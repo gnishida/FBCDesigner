@@ -192,9 +192,9 @@
 		vboSkyBox.init(*this);
 	}//
 
-	void VBORenderManager::changeTerrainShader(int newMode){
+	/*void VBORenderManager::changeTerrainShader(int newMode){
 		glUniform1i(glGetUniformLocation(program, "terrainMode"),newMode);//newMode
-	}//
+	}*/
 
 	///////////////////////////////////////////////////////////////////
 	// STATIC

@@ -14,11 +14,9 @@ ControlWidget::ControlWidget(MainWindow* mainWin) : QDockWidget("Control Widget"
 	ui.setupUi(this);
 	connect(ui.terrainPaint_sizeSlider, SIGNAL(valueChanged(int)),this, SLOT(updateTerrainLabels(int)));
 	connect(ui.terrainPaint_changeSlider, SIGNAL(valueChanged(int)),this, SLOT(updateTerrainLabels(int)));
-	connect(ui.terrain_2DShader, SIGNAL(stateChanged(int)),this, SLOT(changeTerrainShader(int)));
 	connect(ui.render_2DroadsStrokeSlider, SIGNAL(valueChanged(int)),this, SLOT(updateRender2D(int)));
 	connect(ui.render_2DroadsExtraWidthSlider, SIGNAL(valueChanged(int)),this, SLOT(updateRender2D(int)));
 	connect(ui.render_2DparksSlider, SIGNAL(valueChanged(int)),this, SLOT(updateRender2D(int)));
-	connect(ui.render_2DparcelLineSlider, SIGNAL(valueChanged(int)),this, SLOT(updateRender2D(int)));
 	connect(ui.terrain_smooth, SIGNAL(clicked()),this, SLOT(smoothTerrain()));
 
 
@@ -59,11 +57,7 @@ void ControlWidget::updateRender2D(int newValue){
 		ui.render_2DparksLabel->setText("Park: "+QString::number(parkPer)+"%");
 		G::global()["2d_parkPer"]=parkPer;
 
-		G::global()["maxBlockSizeForPark"] = ui.lineEditMaxBlockSizeForPark->text().toFloat();
 
-		float parcelLine=ui.render_2DparcelLineSlider->value()*0.1f;
-		ui.render_2DparcelLineLabel->setText("Par. Line: "+QString::number(parcelLine,'f',1)+"");
-		G::global()["2d_parcelLine"]=parcelLine;
 
 		if(newValue!=-1){//init
 			mainWin->urbanGeometry->roads.modified=true;//force 
@@ -72,15 +66,9 @@ void ControlWidget::updateRender2D(int newValue){
 }//
 
 void ControlWidget::changeTerrainShader(int){
-	bool shader2D=ui.terrain_2DShader->isChecked();
-	G::global()["shader2D"] = shader2D;
-	int terrainMode;
-	if(shader2D==true){
-		terrainMode=0;
-	}else 
-		terrainMode=1;
-	printf("terrainMode %d\n",terrainMode);
-	mainWin->glWidget->vboRenderManager.changeTerrainShader(terrainMode);//could have used !shader2D
+	G::global()["shader2D"] = false;
+	printf("terrainMode %d\n",1);
+	//mainWin->glWidget->vboRenderManager.changeTerrainShader(1);//could have used !shader2D
 	mainWin->urbanGeometry->adaptToTerrain();
 	mainWin->glWidget->updateGL();
 }//

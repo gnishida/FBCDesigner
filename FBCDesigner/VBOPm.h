@@ -30,7 +30,6 @@ public:
 	static PlaceTypesMainClass placeTypes;
 
 	static bool generateGeometry(VBORenderManager& rendManager,RoadGraph &roadGraph);
-	static bool generate2DGeometry(VBORenderManager& rendManager,RoadGraph &roadGraph);
 
 private:
 

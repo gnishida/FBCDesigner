@@ -512,28 +512,6 @@ bool VBOPmBlocks::generateBlocks(
 	int numBlockParks=park_percentage*blocks.size();
 	QSet<int> blockWithPark;
 
-	// make large blocks as parks
-	if (numBlockParks > 0) {
-		for(int i=0; i<blocks.size(); ++i){
-			if(blocks[i].blockContour.contour.size() < 3){
-				continue;
-			}
-
-			Polygon2D polygon;
-			for (int j = 0; j < blocks[i].blockContour.contour.size(); ++j) {
-				polygon.push_back(QVector2D(blocks[i].blockContour.contour[j]));
-			}
-			float area = polygon.area();
-
-			// HACK: to make a circle as a park
-			//if(area > G::getFloat("maxBlockSizeForPark") || (area > 46000 && area < 48000) || (area > 53000 && area < 55000)){
-			if(area > G::getFloat("maxBlockSizeForPark") || (area > 46000 && area < 48000) || (area > 53000 && area < 55000) || (area > 56500 && area < 57000)){
-				blockWithPark.insert(i);
-				blocks[i].isPark = true;
-			}
-		}
-	}
-
 	while(blockWithPark.size()<numBlockParks){
 		int ind=qrand()%blocks.size();
 		blockWithPark.insert(ind);

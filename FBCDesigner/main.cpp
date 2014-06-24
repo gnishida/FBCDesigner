@@ -30,8 +30,7 @@ int main(int argc, char *argv[]) {
 	G::global()["seaLevelForStreet"] = 48.9f;
 
 	G::global()["MAX_Z"] = 4500.0f;
-	G::global()["shader2D"] = true;
-
+	G::global()["shader2D"] = false;
 
 
 	QApplication a(argc, argv);

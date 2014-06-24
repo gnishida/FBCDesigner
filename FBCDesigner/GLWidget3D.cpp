@@ -214,7 +214,7 @@ void GLWidget3D::initializeGL() {
 		updateCamera();
 		shadow.initShadow(vboRenderManager.program,this);
 		glUniform1i(glGetUniformLocation(vboRenderManager.program,"shadowState"), 0);//SHADOW: Disable
-		glUniform1i(glGetUniformLocation(vboRenderManager.program, "terrainMode"),0);//FLAT
+		glUniform1i(glGetUniformLocation(vboRenderManager.program, "terrainMode"),1);//FLAT
 		
 }
 
@@ -244,7 +244,7 @@ void GLWidget3D::drawScene(int drawMode) {
 		glEnable(GL_CULL_FACE);
 		
 		vboRenderManager.vboTerrain.render(vboRenderManager);
-		if(mainWin->controlWidget->ui.terrain_2DShader->isChecked()==false)
+		//if(mainWin->controlWidget->ui.terrain_2DShader->isChecked()==false)
 			vboRenderManager.vboWater.render(vboRenderManager);
 
 		// draw the selected vertex and edge
@@ -479,7 +479,7 @@ void GLWidget3D::generate3DGeometry(bool justRoads){
 
 	printf("generate3DGeometry\n");
 	G::global()["3d_render_mode"]=1;//LC
-	mainWin->controlWidget->ui.terrain_2DShader->setChecked(false);
+	//mainWin->controlWidget->ui.terrain_2DShader->setChecked(false);
 	//camera=&camera3D;//change camera MODE!! 
 
 	//1. update roadgraph geometry

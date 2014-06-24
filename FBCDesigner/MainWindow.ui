@@ -62,7 +62,6 @@
     <property name="title">
      <string>PM</string>
     </property>
-    <addaction name="actionGenerate2D"/>
     <addaction name="actionGenerate3D"/>
     <addaction name="actionGenerate3DRoads"/>
    </widget>
