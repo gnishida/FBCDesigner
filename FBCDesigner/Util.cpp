@@ -461,3 +461,4 @@ bool Util::getIrregularBisector(const QVector3D& p0, const QVector3D& p1, const 
 	}
 	return true;
 }
+

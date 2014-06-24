@@ -171,7 +171,7 @@ public:
 	float computeInset(float offsetDistance, Loop3D &pgonInset, bool computeArea = true);
 	float computeInset(std::vector<float> &offsetDistances, Loop3D &pgonInset, bool computeArea = true);
 
-	float computeArea(bool parallelToXY = false);
+	//float computeArea(bool parallelToXY = false);
 
 	bool isPointWithinLoop(QVector3D &pt){
 		int i, j, c = 0;
@@ -189,7 +189,7 @@ public:
 	**/
 	Loop3D contour;
 
-	static QVector3D getLoopNormalVector(Loop3D &pin);
+	static QVector3D getLoopNormalVector(const Loop3D &pin);
 
 	static bool reorientFace(Loop3D &pface, bool onlyCheck = false);
 
@@ -197,7 +197,7 @@ public:
 
 	static void transformLoop(Loop3D &pin, Loop3D &pout, QMatrix4x4 &transformMat);
 
-	static float computeLoopArea(Loop3D &pin, bool parallelToXY = false);
+	//static float computeLoopArea(Loop3D &pin, bool parallelToXY = false);
 
 	static void sampleTriangularLoopInterior(Loop3D &pin, std::vector<QVector3D> &pts, float density);
 

@@ -222,49 +222,6 @@ bool removeIntersectingEdges(RoadGraph &roadGraph)
 	}
 }//
 
-//
-// Remove edges conecting same vertex
-//
-bool removeDuplicatedAndAutoEdges(RoadGraph &roadGraph){
-	std::vector<RoadEdgeIter> edgesToRemove;
-
-	RoadEdgeIter a_ei, a_ei_end;
-	float ta0a1, tb0b1;
-
-	std::set<std::pair<RoadVertexDesc,RoadVertexDesc>> pairsVer;
-	for(boost::tie(a_ei, a_ei_end) = boost::edges(roadGraph.graph); a_ei != a_ei_end; ++a_ei){
-		RoadVertexDesc src=boost::source(*a_ei,roadGraph.graph);
-		RoadVertexDesc targ=boost::target(*a_ei,roadGraph.graph);
-		if(src==targ){
-			//edgesToRemove.push_back(a_ei);//remove those autoconnected
-			continue;
-		}
-
-		RoadVertexDesc first,second;
-		if(src<targ){
-			first=src;second=targ;
-		}else{
-			first=targ;second=src;
-		}
-
-		if(pairsVer.find(std::make_pair(first,second)) != pairsVer.end()){
-			edgesToRemove.push_back(a_ei);
-		}else{
-			pairsVer.insert(std::make_pair(first,second));
-		}
-	}
-
-	for(int i=0; i<edgesToRemove.size(); ++i){	
-		boost::remove_edge(*(edgesToRemove[i]),roadGraph.graph);
-	}
-
-	if(edgesToRemove.size()>0){
-		printf("AutoEdge removed %d\n",edgesToRemove.size());
-		return true;
-	} else {
-		return false;
-	}
-}//
 
 //
 // Given a road network, this function extracts the blocks
@@ -293,82 +250,31 @@ bool VBOPmBlocks::generateBlocks(
 	//Make sure graph is planar
 	typedef std::vector< RoadEdgeDesc > tEdgeDescriptorVector;
 	std::vector<tEdgeDescriptorVector> embedding(boost::num_vertices(roadGraph.graph));
-	//printf("b1.3\n");
+
 	int cont=0;
 
-	
-
-
-	// Test for planarity		
-	if (boost::boyer_myrvold_planarity_test(boost::boyer_myrvold_params::graph =roadGraph.graph,
-		boost::boyer_myrvold_params::embedding = &embedding[0]) 
-		){
-			//std::cout << "Input graph is planar" << std::endl;
-			isPlanar = true;
-	}
-	else {			
-		std::cout << "Input graph is not planar trying removeIntersectingEdges" << std::endl;
-		// No planar: Remove intersecting edges and check again
-		removeIntersectingEdges(roadGraph) ;
+	// Test for planarity
+	while (cont<2) {
 		if (boost::boyer_myrvold_planarity_test(boost::boyer_myrvold_params::graph =roadGraph.graph,
 			boost::boyer_myrvold_params::embedding = &embedding[0]) 
 			){
-				std::cout << "Input graph is planar AFTER REMOVE" << std::endl;
 				isPlanar = true;
-		}else{
-			std::cout << "Input graph is not planar trying removeDuplicatedAndAutoEdges" << std::endl;
-			// No planar: Remove didn't work--> kuratowski_edges
-			//RoadEdgeDescs kuratowski_edges;
-			// Initialize the interior edge index
-			/*boost::property_map<BGLGraph, edge_index_t>::type e_index = boost::get(edge_index, roadGraph.graph);
-			boost::graph_traits<BGLGraph>::edges_size_type edge_count = 0;
-			boost::graph_traits<BGLGraph>::edge_iterator ei, ei_end;
-			for(boost::tie(ei, ei_end) = edges(roadGraph.graph); ei != ei_end; ++ei)
-				put(e_index, *ei, edge_count++);
-
-			RoadEdgeDescs kuratowski_edges;
-			if(boost::boyer_myrvold_planarity_test(
-				boost::boyer_myrvold_params::graph =roadGraph.graph,
-				boost::boyer_myrvold_params::embedding = &embedding[0]
-			   //,boost::boyer_myrvold_params::kuratowski_subgraph =std::back_inserter(kuratowski_edges)
-				,std::back_inserter(kuratowski_edges)
-				)){
-					isPlanar = true;
-					printf("ERROR: This should not happen\n");
-			}else{
-				std::cout << "Input graph is planar AFTER REMOVE AND KURATOWSKI" << std::endl;
-				return false;
-				RoadEdgeIter ki, ki_end;
-				ki_end = kuratowski_edges.end();
-				for(ki = kuratowski_edges.begin(); ki != ki_end; ++ki)
-				{
-					std::cout << *ki << " ";
-				}
-				std::cout << std::endl;
-				}*/
-			removeDuplicatedAndAutoEdges(roadGraph);
-			if (boost::boyer_myrvold_planarity_test(boost::boyer_myrvold_params::graph =roadGraph.graph,
-				boost::boyer_myrvold_params::embedding = &embedding[0]) 
-				){
-					std::cout << "Input graph is planar AFTER REMOVE AUTO" << std::endl;
-					isPlanar = true;
-			}else{
-				printf("ERROR PLANARIZE\n");
-				return false;
-			}
-			/////////////////////	
+		} else {
+			std::cout << "Input graph is not planar trying removeIntersectingEdges" << std::endl;
+			// No planar: Remove intersecting edges and check again
+			removeIntersectingEdges(roadGraph);
+			cont++;
 		}
 	}
-
-
-	embedding.resize(boost::num_vertices(roadGraph.graph));
 
 	if(!isPlanar){
 		std::cout << "ERROR: Graph could not be planarized: (generateBlocks)\n";
 		return false;
 	}
-
+	
 	// build embedding manually
+	//embedding.clear();
+	//embedding.resize(boost::num_vertices(roadGraph.graph));
 	buildEmbedding(roadGraph, embedding);
 
 	//Create edge index property map?	
@@ -381,91 +287,47 @@ bool VBOPmBlocks::generateBlocks(
 		mapEdgeIdx.insert(std::make_pair(*ei, edge_count++));	
 	}
 
-	//std::cout << "1..\n"; fflush(stdout);
-
 	//Extract blocks from road graph using boost graph planar_face_traversal
-	//std::cout << std::endl << "Vertices on the faces: " << std::endl;
 	vertex_output_visitor v_vis;	
 	boost::planar_face_traversal(roadGraph.graph, &embedding[0], v_vis, pmEdgeIndex);
 
 	//Misc postprocessing operations on blocks =======
 	int maxVtxCount = 0;
-	int maxVtxCountIdx = -1; 
-	float avgInsetArea = 0.0f;
-	int numBadBlocks = 0;
+	int maxVtxCountIdx = -1;
 	std::vector<float> blockAreas;
 
 	Loop3D blockContourInset;
 	for(int i=0; i<blocks.size(); ++i){
-		//printf("PROC 1 block %d: %d\n",i,blocks[i].blockContour.contour.size());
 		//assign default place type
 		blocks[i].setMyPlaceTypeIdx(-1);
 		//Reorient faces
-		if(Polygon3D::reorientFace(blocks[i].blockContour.contour)){
-			std::reverse(blocks[i].blockContourRoadsWidths.begin(),
-				blocks[i].blockContourRoadsWidths.end() - 1);
-			//std::cout << "reorient\n";
+		if (Polygon3D::reorientFace(blocks[i].blockContour.contour)) {
+			std::reverse(blocks[i].blockContourRoadsWidths.begin(), blocks[i].blockContourRoadsWidths.end() - 1);
 		}
-
-		/*
-		//fix block geometry before calling function...
-		Loop3D cleanPgon;
-		Polygon3D::cleanLoop(blocks[i].blockContour.contour, cleanPgon, 5.0f);		
-
-		//update widths			
-		if(blocks[i].blockContour.contour.size() != cleanPgon.size()){
-			//std::cout << "clean\n";
-			int cleanPgonSz = cleanPgon.size();
-			std::vector<float> cleanWidths(cleanPgonSz);
-
-			for(int j=0; j<cleanPgonSz; ++j){
-				//find element j in from clean polygon in original polygon
-				//if element IS there, add to clean width array
-				for(int k=0; k<blocks[i].blockContour.contour.size(); ++k){
-					if( cleanPgon[j] == blocks[i].blockContour.contour[k] ){
-						cleanWidths[(j-1+cleanPgonSz)%cleanPgonSz] = blocks[i].blockContourRoadsWidths[k];
-						//std::cout << blocks[i].blockContourRoadsWidths[k] << " ";
-						break;
-					}			
-				}
-			}
-			blocks[i].blockContour.contour = cleanPgon;
-			blocks[i].blockContourRoadsWidths = cleanWidths;
-			//std::cout << cleanPgon.size() << " " << cleanWidths.size() << "\n";
-			blocks[i].myColor = QVector3D(0.5f, 0.7f, 0.8f);		
-		}
-		*/
 
 		if( blocks[i].blockContour.contour.size() != blocks[i].blockContourRoadsWidths.size() ){
 			std::cout << "Error: contour" << blocks[i].blockContour.contour.size() << " widhts " << blocks[i].blockContourRoadsWidths.size() << "\n";
 			blocks[i].blockContour.contour.clear();
 			blockAreas.push_back(0.0f);
-			numBadBlocks++;
 			continue;
 		}
 
 		if(blocks[i].blockContour.contour.size() < 3){
 			std::cout << "Error: Contour <3 " << "\n";
 			blockAreas.push_back(0.0f);
-			numBadBlocks++;
 			continue;
 		}
 
 		//Compute block offset	
-		float insetArea = //10000.0f;
-			blocks[i].blockContour.computeInset(blocks[i].blockContourRoadsWidths,blockContourInset);
-
-		//printf("PROC 2 block %d: %d\n",i,blocks[i].blockContour.contour.size());
+		float insetArea = blocks[i].blockContour.computeInset(blocks[i].blockContourRoadsWidths,blockContourInset);
+		
 		blocks[i].blockContour.contour = blockContourInset;
 		blocks[i].blockContour.getBBox3D(blocks[i].bbox.minPt, blocks[i].bbox.maxPt);
-		//printf("PROC 3 block %d: %d\n",i,blocks[i].blockContour.contour.size());
-		avgInsetArea += insetArea;
+		
 		blockAreas.push_back(insetArea);
 
 		//assign place type to block ------------
 		int validClosestPlaceTypeIdx = -1;
-
-		//if(blocks.size() > 5)
 
 		float distToValidClosestPlaceType = FLT_MAX;
 		QVector3D testPt;
@@ -479,11 +341,7 @@ bool VBOPmBlocks::generateBlocks(
 		}
 
 		blocks[i].setMyPlaceTypeIdx( validClosestPlaceTypeIdx );
-
-		//---------------------------------------
-		//printf("PROC 4 block %d: %d\n",i,blocks[i].blockContour.contour.size());
 	}
-	avgInsetArea = avgInsetArea/ ( (float)(blockAreas.size() - numBadBlocks));
 
 	//Remove the largest block
 	float maxArea = -FLT_MAX;
@@ -492,21 +350,17 @@ bool VBOPmBlocks::generateBlocks(
 		if(blocks[i].blockContour.contour.size() < 3){
 			continue;
 		}
-		//std::cout << "area: " << blockAreas[i] << "\n";
 		if(blockAreas[i] > maxArea){
 			maxArea = blockAreas[i];
 			maxAreaIdx = i;
 		}
-		//printf("PROC 3 block %d: %d\n",i,blocks[i].blockContour.contour.size());
 	}
-	//printf("PROC Rem %d Total before %d\n",maxAreaIdx,blocks.size());
-	//maxAreaIdx=9;//!!! REMOVE
 	if(maxAreaIdx != -1){
 		blocks.erase(blocks.begin()+maxAreaIdx);
 		blockAreas.erase(blockAreas.begin()+maxAreaIdx);
 	}
-	// block park
 
+	// block park
 	qsrand(blocks.size());
 	float park_percentage=G::global().getInt("2d_parkPer")*0.01f;//tmpPlaceType["pt_park_percentage"]
 	int numBlockParks=park_percentage*blocks.size();
@@ -522,17 +376,42 @@ bool VBOPmBlocks::generateBlocks(
 }//
 
 void VBOPmBlocks::buildEmbedding(RoadGraph &roads, std::vector<std::vector<RoadEdgeDesc> > &embedding) {
+	for (int i = 0; i < embedding.size(); ++i) {
+		QMap<float, RoadEdgeDesc> edges;
+
+		for (int j = 0; j < embedding[i].size(); ++j) {
+			Polyline2D polyline = GraphUtil::orderPolyLine(roads, embedding[i][j], i);
+			QVector2D vec = polyline[1] - polyline[0];
+			edges[-atan2f(vec.y(), vec.x())] = embedding[i][j];
+		}
+
+		std::vector<RoadEdgeDesc> edge_descs;
+		for (QMap<float, RoadEdgeDesc>::iterator it = edges.begin(); it != edges.end(); ++it) {
+			edge_descs.push_back(it.value());
+		}
+
+		embedding[i] = edge_descs;
+	}
+}
+
+/*
+void VBOPmBlocks::buildEmbedding(RoadGraph &roads, std::vector<std::vector<RoadEdgeDesc> > &embedding) {
 	RoadVertexIter vi, vend;
 	for (boost::tie(vi, vend) = boost::vertices(roads.graph); vi != vend; ++vi) {
+		if (*vi == 1090 || *vi == 1089) {
+			int xxx = 0;
+		}
+
 		std::map<float, RoadEdgeDesc> edges;
 
 		RoadOutEdgeIter ei, eend;
 		for (boost::tie(ei, eend) = boost::out_edges(*vi, roads.graph); ei != eend; ++ei) {
-			if ((roads.graph[*ei]->polyline[0] - roads.graph[*vi]->pt).lengthSquared() > (roads.graph[*ei]->polyline.last() - roads.graph[*vi]->pt).lengthSquared()) {
-				std::reverse(roads.graph[*ei]->polyline.begin(), roads.graph[*ei]->polyline.end());
+			Polyline2D polyline = GraphUtil::orderPolyLine(roads, *ei, *vi);
+			//QVector2D vec = roads.graph[*ei]->polyline[1] - roads.graph[*ei]->polyline[0];
+			if (polyline.size() <= 1) {
+				int xxx = 0;
 			}
-
-			QVector2D vec = roads.graph[*ei]->polyline[1] - roads.graph[*ei]->polyline[0];
+			QVector2D vec = polyline[1] - polyline[0];
 			//QVector2D vec = roads.graph[*ei]->polyline.back() - roads.graph[*ei]->polyline.front();
 			edges[-atan2f(vec.y(), vec.x())] = *ei;
 		}
@@ -545,4 +424,4 @@ void VBOPmBlocks::buildEmbedding(RoadGraph &roads, std::vector<std::vector<RoadE
 		embedding.push_back(edge_descs);
 	}
 }
-
+*/

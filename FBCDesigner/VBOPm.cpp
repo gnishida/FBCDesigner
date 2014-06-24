@@ -132,22 +132,26 @@ bool VBOPm::generateGeometry(VBORenderManager& rendManager,RoadGraph &roadGraph)
 	//float offsetArterials =-3.5f;//-((LC::misctools::Global::global()->cuda_arterial_numLanes+1)*LC::misctools::Global::global()->roadLaneWidth);	
 	rendManager.removeStaticGeometry("3d_sidewalk");
 	
-	/*{//test blocks
+	{//test blocks
 		for(int bN=0;bN<blocks.size();bN++){
 			std::vector<Vertex> vert;
 			QVector3D color((float)qrand()/RAND_MAX,(float)qrand()/RAND_MAX,(float)qrand()/RAND_MAX);
 			qDebug()<<color;
 			qDebug()<<blocks[bN].blockContour.contour.size();
 			for(int sN=0;sN<blocks[bN].blockContour.contour.size();sN++){
-				vert.push_back(Vertex(QVector3D(blocks[bN].blockContour.contour[sN].x(),blocks[bN].blockContour.contour[sN].y(),5+bN),
+				int next = (sN+1) % blocks[bN].blockContour.contour.size();
+				vert.push_back(Vertex(QVector3D(blocks[bN].blockContour.contour[sN].x(),blocks[bN].blockContour.contour[sN].y(),5),
+					color,QVector3D(),QVector3D()));
+				vert.push_back(Vertex(QVector3D(blocks[bN].blockContour.contour[next].x(),blocks[bN].blockContour.contour[next].y(),5),
 					color,QVector3D(),QVector3D()));
 			}
-			rendManager.addStaticGeometry("3d_sidewalk",vert,"",GL_POINTS,1|mode_AdaptTerrain);
+			//rendManager.addStaticGeometry("3d_sidewalk",vert,"",GL_POINTS,1|mode_AdaptTerrain);
+			rendManager.addStaticGeometry("3d_sidewalk",vert,"",GL_LINES,1|mode_AdaptTerrain);
 
 		}
 		return true;
 
-	}*/
+	}
 
 	for(int bN=0;bN<blocks.size();bN++){
 		

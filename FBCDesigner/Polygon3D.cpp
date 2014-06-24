@@ -241,8 +241,8 @@ float Polygon3D::computeInset(std::vector<float> &offsetDistances, Loop3D &pgonI
 	QVector3D intPt;
 
 
-	/*
 	// GEN CODE--> It leads to self-intersection very often with non-convex polygons
+	/*
 	for(int cur=0; cur<cSz; ++cur){
 		//Some geometry and trigonometry
 
@@ -273,8 +273,9 @@ float Polygon3D::computeInset(std::vector<float> &offsetDistances, Loop3D &pgonI
 
 			pgonInset.push_back(intPt);
 		}
-	}*/
-	
+	}
+	*/
+
 	// Old Code
 	pgonInset.resize(cSz);
 	for(int cur=0; cur<cSz; ++cur){
@@ -289,7 +290,6 @@ float Polygon3D::computeInset(std::vector<float> &offsetDistances, Loop3D &pgonI
 
 		pgonInset[cur] = intPt;
 	}
-
 
 
 	//temp
@@ -366,12 +366,12 @@ float Polygon3D::computeInset(std::vector<float> &offsetDistances, Loop3D &pgonI
 
 }
 
-QVector3D calculateNormal(QVector3D& p0,QVector3D& p1,QVector3D& p2)
+QVector3D calculateNormal(const QVector3D& p0,const QVector3D& p1,const QVector3D& p2)
 {
 	return (QVector3D::normal((p1-p0),(p2-p1)));
 }
 
-QVector3D Polygon3D::getLoopNormalVector(Loop3D &pin)
+QVector3D Polygon3D::getLoopNormalVector(const Loop3D &pin)
 {
 	if(pin.size() >= 3){
 		return (calculateNormal(pin[0], pin[1], pin[2]));
@@ -845,5 +845,3 @@ bool Polygon3D::isSelfIntersecting(void){
 	boost::geometry::correct(bg_pgon);
 	return boost::geometry::intersects(bg_pgon);
 }//
-
-

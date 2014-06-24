@@ -5,6 +5,7 @@
 #include <QGenericMatrix>
 #include "common.h"
 #include "Polyline2D.h"
+#include "Polygon3D.h"
 
 class Util {
 	static const float MTC_FLOAT_TOL;

@@ -50,10 +50,10 @@ void RoadGraph::adaptToTerrain(VBORenderManager* vboRenderManager) {
 		RoadVertexDesc tgt = boost::target(*ei, graph);
 		graph[*ei]->polyline3D.clear();
 
-		Polyline2D polyline = GraphUtil::finerEdge(graph[*ei]->polyline, 10.0f);
-		for (int i = 0; i < polyline.size(); ++i) {
-			float z = vboRenderManager->getTerrainHeight(polyline[i].x(), polyline[i].y(), true);
-			graph[*ei]->polyline3D.push_back(QVector3D(polyline[i].x(), polyline[i].y(), z + 2));
+		//Polyline2D polyline = GraphUtil::finerEdge(graph[*ei]->polyline, 10.0f);
+		for (int i = 0; i < graph[*ei]->polyline.size(); ++i) {
+			float z = vboRenderManager->getTerrainHeight(graph[*ei]->polyline[i].x(), graph[*ei]->polyline[i].y(), true);
+			graph[*ei]->polyline3D.push_back(QVector3D(graph[*ei]->polyline[i].x(), graph[*ei]->polyline[i].y(), z + 2));
 		}
 	}
 
