@@ -27,12 +27,12 @@ public:
 	void clear();
 	void clearGeometry();
 
-	void render(VBORenderManager &vboRenderManager);
+	//void render(VBORenderManager &vboRenderManager);
 	void adaptToTerrain();
 
-	void newTerrain(int width, int depth, int cellLength);
-	void loadTerrain(const QString &filename);
-	void saveTerrain(const QString &filename);
+	//void newTerrain(int width, int depth, int cellLength);
+	//void loadTerrain(const QString &filename);
+	//void saveTerrain(const QString &filename);
 
 	void loadRoads(const QString &filename);
 	void saveRoads(const QString &filename);

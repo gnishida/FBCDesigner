@@ -78,7 +78,6 @@ void MainWindow::onLoadTerrain() {
 	QString filename = QFileDialog::getOpenFileName(this, tr("Load Terrain file..."), "", tr("Terrain Files (*.png *.jpg)"));
 	if (filename.isEmpty()) return;
 	glWidget->vboRenderManager.vboTerrain.loadTerrain(filename);
-	//urbanGeometry->loadTerrain(filename);
 
 	glWidget->updateGL();
 }
@@ -87,7 +86,6 @@ void MainWindow::onSaveTerrain() {
 	QString filename = QFileDialog::getSaveFileName(this, tr("Save Terrain file..."), "", tr("Terrain Files (*.png)"));
 	if (filename.isEmpty()) return;
 	glWidget->vboRenderManager.vboTerrain.saveTerrain(filename);
-	//urbanGeometry->saveTerrain(filename);
 }
 
 void MainWindow::onLoadRoads() {

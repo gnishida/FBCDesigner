@@ -237,15 +237,22 @@ void GLWidget3D::drawScene(int drawMode) {
 	///////////////////////////////////
 	// GEN MODE
 	if(G::global().getInt("3d_render_mode")==0){
-		//vboRenderManager.renderStaticGeometry(QString("sky"));
-
 		glDisable(GL_CULL_FACE);
-		mainWin->urbanGeometry->render(vboRenderManager);
+
+			vboRenderManager.renderStaticGeometry(QString("sky"));
+
+			vboRenderManager.renderStaticGeometry(QString("3d_roads"));
+
+			
+			vboRenderManager.renderStaticGeometry(QString("3d_roads_inter"));//
+			vboRenderManager.renderStaticGeometry(QString("3d_roads_interCom"));//
+
+
 		glEnable(GL_CULL_FACE);
+
 		
 		vboRenderManager.vboTerrain.render(vboRenderManager);
-		//if(mainWin->controlWidget->ui.terrain_2DShader->isChecked()==false)
-			vboRenderManager.vboWater.render(vboRenderManager);
+		vboRenderManager.vboWater.render(vboRenderManager);
 
 		// draw the selected vertex and edge
 		if (vertexSelected) {
@@ -267,7 +274,6 @@ void GLWidget3D::drawScene(int drawMode) {
 			glUniform1i(glGetUniformLocation(vboRenderManager.program,"shadowState"), 0);//SHADOW: Disable
 
 			// RENDER SKY WATER
-
 			vboRenderManager.renderStaticGeometry(QString("sky"));
 			vboRenderManager.vboWater.render(vboRenderManager);
 

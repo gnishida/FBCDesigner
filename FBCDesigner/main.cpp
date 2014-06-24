@@ -32,6 +32,7 @@ int main(int argc, char *argv[]) {
 	G::global()["MAX_Z"] = 4500.0f;
 	G::global()["shader2D"] = false;
 
+	G::global()["3d_road_deltaZ"]=1.0f;
 
 	QApplication a(argc, argv);
 	MainWindow w;

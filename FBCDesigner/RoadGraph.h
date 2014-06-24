@@ -54,14 +54,14 @@ public:
 
 	void setModified() { modified = true; }
 
-	void generateMesh(VBORenderManager& renderManger, const QString &linesN, const QString &pointsN);
+	void generateMesh(VBORenderManager& renderManger);
 
 	void clear();
 	//void setZ(float z);
 	void adaptToTerrain(VBORenderManager* vboRenderManager);
 
-private:
-	void _generateMeshVerticesDefault(VBORenderManager& renderManager, const QString &linesN, const QString &pointsN);
+public:
+	void updateRoadGraph(VBORenderManager& renderManager);
 };
 
 typedef boost::shared_ptr<RoadGraph> RoadGraphPtr;

@@ -151,22 +151,8 @@ void VBORoadGraph::updateRoadGraph(VBORenderManager& rendManager,RoadGraph &road
 
 
 		// add all geometry
-		if(G::global()["3d_render_mode"]==1){//LC
-			rendManager.addStaticGeometry("3d_roads",vertINT,"../data/textures/street_1.png",GL_QUADS, 2|mode_AdaptTerrain);
-			rendManager.addStaticGeometry("3d_roads",vertROAD,"../data/textures/street_0.png",GL_QUADS,2|mode_AdaptTerrain);
-		}
-		if(G::global()["3d_render_mode"]==2){//hatch
-			rendManager.addStaticGeometry("3d_roads",vertINT,"../data/textures/street_1b.png",GL_QUADS, 2|mode_AdaptTerrain);
-			rendManager.addStaticGeometry("3d_roads",vertROAD,"../data/textures/street_0b.png",GL_QUADS,2|mode_AdaptTerrain);
-			/*// add bbox
-			std::vector<QVector3D> vertBB;
-			vertBB.push_back(QVector3D(roadBB.minPt.x(),roadBB.minPt.y(),0));
-			vertBB.push_back(QVector3D(roadBB.maxPt.x(),roadBB.minPt.y(),0));
-			vertBB.push_back(QVector3D(roadBB.maxPt.x(),roadBB.maxPt.y(),0));
-			vertBB.push_back(QVector3D(roadBB.minPt.x(),roadBB.maxPt.y(),0));
-			rendManager.addStaticGeometry2("3d_roads",vertBB,0,false,"hatching_array",GL_QUADS,11|mode_TexArray|mode_Lighting|mode_AdaptTerrain,QVector3D(1.0f/(5.0f),1.0f/(5.0f),1.0f),QVector3D(0,0,0));
-			*/
-		}
+		rendManager.addStaticGeometry("3d_roads",vertINT,"../data/textures/street_1.png",GL_QUADS, 2|mode_AdaptTerrain);
+		rendManager.addStaticGeometry("3d_roads",vertROAD,"../data/textures/street_0.png",GL_QUADS,2|mode_AdaptTerrain);
 	}
 
 	//////////////////////////////////////////
