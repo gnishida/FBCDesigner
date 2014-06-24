@@ -4,7 +4,6 @@
 #include "MainWindow.h"
 #include <gl/GLU.h>
 #include "RendererHelper.h"
-#include "VBORoadGraph.h"
 #include "VBOPm.h"
 
 GLWidget3D::GLWidget3D(MainWindow* mainWin) : QGLWidget(QGLFormat(QGL::SampleBuffers), (QWidget*)mainWin) {
@@ -15,7 +14,6 @@ GLWidget3D::GLWidget3D(MainWindow* mainWin) : QGLWidget(QGLFormat(QGL::SampleBuf
 	camera3D.resetCamera();
 	camera = &camera2D;
 	//camera = &flyCamera;
-	//G::global()["rend_mode"]=0;//2D	setRender2D_3D();
 
 	spaceRadius=30000.0;
 	farPlaneToSpaceRadiusFactor=5.0f;//N 5.0f
@@ -494,7 +492,7 @@ void GLWidget3D::generate3DGeometry(bool justRoads){
 	}else{
 		G::global()["3d_road_deltaZ"]=1.0f;
 	}
-	VBORoadGraph::updateRoadGraph(vboRenderManager, mainWin->urbanGeometry->roads);
+	//VBORoadGraph::updateRoadGraph(vboRenderManager, mainWin->urbanGeometry->roads);
 	//2. generate blocks, parcels and buildings and vegetation
 	if(justRoads==false)
 		VBOPm::generateGeometry(vboRenderManager, mainWin->urbanGeometry->roads);

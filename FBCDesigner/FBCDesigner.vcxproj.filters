@@ -130,9 +130,6 @@
     <ClCompile Include="VBORenderManager.cpp">
       <Filter>VBO</Filter>
     </ClCompile>
-    <ClCompile Include="VBORoadGraph.cpp">
-      <Filter>VBO</Filter>
-    </ClCompile>
     <ClCompile Include="VBOShader.cpp">
       <Filter>VBO</Filter>
     </ClCompile>
@@ -315,9 +312,6 @@
       <Filter>VBO</Filter>
     </ClInclude>
     <ClInclude Include="VBORenderManager.h">
-      <Filter>VBO</Filter>
-    </ClInclude>
-    <ClInclude Include="VBORoadGraph.h">
       <Filter>VBO</Filter>
     </ClInclude>
     <ClInclude Include="VBOShader.h">
