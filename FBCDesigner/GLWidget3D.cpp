@@ -485,7 +485,6 @@ void GLWidget3D::generate3DGeometry(bool justRoads){
 
 	printf("generate3DGeometry\n");
 	G::global()["3d_render_mode"]=1;//LC
-	//mainWin->controlWidget->ui.terrain_2DShader->setChecked(false);
 	//camera=&camera3D;//change camera MODE!! 
 
 	//1. update roadgraph geometry

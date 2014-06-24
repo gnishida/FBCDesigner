@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>190</width>
-    <height>252</height>
+    <height>240</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -26,7 +26,7 @@
       <x>10</x>
       <y>10</y>
       <width>171</width>
-      <height>181</height>
+      <height>141</height>
      </rect>
     </property>
     <property name="title">
@@ -111,84 +111,11 @@
       <enum>Qt::Horizontal</enum>
      </property>
     </widget>
-    <widget class="QLabel" name="render_2DroadsStrokeLabel">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>120</y>
-       <width>71</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Stroke: 3.5</string>
-     </property>
-    </widget>
-    <widget class="QSlider" name="render_2DroadsStrokeSlider">
-     <property name="geometry">
-      <rect>
-       <x>80</x>
-       <y>120</y>
-       <width>81</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>17</height>
-      </size>
-     </property>
-     <property name="maximum">
-      <number>100</number>
-     </property>
-     <property name="value">
-      <number>35</number>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-    <widget class="QSlider" name="render_2DroadsExtraWidthSlider">
-     <property name="geometry">
-      <rect>
-       <x>90</x>
-       <y>100</y>
-       <width>71</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>17</height>
-      </size>
-     </property>
-     <property name="maximum">
-      <number>100</number>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-    <widget class="QLabel" name="render_2DroadsExtraWidthLabel">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>100</y>
-       <width>71</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>R Width: 0.0</string>
-     </property>
-    </widget>
     <widget class="QLabel" name="render_2DparksLabel">
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>150</y>
+       <y>110</y>
        <width>61</width>
        <height>16</height>
       </rect>
@@ -201,7 +128,7 @@
      <property name="geometry">
       <rect>
        <x>80</x>
-       <y>150</y>
+       <y>110</y>
        <width>81</width>
        <height>17</height>
       </rect>
@@ -255,8 +182,6 @@
   <tabstop>terrainPaint_sizeSlider</tabstop>
   <tabstop>terrainPaint_changeSlider</tabstop>
   <tabstop>render_3DtreesCheckBox</tabstop>
-  <tabstop>render_2DroadsExtraWidthSlider</tabstop>
-  <tabstop>render_2DroadsStrokeSlider</tabstop>
   <tabstop>render_2DparksSlider</tabstop>
  </tabstops>
  <resources/>

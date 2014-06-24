@@ -10,14 +10,6 @@ bool compare2ndPartTuple2 (const std::pair<std::pair<QVector3D,QVector2D>,float>
 }
 
 RoadGraph::RoadGraph() {
-	showHighways = true;
-	showBoulevards = true;
-	showAvenues = true;
-	showLocalStreets = true;
-
-	renderMode = RENDER_DEFAULT;
-	//renderMode = RENDER_GROUPBY;
-
 	modified = false;
 }
 
@@ -79,30 +71,25 @@ void RoadGraph::updateRoadGraph(VBORenderManager& rendManager) {
 	//////////////////////////////////////////
 	// TYPE=1/2/3 POLYLINES 
 	if(renderRoadType==1||renderRoadType==2||renderRoadType==3){
-
-		//clearVBORoadGraph(rendManager);
-
 		float const maxSegmentLeng=5.0f;//5.0f
 
 		RoadEdgeIter ei, eiEnd;
 		QVector3D p0,p1;
-		int numEdges=0;
+		//int numEdges=0;
 
 		std::vector<Vertex> vertROAD[2];
-		std::vector<Vertex> intersectCirclesV;
 		QVector3D a0,a1,a2,a3;
 		QVector3D per,dir,lastDir;
 		float length;
-		//BBox3D roadBB;
 		for(boost::tie(ei, eiEnd) = boost::edges(graph);
 			ei != eiEnd; ++ei)
 		{
 			if (!graph[*ei]->valid) continue;
-			numEdges++;
+			//numEdges++;
 
 			RoadEdgePtr edge = graph[*ei];
 			float hWidth=1.1f*graph[*ei]->getWidth()/2.0f;//magic 1.1f !!!! (make roads go below buildings
-			//printf("roadGraph.graph[*ei]->type %d\n",roadGraph.graph[*ei]->type);
+
 			int type;
 			switch (graph[*ei]->type) {
 			case RoadEdge::TYPE_HIGHWAY:
@@ -119,8 +106,6 @@ void RoadGraph::updateRoadGraph(VBORenderManager& rendManager) {
 				type=0;
 				break;
 			}
-
-			//float lengthMoved=0;//road texture dX
 			
 			float lengthMovedL=0;//road texture dX
 			float lengthMovedR=0;//road texture dX
@@ -202,8 +187,6 @@ void RoadGraph::updateRoadGraph(VBORenderManager& rendManager) {
 		// add all geometry
 		rendManager.addStaticGeometry("3d_roads",vertROAD[0],"../data/textures/roads/road_2lines.jpg",GL_QUADS,2|mode_AdaptTerrain);
 		rendManager.addStaticGeometry("3d_roads",vertROAD[1],"../data/textures/roads/road_4lines.jpg",GL_QUADS,2|mode_AdaptTerrain);
-		if(intersectCirclesV.size()>0)
-			rendManager.addStaticGeometry("3d_roads_inter",intersectCirclesV,"../data/textures/roads/road_0lines.jpg",GL_TRIANGLES,2|mode_AdaptTerrain);
 	}
 
 	//////////////////////////////////////////
@@ -284,7 +267,6 @@ void RoadGraph::updateRoadGraph(VBORenderManager& rendManager) {
 					if (!graph[*Oei]->valid) continue;
 					// find first segment 
 					RoadEdgePtr edge = graph[*Oei];
-					//printf("a11 poly %d\n",edge->polyline.size());
 
 					Polyline2D polyline = GraphUtil::orderPolyLine(*this, *Oei, *vi);
 					p0 = polyline[0];

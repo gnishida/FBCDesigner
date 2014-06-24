@@ -25,28 +25,14 @@ class Terrain;
 
 class RoadGraph {
 public:
-	static enum { RENDER_DEFAULT = 0, RENDER_TEXTURE, RENDER_GROUPBY, RENDER_GENERATION_TYPE };
-
-public:
 	bool modified;
 	BGLGraph graph;
 
 	// for rendering (These variables should be updated via setZ() function only!!
-	float highwayHeight;
-	float avenueHeight;
-	float widthBase;
-	float curbRatio;
-
-	QColor colorHighway;
-	QColor colorBoulevard;
-	QColor colorAvenue;
-	QColor colorStreet;
-	bool showHighways;
-	bool showBoulevards;
-	bool showAvenues;
-	bool showLocalStreets;
-
-	int renderMode;
+	//float highwayHeight;
+	//float avenueHeight;
+	//float widthBase;
+	//float curbRatio;
 
 public:
 	RoadGraph();
@@ -57,7 +43,6 @@ public:
 	void generateMesh(VBORenderManager& renderManger);
 
 	void clear();
-	//void setZ(float z);
 	void adaptToTerrain(VBORenderManager* vboRenderManager);
 
 public:
