@@ -8,33 +8,8 @@ RoadEdge::RoadEdge(unsigned int type, unsigned int lanes, bool oneWay, bool link
 	this->link = link;
 	this->roundabout = roundabout;
 
-	this->color = QColor(255, 255, 255);
-
 	// initialize other members
 	this->valid = true;
-	this->properties["seed"] = false;
-	this->properties["shapeType"] = SHAPE_DEFAULT;
-	this->properties["group"] = -1;
-	this->properties["gridness"] = 0.0f;
-	this->properties["fullyPaired"] = false;
-
-	// default color
-	switch (type) {
-	case TYPE_HIGHWAY:
-		color = QColor(255, 225, 104);
-		bgColor = QColor(229, 153, 21);
-		break;
-	case TYPE_AVENUE:
-		//color = QColor(247, 247, 185);
-		//bgColor = QColor(203, 202, 149);
-		color = QColor(255, 225, 104);
-		bgColor = QColor(230, 197, 101);
-		break;
-	case TYPE_STREET:
-		color = QColor(255, 255, 255);
-		bgColor = QColor(222, 217, 207);
-		break;
-	} 
 }
 
 RoadEdge::~RoadEdge() {
@@ -42,14 +17,6 @@ RoadEdge::~RoadEdge() {
 
 float RoadEdge::getLength() {
 	return polyline.length();
-	/*
-	float length = 0.0f;
-	for (int i = 0; i < polyline.size() - 1; i++) {
-		length += (polyline[i + 1] - polyline[i]).length();
-	}
-
-	return length;
-	*/
 }
 
 /**
@@ -62,13 +29,17 @@ void RoadEdge::addPoint(const QVector2D &pt) {
 }
 
 float RoadEdge::getWidth(float widthPerLane) {
+	return widthPerLane * getWidthUnit();
+}
+
+int RoadEdge::getWidthUnit() {
 	switch (type) {
 	case TYPE_HIGHWAY:
-		return widthPerLane * 3.0f;// * lanes;
+		return 3 * (oneWay ? 1 : 2); //* lanes;
 	case TYPE_AVENUE:
-		return widthPerLane * 2.0f;// * lanes;
+		return 2 * (oneWay ? 1 : 2); //* lanes;
 	case TYPE_STREET:
-		return widthPerLane * 1.0;// * lanes;
+		return 1 * (oneWay ? 1 : 2); //* lanes;
 	default:
 		return 0.0f;
 	}

@@ -3485,9 +3485,6 @@ void GraphUtil::removeShortDeadend(RoadGraph& roads, float threshold) {
 			for (boost::tie(ei, eend) = boost::out_edges(*vi, roads.graph); ei != eend; ++ei) {
 				if (!roads.graph[*ei]->valid) continue;
 
-				// If the edge has a pair, don't remove it.
-				if (roads.graph[*ei]->properties["fullyPaired"] == true) continue;
-
 				RoadVertexDesc tgt = boost::target(*ei, roads.graph);
 
 				// invalidate the too short edge, and invalidate the dead-end vertex.

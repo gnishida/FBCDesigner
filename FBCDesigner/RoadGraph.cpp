@@ -61,7 +61,7 @@ void RoadGraph::adaptToTerrain(VBORenderManager* vboRenderManager) {
 }
 
 void RoadGraph::updateRoadGraph(VBORenderManager& rendManager) {
-	const int renderRoadType=3;
+	const int renderRoadType=2;
 	float deltaZ=G::global().getFloat("3d_road_deltaZ");//avoid road intersect with terrain
 	// 0 No polylines No intersection
 	// 1 Polylines Circle Intersection --> GOOD
@@ -75,20 +75,16 @@ void RoadGraph::updateRoadGraph(VBORenderManager& rendManager) {
 
 		RoadEdgeIter ei, eiEnd;
 		QVector3D p0,p1;
-		//int numEdges=0;
 
 		std::vector<Vertex> vertROAD[2];
 		QVector3D a0,a1,a2,a3;
 		QVector3D per,dir,lastDir;
 		float length;
-		for(boost::tie(ei, eiEnd) = boost::edges(graph);
-			ei != eiEnd; ++ei)
-		{
+		for (boost::tie(ei, eiEnd) = boost::edges(graph); ei != eiEnd; ++ei) {
 			if (!graph[*ei]->valid) continue;
-			//numEdges++;
 
 			RoadEdgePtr edge = graph[*ei];
-			float hWidth=1.1f*graph[*ei]->getWidth()/2.0f;//magic 1.1f !!!! (make roads go below buildings
+			float hWidth=graph[*ei]->getWidth()/2.0f;//magic 1.1f !!!! (make roads go below buildings
 
 			int type;
 			switch (graph[*ei]->type) {
@@ -106,11 +102,17 @@ void RoadGraph::updateRoadGraph(VBORenderManager& rendManager) {
 				type=0;
 				break;
 			}
+
+			// GEN
+			type = 0;
+			if (graph[*ei]->getWidthUnit() > 2) {
+				type = 1;
+			}
 			
 			float lengthMovedL=0;//road texture dX
 			float lengthMovedR=0;//road texture dX
 
-			for(int pL=0;pL<edge->polyline3D.size()-1;pL++){//note -1
+			for (int pL = 0; pL < edge->polyline3D.size()-1; pL++) {
 				bool bigAngle=false;
 				p0 = edge->polyline3D[pL];
 				p1 = edge->polyline3D[pL+1];
@@ -232,7 +234,7 @@ void RoadGraph::updateRoadGraph(VBORenderManager& rendManager) {
 					center.setZ(deltaZ+0.1f);//above
 
 				float radi1 = max_r /2.0f;
-				if(outDegree==2)radi1*=1.10f;
+				//if(outDegree==2)radi1*=1.10f;
 
 				const float numSides=20;
 				const float deltaAngle=( 1.0f / numSides ) * 3.14159f * 2.0f;
@@ -276,7 +278,7 @@ void RoadGraph::updateRoadGraph(VBORenderManager& rendManager) {
 					p1=p0+edgeDir*30.0f;//expand edge to make sure it is long enough
 
 					float angle=angleRef-atan2(edgeDir.y(),edgeDir.x());
-					float width=edge->getWidth()*1.1f;//1.1 (since in render this is also applied)
+					float width=edge->getWidth();//*1.1f;//1.1 (since in render this is also applied)
 					edgeAngleOut.push_back(std::make_pair(std::make_pair(QVector3D(p0.x(),p0.y(),width),p1),angle));//z as width
 					numOutEdges++;
 				}
@@ -413,8 +415,7 @@ void RoadGraph::updateRoadGraph(VBORenderManager& rendManager) {
 					interPedXLineR.push_back(Vertex(intPoint1-ed1Dir*4.25f,QVector3D(0.0f,1.0f,0)));
 
 				}
-				//printf("EdgeOut %d interVertex %d\n",edgeAngleOut.size(),interVertex.size());
-				//rendManager.addStaticGeometry("3d_roads_interCom",interVertex,"../data/textures/roads/road_pedX.jpg",GL_POINTS,1|mode_AdaptTerrain);//POINTS (tex meant to set points)
+
 				if(interPoints.size()>2){
 						
 					{
@@ -426,7 +427,6 @@ void RoadGraph::updateRoadGraph(VBORenderManager& rendManager) {
 						}
 					}
 
-					//rendManager.addStaticGeometry2("3d_roads_interCom",interPoints,1.8f,false,"",GL_QUADS,1|mode_AdaptTerrain,QVector3D(1,1,1),QVector3D());
 					rendManager.addStaticGeometry2("3d_roads_interCom",interPoints,0.0f,false,"../data/textures/roads/road_0lines.jpg",GL_QUADS,2|mode_AdaptTerrain,QVector3D(1.0f/7.5f,1.0f/7.5f,1),QVector3D());//0.0f (moved before)
 				}
 				rendManager.addStaticGeometry("3d_roads_interCom",interPedX,"../data/textures/roads/road_pedX.jpg",GL_QUADS,2|mode_AdaptTerrain);
