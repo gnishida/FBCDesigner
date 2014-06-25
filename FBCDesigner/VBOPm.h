@@ -13,7 +13,7 @@
 #include "VBOBuilding.h"
 #include "VBOPlaceType.h"
 #include "RoadGraph.h"
-
+#include "BlockSet.h"
 
 class VBORenderManager;
 
@@ -29,7 +29,7 @@ public:
 
 	static PlaceTypesMainClass placeTypes;
 
-	static bool generateGeometry(VBORenderManager& rendManager,RoadGraph &roadGraph);
+	static bool generateGeometry(VBORenderManager& rendManager, RoadGraph &roadGraph, BlockSet& blocks);
 
 private:
 

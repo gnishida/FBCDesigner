@@ -79,3 +79,12 @@ void UrbanGeometry::saveRoads(const QString &filename) {
 void UrbanGeometry::clearRoads() {
 	roads.clear();
 }
+
+void UrbanGeometry::loadBlocks(const QString& filename) {
+	blocks.load(filename);
+	blocks.generateMesh(mainWin->glWidget->vboRenderManager);
+}
+
+void UrbanGeometry::saveBlocks(const QString& filename) {
+	blocks.save(filename);
+}

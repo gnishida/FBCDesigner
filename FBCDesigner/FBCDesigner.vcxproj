@@ -128,6 +128,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BBox.cpp" />
+    <ClCompile Include="BlockSet.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="clipper.cpp" />
     <ClCompile Include="ControlWidget.cpp" />
@@ -259,6 +260,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BBox.h" />
+    <ClInclude Include="BlockSet.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Camera2D.h" />
     <ClInclude Include="Camera3D.h" />

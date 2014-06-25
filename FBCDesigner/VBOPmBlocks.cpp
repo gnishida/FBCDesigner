@@ -36,12 +36,6 @@ struct output_visitor : public boost::planar_face_traversal_visitor
 	{
 		//std::cout << "face: " << face_index++ << std::endl;
 		
-		/*
-		blockContourTmp.clear();
-		blockContourWidths.clear();
-		isFirstVertexVisited = true;
-		curRandSeed = 0;
-		*/
 		blockContourTmp.clear();
 		blockContourWidths.clear();
 
@@ -53,15 +47,6 @@ struct output_visitor : public boost::planar_face_traversal_visitor
 
 	void end_face()
 	{
-		/*
-		if(blockContourTmp.size() > 2){
-			Block newBlock;
-			newBlock.blockContour.contour = blockContourTmp;		
-			newBlock.blockContourRoadsWidths = blockContourWidths;
-			newBlock.randSeed = curRandSeed;	
-			blocksPtr->push_back(newBlock);//!!!! UPDATEE
-		}
-		*/
 		blockContourTmp.clear();
 
 		if (vertex_output_visitor_invalid){ 
@@ -139,17 +124,6 @@ struct vertex_output_visitor : public output_visitor
 			return;
 		}
 
-		/*
-		int sIdx, tIdx;
-		sIdx = boost::source(e, roadGraphPtr->graph);
-		tIdx = boost::target(e, roadGraphPtr->graph);
-
-		if(  sIdx >= 0 && sIdx < boost::num_vertices(roadGraphPtr->graph) &&
-			tIdx >= 0 && tIdx < boost::num_vertices(roadGraphPtr->graph) ){			
-
-				blockContourWidths.push_back( 0.5f*7.0f);///!!!!! UPDATEE //roadGraphPtr->graph)[e]->wid);	//half of the width	
-		}
-		*/
 		blockContourLines.push_back(roadGraphPtr->graph[e]->polyline3D);
 
 		for (int i = 0; i < roadGraphPtr->graph[e]->polyline3D.size() - 1; ++i) {
@@ -229,14 +203,14 @@ bool removeIntersectingEdges(RoadGraph &roadGraph)
 bool VBOPmBlocks::generateBlocks(
 	PlaceTypesMainClass &placeTypesIn,
 	RoadGraph &roadGraph,
-	std::vector< Block > &blocks)
+	BlockSet &blocks)
 {
 
 	GraphUtil::normalizeLoop(roadGraph);
 
 	//printf("b1.1\n");
 	roadGraphPtr = &roadGraph;
-	blocksPtr = &blocks;
+	blocksPtr = &blocks.blocks;
 	blocksPtr->clear();
 	//printf("b1.2\n");
 	//std::cout << "Init num blocks is: " << blocksPtr->size() << std::endl;
@@ -255,10 +229,12 @@ bool VBOPmBlocks::generateBlocks(
 
 	// Test for planarity
 	while (cont<2) {
+		std::cout << "planarity_test..." << std::endl;
 		if (boost::boyer_myrvold_planarity_test(boost::boyer_myrvold_params::graph =roadGraph.graph,
 			boost::boyer_myrvold_params::embedding = &embedding[0]) 
 			){
 				isPlanar = true;
+				break;
 		} else {
 			std::cout << "Input graph is not planar trying removeIntersectingEdges" << std::endl;
 			// No planar: Remove intersecting edges and check again
@@ -267,7 +243,7 @@ bool VBOPmBlocks::generateBlocks(
 		}
 	}
 
-	if(!isPlanar){
+	if (!isPlanar) {
 		std::cout << "ERROR: Graph could not be planarized: (generateBlocks)\n";
 		return false;
 	}
@@ -286,10 +262,12 @@ bool VBOPmBlocks::generateBlocks(
 	for(boost::tie(ei, ei_end) = boost::edges(roadGraph.graph); ei != ei_end; ++ei){
 		mapEdgeIdx.insert(std::make_pair(*ei, edge_count++));	
 	}
+	std::cout << "edge index was built." << std::endl;
 
 	//Extract blocks from road graph using boost graph planar_face_traversal
 	vertex_output_visitor v_vis;	
 	boost::planar_face_traversal(roadGraph.graph, &embedding[0], v_vis, pmEdgeIndex);
+	std::cout << "faces were traversed." << std::endl;
 
 	//Misc postprocessing operations on blocks =======
 	int maxVtxCount = 0;
@@ -331,7 +309,7 @@ bool VBOPmBlocks::generateBlocks(
 
 		float distToValidClosestPlaceType = FLT_MAX;
 		QVector3D testPt;
-		testPt = blocks.at(i).bbox.midPt();
+		testPt = blocks[i].bbox.midPt();
 
 		//NEW WAY!
 		for(int k=G::global().getInt("num_place_types")-1; k>=0; --k){			
@@ -356,7 +334,7 @@ bool VBOPmBlocks::generateBlocks(
 		}
 	}
 	if(maxAreaIdx != -1){
-		blocks.erase(blocks.begin()+maxAreaIdx);
+		blocks.blocks.erase(blocks.blocks.begin()+maxAreaIdx);
 		blockAreas.erase(blockAreas.begin()+maxAreaIdx);
 	}
 
@@ -372,10 +350,15 @@ bool VBOPmBlocks::generateBlocks(
 		blocks[ind].isPark=true;
 	}
 
+	blocks.setModified();
+
 	return true;
 }//
 
 void VBOPmBlocks::buildEmbedding(RoadGraph &roads, std::vector<std::vector<RoadEdgeDesc> > &embedding) {
+	std::cout << "building embedding..." << std::endl;
+	time_t start = clock();
+
 	for (int i = 0; i < embedding.size(); ++i) {
 		QMap<float, RoadEdgeDesc> edges;
 
@@ -392,6 +375,9 @@ void VBOPmBlocks::buildEmbedding(RoadGraph &roads, std::vector<std::vector<RoadE
 
 		embedding[i] = edge_descs;
 	}
+
+	time_t end = clock();
+	std::cout << "embedding was built. Elapsed time: " << (double)(end-start)/CLOCKS_PER_SEC << "[sec]" << std::endl;
 }
 
 /*

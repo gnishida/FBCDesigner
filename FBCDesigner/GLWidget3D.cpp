@@ -60,13 +60,14 @@ void GLWidget3D::mousePressEvent(QMouseEvent *event) {
 	lastPos = event->pos();
 	mouseTo2D(event->x(), event->y(), pos);
 
-	if (event->buttons() /*& Qt::LeftButton*/) {
-		switch (mainWin->mode) {
-		case MainWindow::MODE_AREA_SELECT:
-			if (altPressed) {
+	if (event->buttons() & Qt::LeftButton) {
+		if (altPressed) {
+			float xM, yM, radi, change;
+			switch (mainWin->mode) {
+			case MainWindow::MODE_DEFAULT: // terrain editing
 				// normal Gaussian edition
-				float change=mainWin->controlWidget->ui.terrainPaint_changeSlider->value()*0.003f;
-				float radi=mainWin->controlWidget->ui.terrainPaint_sizeSlider->value()*0.01f;
+				change=mainWin->controlWidget->ui.terrainPaint_changeSlider->value()*0.003f;
+				radi=mainWin->controlWidget->ui.terrainPaint_sizeSlider->value()*0.01f;
 				if (event->buttons() & Qt::RightButton) {
 					change = -change;
 				}
@@ -74,37 +75,45 @@ void GLWidget3D::mousePressEvent(QMouseEvent *event) {
 					change=FLT_MAX;//hack: flat terrain
 				}
 				//mainWin->urbanGeometry->vboRenderManager->addValue(pos.x(), pos.y(), change);
-				float xM=1.0f-(vboRenderManager.side/2.0f-pos.x())/vboRenderManager.side;
-				float yM=1.0f-(vboRenderManager.side/2.0f-pos.y())/vboRenderManager.side;
+				xM=1.0f-(vboRenderManager.side/2.0f-pos.x())/vboRenderManager.side;
+				yM=1.0f-(vboRenderManager.side/2.0f-pos.y())/vboRenderManager.side;
 				vboRenderManager.vboTerrain.updateTerrain(xM,yM,change,radi);//rad,change);
 				mainWin->urbanGeometry->adaptToTerrain();/// !! GEN did not have it here (enough in move?)
 				shadow.makeShadowMap(this);
 				updateGL();
-			} else {
-				if (shiftPressed) {	// select am edge
-						if (GraphUtil::getEdge(mainWin->urbanGeometry->roads, pos, 30, selectedEdgeDesc)) {
-							selectEdge(mainWin->urbanGeometry->roads, selectedEdgeDesc);
-						} else {
-							vertexSelected = false;
-							edgeSelected = false;
-						}
-				} else {	// select a vertex
-						if (GraphUtil::getVertex(mainWin->urbanGeometry->roads, pos, 30, selectedVertexDesc)) {
-							selectVertex(mainWin->urbanGeometry->roads, selectedVertexDesc);
-						} else {
-							vertexSelected = false;
-							edgeSelected = false;
-						}
+				break;
+			case MainWindow::MODE_BLOCK: // select a block
+				int selectedIndex = mainWin->urbanGeometry->blocks.select(pos);
+				if (selectedIndex >= 0) {
+					mainWin->propertyWidget->setBlock(selectedIndex, mainWin->urbanGeometry->blocks[selectedIndex]);
+				}
+				mainWin->urbanGeometry->blocks.generateMesh(vboRenderManager);
+				updateGL();
+				break;
+			}
+		} else {
+			if (shiftPressed) {	// select an edge
+				if (GraphUtil::getEdge(mainWin->urbanGeometry->roads, pos, 30, selectedEdgeDesc)) {
+					selectEdge(mainWin->urbanGeometry->roads, selectedEdgeDesc);
+				} else {
+					vertexSelected = false;
+					edgeSelected = false;
+				}
+			} else {	// select a vertex
+				if (GraphUtil::getVertex(mainWin->urbanGeometry->roads, pos, 30, selectedVertexDesc)) {
+					selectVertex(mainWin->urbanGeometry->roads, selectedVertexDesc);
+				} else {
+					vertexSelected = false;
+					edgeSelected = false;
 				}
 			}
-			break;
 		}
 	}
 }
 
 void GLWidget3D::mouseReleaseEvent(QMouseEvent *event) {
 	switch (mainWin->mode) {
-	case MainWindow::MODE_AREA_SELECT:
+	case MainWindow::MODE_DEFAULT:
 		break;
 	}
 
@@ -123,43 +132,46 @@ void GLWidget3D::mouseMoveEvent(QMouseEvent *event) {
 
 	vboRenderManager.mousePos3D=pos.toVector3D();
 
-	switch (mainWin->mode) {
-	case MainWindow::MODE_AREA_SELECT:
-		if (altPressed) {	// editing
-			if (event->buttons() & Qt::RightButton||event->buttons() & Qt::LeftButton||event->buttons() & Qt::MiddleButton) {//make sure something is clicking
-					// normal Gaussian edition
-					float change=mainWin->controlWidget->ui.terrainPaint_changeSlider->value()*0.003f;
-					float radi=mainWin->controlWidget->ui.terrainPaint_sizeSlider->value()*0.01f;
-					change*=0.2f;//while moving, it is not necessary to change much
-					if (event->buttons() & Qt::RightButton) {
-						change = -change;
-					}
-					if (event->buttons() & Qt::MiddleButton) {
-						change=FLT_MAX;//hack: flat terrain
-					}
-					//mainWin->urbanGeometry->vboRenderManager->addValue(pos.x(), pos.y(), change);
-					float xM=1.0f-(vboRenderManager.side/2.0f-pos.x())/vboRenderManager.side;
-					float yM=1.0f-(vboRenderManager.side/2.0f-pos.y())/vboRenderManager.side;
-					vboRenderManager.vboTerrain.updateTerrain(xM,yM,change,radi);//rad,change);
+	if (altPressed) {	// editing
+		if (event->buttons() & Qt::LeftButton) {
+			float xM, yM, radi, change;
+			switch (mainWin->mode) {
+			case MainWindow::MODE_DEFAULT: // terrain editing
+				// normal Gaussian edition
+				change=mainWin->controlWidget->ui.terrainPaint_changeSlider->value()*0.003f;
+				radi=mainWin->controlWidget->ui.terrainPaint_sizeSlider->value()*0.01f;
+				change*=0.2f;//while moving, it is not necessary to change much
+				if (event->buttons() & Qt::RightButton) {
+					change = -change;
+				}
+				if (event->buttons() & Qt::MiddleButton) {
+					change=FLT_MAX;//hack: flat terrain
+				}
+				//mainWin->urbanGeometry->vboRenderManager->addValue(pos.x(), pos.y(), change);
+				xM=1.0f-(vboRenderManager.side/2.0f-pos.x())/vboRenderManager.side;
+				yM=1.0f-(vboRenderManager.side/2.0f-pos.y())/vboRenderManager.side;
+				vboRenderManager.vboTerrain.updateTerrain(xM,yM,change,radi);//rad,change);
 
-					mainWin->urbanGeometry->adaptToTerrain();
-					shadow.makeShadowMap(this);
+				mainWin->urbanGeometry->adaptToTerrain();
+				shadow.makeShadowMap(this);
+				break;
+			case MainWindow::MODE_BLOCK: // block editing
+				break;
 			}
-		} else if (event->buttons() & Qt::LeftButton) {	// Rotate
-			camera->changeXRotation(rotationSensitivity * dy);
-			camera->changeZRotation(-rotationSensitivity * dx);    
-			updateCamera();
-			lastPos = event->pos();
-		} else if (event->buttons() & Qt::MidButton) {
-			camera->changeXYZTranslation(-dx, dy, 0);
-			updateCamera();
-			lastPos = event->pos();
-		} else if (event->buttons() & Qt::RightButton) {	// Zoom
-			camera->changeXYZTranslation(0, 0, -zoomSensitivity * dy);
-			updateCamera();
-			lastPos = event->pos();
 		}
-		break;
+	} else if (event->buttons() & Qt::LeftButton) {	// Rotate
+		camera->changeXRotation(rotationSensitivity * dy);
+		camera->changeZRotation(-rotationSensitivity * dx);    
+		updateCamera();
+		lastPos = event->pos();
+	} else if (event->buttons() & Qt::MidButton) {
+		camera->changeXYZTranslation(-dx, dy, 0);
+		updateCamera();
+		lastPos = event->pos();
+	} else if (event->buttons() & Qt::RightButton) {	// Zoom
+		camera->changeXYZTranslation(0, 0, -zoomSensitivity * dy);
+		updateCamera();
+		lastPos = event->pos();
 	}
 
 	updateGL();
@@ -239,6 +251,8 @@ void GLWidget3D::drawScene(int drawMode) {
 
 			vboRenderManager.renderStaticGeometry(QString("sky"));
 
+			glLineWidth(10);
+			vboRenderManager.renderStaticGeometry(QString("3d_sidewalk"));
 			vboRenderManager.renderStaticGeometry(QString("3d_roads"));
 
 			
@@ -274,8 +288,7 @@ void GLWidget3D::drawScene(int drawMode) {
 			// RENDER SKY WATER
 			vboRenderManager.renderStaticGeometry(QString("sky"));
 			vboRenderManager.vboWater.render(vboRenderManager);
-
-			
+						
 
 			if(shadowEnabled)
 				glUniform1i(glGetUniformLocation(vboRenderManager.program,"shadowState"), 1);//SHADOW: Render Normal with Shadows
@@ -357,18 +370,26 @@ void GLWidget3D::keyPressEvent( QKeyEvent *e ){
 		break;
 	case Qt::Key_Alt:
 		altPressed=true;
-		vboRenderManager.editionMode=true;
-		updateGL();
-		setMouseTracking(true);
+		if (mainWin->mode == MainWindow::MODE_DEFAULT) {
+			vboRenderManager.editionMode=true;
+			updateGL();
+			setMouseTracking(true);
+		}
 		break;
 	case Qt::Key_Escape:
 		updateGL();
 		break;
 	case Qt::Key_Delete:
-		if (edgeSelected) {
-			selectedEdge->valid = false;
-			mainWin->urbanGeometry->adaptToTerrain();
-			edgeSelected = false;
+		if (mainWin->mode == MainWindow::MODE_DEFAULT) {
+			if (edgeSelected) {
+				selectedEdge->valid = false;
+				mainWin->urbanGeometry->adaptToTerrain();
+				edgeSelected = false;
+				updateGL();
+			}
+		} else if (mainWin->mode == MainWindow::MODE_BLOCK) {
+			mainWin->urbanGeometry->blocks.removeSelectedBlock();
+			mainWin->urbanGeometry->blocks.generateMesh(vboRenderManager);
 			updateGL();
 		}
 		break;
@@ -410,9 +431,11 @@ void GLWidget3D::keyReleaseEvent(QKeyEvent* e) {
 		break;
 	case Qt::Key_Alt:
 		altPressed=false;
-		vboRenderManager.editionMode=false;
-		setMouseTracking(false);
-		updateGL();
+		if (mainWin->mode == MainWindow::MODE_DEFAULT) {
+			vboRenderManager.editionMode=false;
+			setMouseTracking(false);
+			updateGL();
+		}
 	default:
 		;
 	}
@@ -484,7 +507,6 @@ void GLWidget3D::generate3DGeometry(bool justRoads){
 
 	printf("generate3DGeometry\n");
 	G::global()["3d_render_mode"]=1;//LC
-	//camera=&camera3D;//change camera MODE!! 
 
 	//1. update roadgraph geometry
 	if(justRoads){//just roads a bit higher
@@ -493,10 +515,10 @@ void GLWidget3D::generate3DGeometry(bool justRoads){
 	}else{
 		G::global()["3d_road_deltaZ"]=1.0f;
 	}
+
 	//VBORoadGraph::updateRoadGraph(vboRenderManager, mainWin->urbanGeometry->roads);
 	//2. generate blocks, parcels and buildings and vegetation
-	if(justRoads==false)
-		VBOPm::generateGeometry(vboRenderManager, mainWin->urbanGeometry->roads);
+	VBOPm::generateGeometry(vboRenderManager, mainWin->urbanGeometry->roads, mainWin->urbanGeometry->blocks);
 
 	shadow.makeShadowMap(this);
 

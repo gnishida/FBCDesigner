@@ -4,6 +4,7 @@
 
 #include "VBORenderManager.h"
 #include "RoadGraph.h"
+#include "BlockSet.h"
 
 class MainWindow;
 
@@ -13,6 +14,7 @@ public:
 	int depth;
 	MainWindow* mainWin;
 	RoadGraph roads;
+	BlockSet blocks;
 
 public:
 	UrbanGeometry(MainWindow* mainWin);
@@ -34,9 +36,12 @@ public:
 	//void loadTerrain(const QString &filename);
 	//void saveTerrain(const QString &filename);
 
-	void loadRoads(const QString &filename);
-	void saveRoads(const QString &filename);
+	void loadRoads(const QString& filename);
+	void saveRoads(const QString& filename);
 	void clearRoads();
+
+	void loadBlocks(const QString& filename);
+	void saveBlocks(const QString& filename);
 
 private:
 };

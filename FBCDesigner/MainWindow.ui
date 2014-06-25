@@ -38,9 +38,11 @@
     <addaction name="actionSaveTerrain"/>
     <addaction name="separator"/>
     <addaction name="actionLoadRoads"/>
-    <addaction name="actionAddRoads"/>
     <addaction name="actionSaveRoads"/>
     <addaction name="actionClearRoads"/>
+    <addaction name="separator"/>
+    <addaction name="actionLoadBlocks"/>
+    <addaction name="actionSaveBlocks"/>
     <addaction name="separator"/>
     <addaction name="actionSaveImage"/>
     <addaction name="actionSaveImageHD"/>
@@ -63,9 +65,16 @@
      <string>PM</string>
     </property>
     <addaction name="actionGenerate3D"/>
-    <addaction name="actionGenerate3DRoads"/>
+   </widget>
+   <widget class="QMenu" name="menuMode">
+    <property name="title">
+     <string>Mode</string>
+    </property>
+    <addaction name="actionModeDefault"/>
+    <addaction name="actionModeBlock"/>
    </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuMode"/>
    <addaction name="menuPM"/>
    <addaction name="menuWindow"/>
   </widget>
@@ -660,6 +669,26 @@
   <action name="actionAreaDeleteAll">
    <property name="text">
     <string>Delete All</string>
+   </property>
+  </action>
+  <action name="actionModeDefault">
+   <property name="text">
+    <string>Default</string>
+   </property>
+  </action>
+  <action name="actionModeBlock">
+   <property name="text">
+    <string>Block</string>
+   </property>
+  </action>
+  <action name="actionLoadBlocks">
+   <property name="text">
+    <string>Load Blocks</string>
+   </property>
+  </action>
+  <action name="actionSaveBlocks">
+   <property name="text">
+    <string>Save Blocks</string>
    </property>
   </action>
  </widget>

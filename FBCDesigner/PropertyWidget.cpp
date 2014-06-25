@@ -93,6 +93,13 @@ void PropertyWidget::setRoadEdge(RoadGraph &roads, RoadEdgeDesc edgeDesc, RoadEd
 	ui.lineEditEdgeRoundabout->setText(roundabout);
 }
 
+void PropertyWidget::setBlock(int id, Block& block) {
+	QString str;
+	str.setNum(id);
+	ui.lineEditBlockId->setText(str);
+	ui.lineEditBlockIsPark->setText(block.isPark ? "yes" : "no");
+}
+
 void PropertyWidget::resetRoadVertex() {
 	ui.lineEditVertexDesc->setText("");
 	ui.lineEditVertexPos->setText("");

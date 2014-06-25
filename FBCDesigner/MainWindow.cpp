@@ -29,6 +29,9 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags) : QMainWindow(parent, 
 	connect(ui.actionLoadRoads, SIGNAL(triggered()), this, SLOT(onLoadRoads()));
 	connect(ui.actionSaveRoads, SIGNAL(triggered()), this, SLOT(onSaveRoads()));
 	connect(ui.actionClearRoads, SIGNAL(triggered()), this, SLOT(onClearRoads()));
+	connect(ui.actionLoadBlocks, SIGNAL(triggered()), this, SLOT(onLoadBlocks()));
+	connect(ui.actionSaveBlocks, SIGNAL(triggered()), this, SLOT(onSaveBlocks()));
+	connect(ui.actionSaveRoads, SIGNAL(triggered()), this, SLOT(onSaveRoads()));
 	connect(ui.actionSaveImage, SIGNAL(triggered()), this, SLOT(onSaveImage()));
 	connect(ui.actionSaveImageHD, SIGNAL(triggered()), this, SLOT(onSaveImageHD()));
 	connect(ui.actionLoadCamera, SIGNAL(triggered()), this, SLOT(onLoadCamera()));
@@ -36,8 +39,10 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags) : QMainWindow(parent, 
 	connect(ui.actionResetCamera, SIGNAL(triggered()), this, SLOT(onResetCamera()));
 	connect(ui.actionExit, SIGNAL(triggered()), this, SLOT(close()));
 
+	connect(ui.actionModeDefault, SIGNAL(triggered()), this, SLOT(onModeDefault()));
+	connect(ui.actionModeBlock, SIGNAL(triggered()), this, SLOT(onModeBlock()));
+
 	connect(ui.actionGenerate3D, SIGNAL(triggered()), this, SLOT(onGenerate3D()));
-	connect(ui.actionGenerate3DRoads, SIGNAL(triggered()), this, SLOT(onGenerate3DRoads()));
 	connect(ui.actionControlWidget, SIGNAL(triggered()), this, SLOT(onShowControlWidget()));
 	connect(ui.actionPropertyWidget, SIGNAL(triggered()), this, SLOT(onShowPropertyWidget()));
 
@@ -50,8 +55,7 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags) : QMainWindow(parent, 
 
 	urbanGeometry = new UrbanGeometry(this);
 
-	mode = MODE_AREA_SELECT;
-	//imgCount=0;
+	mode = MODE_DEFAULT;
 }
 
 MainWindow::~MainWindow() {
@@ -113,6 +117,26 @@ void MainWindow::onClearRoads() {
 	glWidget->updateGL();
 }
 
+void MainWindow::onLoadBlocks() {
+	QString filename = QFileDialog::getOpenFileName(this, tr("Open Block file..."), "", tr("Block Files (*.xml)"));
+	if (filename.isEmpty()) return;
+
+	urbanGeometry->loadBlocks(filename);
+
+	glWidget->updateGL();
+}
+
+void MainWindow::onSaveBlocks() {
+	QString filename = QFileDialog::getSaveFileName(this, tr("Save Block file..."), "", tr("Block Files (*.xml)"));
+	if (filename.isEmpty()) return;
+
+	QApplication::setOverrideCursor(Qt::WaitCursor);
+
+	urbanGeometry->saveBlocks(filename);
+
+	QApplication::restoreOverrideCursor();
+}
+
 void MainWindow::onSaveImage() {
 	if(QDir("screenshots").exists()==false) QDir().mkdir("screenshots");
 	QString fileName="screenshots/"+QDate::currentDate().toString("yyMMdd")+"_"+QTime::currentTime().toString("HHmmss")+".png";
@@ -160,15 +184,18 @@ void MainWindow::onResetCamera() {
 	glWidget->updateGL();
 }
 
+void MainWindow::onModeDefault() {
+	mode = MODE_DEFAULT;
+}
+
+void MainWindow::onModeBlock() {
+	mode = MODE_BLOCK;
+}
+
 void MainWindow::onGenerate3D() {
 	glWidget->generate3DGeometry();
 	glWidget->updateGL();
 }
-
-void MainWindow::onGenerate3DRoads() {
-	glWidget->generate3DGeometry(true);//true just roads
-	glWidget->updateGL();
-}//
 
 void MainWindow::onShowControlWidget() {
 	controlWidget->show();

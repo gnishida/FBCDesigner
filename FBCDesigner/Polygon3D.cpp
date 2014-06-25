@@ -242,7 +242,7 @@ float Polygon3D::computeInset(std::vector<float> &offsetDistances, Loop3D &pgonI
 
 
 	// GEN CODE--> It leads to self-intersection very often with non-convex polygons
-	/*
+	pgonInset.clear();
 	for(int cur=0; cur<cSz; ++cur){
 		//Some geometry and trigonometry
 
@@ -264,6 +264,7 @@ float Polygon3D::computeInset(std::vector<float> &offsetDistances, Loop3D &pgonI
 		} else {
 			Util::getIrregularBisector(cleanPgon[prev], cleanPgon[cur], cleanPgon[next], offsetDistances[prev], offsetDistances[cur], intPt);
 			
+
 			// For acute angle
 			if (pgonInset.size() >= 2) {
 				if (Util::diffAngle(pgonInset[pgonInset.size() - 2] - pgonInset[pgonInset.size() - 1], intPt - pgonInset[pgonInset.size() - 1]) < 0.1f) {
@@ -274,9 +275,9 @@ float Polygon3D::computeInset(std::vector<float> &offsetDistances, Loop3D &pgonI
 			pgonInset.push_back(intPt);
 		}
 	}
-	*/
 
 	// Old Code
+	/*
 	pgonInset.resize(cSz);
 	for(int cur=0; cur<cSz; ++cur){
 		//Some geometry and trigonometry
@@ -285,12 +286,11 @@ float Polygon3D::computeInset(std::vector<float> &offsetDistances, Loop3D &pgonI
 		prev = (cur-1+cSz)%cSz; //point p0
 		next = (cur+1)%cSz;	  //point p2
 
-		getIrregularBisector(cleanPgon[prev], cleanPgon[cur], cleanPgon[next],
-			offsetDistances[prev], offsetDistances[cur], intPt);
+		Util::getIrregularBisector(cleanPgon[prev], cleanPgon[cur], cleanPgon[next], offsetDistances[prev], offsetDistances[cur], intPt);
 
 		pgonInset[cur] = intPt;
 	}
-
+	*/
 
 	//temp
 	
@@ -341,6 +341,7 @@ float Polygon3D::computeInset(std::vector<float> &offsetDistances, Loop3D &pgonI
 		}
 		// IT FAILED TRY SECOND METHOD
 		{
+			std::cout << "Failed!" << std::endl;
 			Path subj;
 			Paths solution;
 			for(int cur=0; cur<cSz; ++cur){

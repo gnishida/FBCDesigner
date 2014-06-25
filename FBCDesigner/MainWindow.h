@@ -14,7 +14,7 @@ class MainWindow : public QMainWindow
 	Q_OBJECT
 
 public:
-	static enum { MODE_AREA_SELECT = 0, MODE_AREA_CREATE, MODE_HINT_LINE, MODE_HIGHWAY_SKETCH, MODE_AVENUE_SKETCH, MODE_STREET_SKETCH, MODE_CONTROL_POINTS };
+	static enum { MODE_DEFAULT = 0, MODE_BLOCK };
 
 public:
 	Ui::MainWindow ui;
@@ -40,14 +40,18 @@ public slots:
 	void onLoadRoads();
 	void onSaveRoads();
 	void onClearRoads();
+	void onLoadBlocks();
+	void onSaveBlocks();
 	void onSaveImage();
 	void onSaveImageHD();
 	void onLoadCamera();
 	void onSaveCamera();
 	void onResetCamera();
 
+	void onModeDefault();
+	void onModeBlock();
+
 	void onGenerate3D();
-	void onGenerate3DRoads();
 	void onShowControlWidget();
 	void onShowPropertyWidget();
 };

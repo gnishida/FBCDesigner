@@ -13,7 +13,7 @@
 #include "VBOBuilding.h"
 #include "VBOPlaceType.h"
 #include "RoadGraph.h"
-
+#include "BlockSet.h"
 
 class VBORenderManager;
 
@@ -25,7 +25,7 @@ public:
 	static bool generateBlocks(
 		PlaceTypesMainClass &placeTypesIn,
 		RoadGraph &roadGraph,
-		std::vector< Block > &blocks);
+		BlockSet &blocks);
 
 	static void buildEmbedding(RoadGraph &roads, std::vector<std::vector<RoadEdgeDesc> > &embedding);
 };

@@ -199,14 +199,17 @@
     <ClCompile Include="VBOPmParcels.cpp">
       <Filter>PM</Filter>
     </ClCompile>
-    <ClCompile Include="VBOBlock.cpp">
-      <Filter>PM</Filter>
-    </ClCompile>
     <ClCompile Include="VBOParcel.cpp">
       <Filter>PM</Filter>
     </ClCompile>
     <ClCompile Include="VBOPlaceType.cpp">
       <Filter>PM</Filter>
+    </ClCompile>
+    <ClCompile Include="VBOBlock.cpp">
+      <Filter>Main Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BlockSet.cpp">
+      <Filter>Generated Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -383,14 +386,17 @@
     <ClInclude Include="VBOPmBuildings.h">
       <Filter>PM</Filter>
     </ClInclude>
-    <ClInclude Include="VBOBlock.h">
-      <Filter>PM</Filter>
-    </ClInclude>
     <ClInclude Include="VBOParcel.h">
       <Filter>PM</Filter>
     </ClInclude>
     <ClInclude Include="VBOPlaceType.h">
       <Filter>PM</Filter>
+    </ClInclude>
+    <ClInclude Include="VBOBlock.h">
+      <Filter>Main Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BlockSet.h">
+      <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
