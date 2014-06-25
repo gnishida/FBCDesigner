@@ -4,6 +4,7 @@
 #include "TerrainSizeInputDialog.h"
 #include "GraphUtil.h"
 #include "Util.h"
+#include "VBOPm.h"
 
 MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags) : QMainWindow(parent, flags) {
 	ui.setupUi(this);
@@ -15,12 +16,10 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags) : QMainWindow(parent, 
 	// setup the toolbar
 	ui.fileToolBar->addAction(ui.actionNewTerrain);
 	ui.fileToolBar->addAction(ui.actionOpenTerrain);
-	ui.areaToolBar->addAction(ui.actionAreaSelect);
-	ui.areaToolBar->addAction(ui.actionAreaCreate);
-	ui.areaToolBar->addAction(ui.actionHintLine);
-	ui.areaToolBar->addAction(ui.actionAvenueSketch);
+	ui.areaToolBar->addAction(ui.actionModeDefault);
+	ui.areaToolBar->addAction(ui.actionModeBlock);
 
-	ui.actionAreaSelect->setChecked(true);
+	ui.actionModeDefault->setChecked(true);
 
 	// register the menu's action handlers
 	connect(ui.actionNewTerrain, SIGNAL(triggered()), this, SLOT(onNewTerrain()));
@@ -42,6 +41,10 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags) : QMainWindow(parent, 
 	connect(ui.actionModeDefault, SIGNAL(triggered()), this, SLOT(onModeDefault()));
 	connect(ui.actionModeBlock, SIGNAL(triggered()), this, SLOT(onModeBlock()));
 
+	connect(ui.actionGenerateBlocks, SIGNAL(triggered()), this, SLOT(onGenerateBlocks()));
+	connect(ui.actionGenerateSidewalks, SIGNAL(triggered()), this, SLOT(onGenerateSidewalks()));
+	connect(ui.actionGenerateParcels, SIGNAL(triggered()), this, SLOT(onGenerateParcels()));
+	connect(ui.actionGenerateBuildings, SIGNAL(triggered()), this, SLOT(onGenerateBuildings()));
 	connect(ui.actionGenerate3D, SIGNAL(triggered()), this, SLOT(onGenerate3D()));
 	connect(ui.actionControlWidget, SIGNAL(triggered()), this, SLOT(onShowControlWidget()));
 	connect(ui.actionPropertyWidget, SIGNAL(triggered()), this, SLOT(onShowPropertyWidget()));
@@ -190,6 +193,24 @@ void MainWindow::onModeDefault() {
 
 void MainWindow::onModeBlock() {
 	mode = MODE_BLOCK;
+}
+
+void MainWindow::onGenerateBlocks() {
+	VBOPm::generateGeometry(glWidget->vboRenderManager, urbanGeometry->roads, urbanGeometry->blocks);
+	glWidget->updateGL();
+}
+
+void MainWindow::onGenerateSidewalks() {
+	VBOPm::generateSidewalks(glWidget->vboRenderManager, urbanGeometry->blocks);
+	glWidget->updateGL();
+}
+
+void MainWindow::onGenerateParcels() {
+	VBOPm::generateParcels(glWidget->vboRenderManager, urbanGeometry->blocks);
+	glWidget->updateGL();
+}
+
+void MainWindow::onGenerateBuildings() {
 }
 
 void MainWindow::onGenerate3D() {

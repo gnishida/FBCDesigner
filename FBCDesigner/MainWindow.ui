@@ -64,6 +64,10 @@
     <property name="title">
      <string>PM</string>
     </property>
+    <addaction name="actionGenerateBlocks"/>
+    <addaction name="actionGenerateSidewalks"/>
+    <addaction name="actionGenerateParcels"/>
+    <addaction name="actionGenerateBuildings"/>
     <addaction name="actionGenerate3D"/>
    </widget>
    <widget class="QMenu" name="menuMode">
@@ -95,30 +99,6 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="actionNewTerrain">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/MainWindow/Resources/New_24x24.png</normaloff>:/MainWindow/Resources/New_24x24.png</iconset>
-   </property>
-   <property name="text">
-    <string>New Terrain</string>
-   </property>
-   <property name="shortcut">
-    <string/>
-   </property>
-  </action>
-  <action name="actionOpenTerrain">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/MainWindow/Resources/Open_24x24.png</normaloff>:/MainWindow/Resources/Open_24x24.png</iconset>
-   </property>
-   <property name="text">
-    <string>Open Terrain</string>
-   </property>
-   <property name="shortcut">
-    <string/>
-   </property>
-  </action>
   <action name="actionExit">
    <property name="text">
     <string>Exit</string>
@@ -153,204 +133,14 @@
     <string/>
    </property>
   </action>
-  <action name="actionUndo">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/MainWindow/Resources/Undo_24x24.png</normaloff>:/MainWindow/Resources/Undo_24x24.png</iconset>
-   </property>
-   <property name="text">
-    <string>Undo</string>
-   </property>
-   <property name="whatsThis">
-    <string/>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+Z</string>
-   </property>
-  </action>
-  <action name="actionSelectAll">
-   <property name="text">
-    <string>Select All</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+A</string>
-   </property>
-  </action>
-  <action name="actionCut">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/MainWindow/Resources/Cut_24x24.png</normaloff>:/MainWindow/Resources/Cut_24x24.png</iconset>
-   </property>
-   <property name="text">
-    <string>Cut</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+X</string>
-   </property>
-  </action>
-  <action name="actionCopy">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/MainWindow/Resources/Copy_24x24.png</normaloff>:/MainWindow/Resources/Copy_24x24.png</iconset>
-   </property>
-   <property name="text">
-    <string>Copy</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+C</string>
-   </property>
-  </action>
-  <action name="actionPaste">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/MainWindow/Resources/Paste_24x24.png</normaloff>:/MainWindow/Resources/Paste_24x24.png</iconset>
-   </property>
-   <property name="text">
-    <string>Paste</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+V</string>
-   </property>
-  </action>
-  <action name="actionOpenToAdd">
-   <property name="text">
-    <string>Open To Add</string>
-   </property>
-  </action>
-  <action name="actionVoronoi">
-   <property name="text">
-    <string>Voronoi</string>
-   </property>
-  </action>
-  <action name="actionVoronoiCut">
-   <property name="text">
-    <string>Voronoi Cut</string>
-   </property>
-  </action>
-  <action name="actionModeBasic">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Basic</string>
-   </property>
-  </action>
-  <action name="actionModeLayer">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Graph</string>
-   </property>
-  </action>
-  <action name="actionModeSketch">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Sketch</string>
-   </property>
-  </action>
-  <action name="actionShowArea">
-   <property name="text">
-    <string>Show Area</string>
-   </property>
-  </action>
-  <action name="actionAreaSelect">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset>
-     <normaloff>:/MainWindow/Resources/Select_24x24.png</normaloff>:/MainWindow/Resources/Select_24x24.png</iconset>
-   </property>
-   <property name="text">
-    <string>Select</string>
-   </property>
-  </action>
-  <action name="actionAreaCreate">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset>
-     <normaloff>:/MainWindow/Resources/Create_24x24.png</normaloff>:/MainWindow/Resources/Create_24x24.png</iconset>
-   </property>
-   <property name="text">
-    <string>Create</string>
-   </property>
-  </action>
-  <action name="actionHighwaySketch">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset>
-     <normaloff>Resources/SketchH_24x24.png</normaloff>Resources/SketchH_24x24.png</iconset>
-   </property>
-   <property name="text">
-    <string>Highway Sketch</string>
-   </property>
-  </action>
-  <action name="actionSave_2">
-   <property name="text">
-    <string>Save</string>
-   </property>
-  </action>
   <action name="actionSaveRoads">
    <property name="text">
     <string>Save Roads</string>
    </property>
   </action>
-  <action name="actionLoad_Highways">
-   <property name="text">
-    <string>Load Highways</string>
-   </property>
-  </action>
-  <action name="actionSave_Highways">
-   <property name="text">
-    <string>Save Highways</string>
-   </property>
-  </action>
-  <action name="actionAvenueSketch">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset>
-     <normaloff>:/MainWindow/Resources/SketchB_24x24.png</normaloff>:/MainWindow/Resources/SketchB_24x24.png</iconset>
-   </property>
-   <property name="text">
-    <string>Avenue Sketch</string>
-   </property>
-  </action>
   <action name="actionPropertyWidget">
    <property name="text">
     <string>Property Widget</string>
-   </property>
-  </action>
-  <action name="action3DView">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset>
-     <normaloff>:/MainWindow/Resources/3DView_24x24.png</normaloff>:/MainWindow/Resources/3DView_24x24.png</iconset>
-   </property>
-   <property name="text">
-    <string>3D</string>
-   </property>
-  </action>
-  <action name="actionTerrain">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset>
-     <normaloff>:/MainWindow/Resources/Terrain_32x32.png</normaloff>:/MainWindow/Resources/Terrain_32x32.png</iconset>
-   </property>
-   <property name="text">
-    <string>Terrain</string>
    </property>
   </action>
   <action name="actionLoadRoads">
@@ -374,130 +164,6 @@
     <string>Save Areas</string>
    </property>
   </action>
-  <action name="actionGenerateBlocks">
-   <property name="text">
-    <string>Generate Blocks</string>
-   </property>
-  </action>
-  <action name="actionGenerateParcels">
-   <property name="text">
-    <string>Generate Parcels</string>
-   </property>
-  </action>
-  <action name="actionGenerateBuildings">
-   <property name="text">
-    <string>Generate Buildings</string>
-   </property>
-  </action>
-  <action name="actionAreaDelete">
-   <property name="text">
-    <string>Delete</string>
-   </property>
-  </action>
-  <action name="actionClearRoads">
-   <property name="text">
-    <string>Clear Roads</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+N</string>
-   </property>
-  </action>
-  <action name="actionPMControlWidget">
-   <property name="text">
-    <string>PM Control Widget</string>
-   </property>
-  </action>
-  <action name="actionHighways">
-   <property name="text">
-    <string>Highway</string>
-   </property>
-  </action>
-  <action name="actionBoulevard">
-   <property name="text">
-    <string>Boulevard</string>
-   </property>
-  </action>
-  <action name="actionAvenue">
-   <property name="text">
-    <string>Avenue</string>
-   </property>
-  </action>
-  <action name="actionLocal_Street">
-   <property name="text">
-    <string>Local Street</string>
-   </property>
-  </action>
-  <action name="actionDisplayHighway">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="checked">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Highway</string>
-   </property>
-  </action>
-  <action name="actionDisplayBoulevard">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="checked">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Boulevard</string>
-   </property>
-  </action>
-  <action name="actionDisplayAvenue">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="checked">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Avenue</string>
-   </property>
-  </action>
-  <action name="actionDisplayLocalStreet">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="checked">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Local Street</string>
-   </property>
-  </action>
-  <action name="actionHintLine">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset>
-     <normaloff>:/MainWindow/Resources/Line_24x24.png</normaloff>:/MainWindow/Resources/Line_24x24.png</iconset>
-   </property>
-   <property name="text">
-    <string>Hint Line</string>
-   </property>
-  </action>
-  <action name="actionRenderingDefault">
-   <property name="text">
-    <string>Default</string>
-   </property>
-  </action>
-  <action name="actionRenderingTexture">
-   <property name="text">
-    <string>Texture</string>
-   </property>
-  </action>
-  <action name="actionRenderingGroupBy">
-   <property name="text">
-    <string>Group</string>
-   </property>
-  </action>
   <action name="actionSaveImage">
    <property name="text">
     <string>Save Image</string>
@@ -506,34 +172,9 @@
     <string>Ctrl+L</string>
    </property>
   </action>
-  <action name="actionColorByGroup">
-   <property name="text">
-    <string>By Group</string>
-   </property>
-  </action>
-  <action name="actionColorDefault">
-   <property name="text">
-    <string>Default</string>
-   </property>
-  </action>
-  <action name="actionRenderingGenerationType">
-   <property name="text">
-    <string>Generation Type</string>
-   </property>
-  </action>
   <action name="actionGenerate3D">
    <property name="text">
     <string>Generate 3D</string>
-   </property>
-  </action>
-  <action name="actionDetectCircle">
-   <property name="text">
-    <string>Circle</string>
-   </property>
-  </action>
-  <action name="actionDetectStructure">
-   <property name="text">
-    <string>Structure</string>
    </property>
   </action>
   <action name="actionLoadCamera">
@@ -552,29 +193,6 @@
     <string>Ctrl+2</string>
    </property>
   </action>
-  <action name="actionDebug">
-   <property name="text">
-    <string>Debug</string>
-   </property>
-  </action>
-  <action name="actionControlPoints">
-   <property name="text">
-    <string>Control Points</string>
-   </property>
-  </action>
-  <action name="actionConvert">
-   <property name="text">
-    <string>Convert</string>
-   </property>
-  </action>
-  <action name="actionCutRoads">
-   <property name="text">
-    <string>Cut Roads</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+X</string>
-   </property>
-  </action>
   <action name="actionSaveImageHD">
    <property name="text">
     <string>Save Image HD</string>
@@ -583,92 +201,9 @@
     <string>Ctrl+S</string>
    </property>
   </action>
-  <action name="actionStreetSketch">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Street Sketch</string>
-   </property>
-  </action>
-  <action name="actionGenerateRegularGrid">
-   <property name="text">
-    <string>Generate Regular Grid</string>
-   </property>
-  </action>
-  <action name="actionGenerateCurvyGrid">
-   <property name="text">
-    <string>Generate Curvy Grid</string>
-   </property>
-  </action>
-  <action name="actionAddRoads">
-   <property name="text">
-    <string>Add Roads</string>
-   </property>
-  </action>
   <action name="actionResetCamera">
    <property name="text">
     <string>Reset Camera</string>
-   </property>
-  </action>
-  <action name="actionRotationVideo">
-   <property name="text">
-    <string>Rotation Video</string>
-   </property>
-  </action>
-  <action name="actionInterpolationVideo">
-   <property name="text">
-    <string>Interpolation Video</string>
-   </property>
-  </action>
-  <action name="actionGrowingVideo">
-   <property name="text">
-    <string>Growing Video</string>
-   </property>
-  </action>
-  <action name="actionGenerate2D">
-   <property name="text">
-    <string>Generate 2D</string>
-   </property>
-  </action>
-  <action name="actionBlendingVideo">
-   <property name="text">
-    <string>Blending Video</string>
-   </property>
-  </action>
-  <action name="action3DVideo">
-   <property name="text">
-    <string>3D Video</string>
-   </property>
-  </action>
-  <action name="actionTerrainSegmentation">
-   <property name="text">
-    <string>Terrain Segmentation</string>
-   </property>
-  </action>
-  <action name="actionTerrainGeneration">
-   <property name="text">
-    <string>Terrain Generation</string>
-   </property>
-  </action>
-  <action name="actionUpdateMountain">
-   <property name="text">
-    <string>Update Mountains</string>
-   </property>
-  </action>
-  <action name="actionMountainVideo">
-   <property name="text">
-    <string>Mountains Video</string>
-   </property>
-  </action>
-  <action name="actionGenerate3DRoads">
-   <property name="text">
-    <string>Generate 3D Roads</string>
-   </property>
-  </action>
-  <action name="actionAreaDeleteAll">
-   <property name="text">
-    <string>Delete All</string>
    </property>
   </action>
   <action name="actionModeDefault">
@@ -689,6 +224,41 @@
   <action name="actionSaveBlocks">
    <property name="text">
     <string>Save Blocks</string>
+   </property>
+  </action>
+  <action name="actionGenerateBlocks">
+   <property name="text">
+    <string>Generate Blocks</string>
+   </property>
+  </action>
+  <action name="actionNewTerrain">
+   <property name="text">
+    <string>New Terrain</string>
+   </property>
+  </action>
+  <action name="actionOpenTerrain">
+   <property name="text">
+    <string>Open Terrain</string>
+   </property>
+  </action>
+  <action name="actionClearRoads">
+   <property name="text">
+    <string>Clear Roads</string>
+   </property>
+  </action>
+  <action name="actionGenerateSidewalks">
+   <property name="text">
+    <string>Generate Sidewalks</string>
+   </property>
+  </action>
+  <action name="actionGenerateParcels">
+   <property name="text">
+    <string>Generate Parcels</string>
+   </property>
+  </action>
+  <action name="actionGenerateBuildings">
+   <property name="text">
+    <string>Generate Buildings</string>
    </property>
   </action>
  </widget>

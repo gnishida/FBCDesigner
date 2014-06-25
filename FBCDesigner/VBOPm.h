@@ -30,7 +30,8 @@ public:
 	static PlaceTypesMainClass placeTypes;
 
 	static bool generateGeometry(VBORenderManager& rendManager, RoadGraph &roadGraph, BlockSet& blocks);
-
+	static bool generateSidewalks(VBORenderManager& rendManager, BlockSet& blocks);
+	static bool generateParcels(VBORenderManager& rendManager, BlockSet& blocks);
 private:
 
 };

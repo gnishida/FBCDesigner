@@ -209,7 +209,7 @@
       <Filter>Main Files</Filter>
     </ClCompile>
     <ClCompile Include="BlockSet.cpp">
-      <Filter>Generated Files</Filter>
+      <Filter>Main Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -396,7 +396,7 @@
       <Filter>Main Files</Filter>
     </ClInclude>
     <ClInclude Include="BlockSet.h">
-      <Filter>Generated Files</Filter>
+      <Filter>Main Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

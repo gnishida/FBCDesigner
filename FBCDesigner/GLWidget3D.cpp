@@ -253,6 +253,7 @@ void GLWidget3D::drawScene(int drawMode) {
 
 			glLineWidth(10);
 			vboRenderManager.renderStaticGeometry(QString("3d_sidewalk"));
+			vboRenderManager.renderStaticGeometry(QString("3d_parcel"));			
 			vboRenderManager.renderStaticGeometry(QString("3d_roads"));
 
 			
