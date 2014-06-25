@@ -62,6 +62,8 @@ void BlockSet::loadBlock(QDomNode& node, Block& block) {
 			pt.setY(child.toElement().attribute("y").toFloat());
 			pt.setZ(child.toElement().attribute("z").toFloat());
 			block.blockContour.push_back(pt);			
+		} else if (child.toElement().tagName() == "parcel") {
+			loadParcel(child, block);
 		}
 
 		child = child.nextSibling();
@@ -80,7 +82,50 @@ void BlockSet::saveBlock(QDomDocument& doc, QDomNode& node, Block& block) {
 		node.appendChild(child);
 	}
 
+	if (block.isPark) return;
+
+	Block::parcelGraphVertexIter vi, viEnd;
+	int id = 0;
+	for (boost::tie(vi, viEnd) = boost::vertices(block.myParcels); vi != viEnd; ++vi) {
+		QDomElement child = doc.createElement("parcel");
+		child.setAttribute("id", id++);
+
+		saveParcel(doc, child, block.myParcels[*vi]);
+
+		node.appendChild(child);
+	}
+
 	//parent.appendChild(node);
+}
+
+void BlockSet::loadParcel(QDomNode& node, Block& block) {
+	Parcel parcel;
+
+	QDomNode child = node.firstChild();
+	while (!child.isNull()) {
+		if (child.toElement().tagName() == "point") {
+			QVector3D pt;
+			pt.setX(child.toElement().attribute("x").toFloat());
+			pt.setY(child.toElement().attribute("y").toFloat());
+			pt.setZ(child.toElement().attribute("z").toFloat());
+			parcel.parcelContour.push_back(pt);			
+		}
+
+		child = child.nextSibling();
+	}
+
+	Block::parcelGraphVertexDesc v_desc = boost::add_vertex(block.myParcels);
+	block.myParcels[v_desc] = parcel;
+}
+
+void BlockSet::saveParcel(QDomDocument& doc, QDomNode& node, Parcel& parcel) {
+	for (int i = 0; i < parcel.parcelContour.contour.size(); ++i) {
+		QDomElement child = doc.createElement("point");
+		child.setAttribute("x", parcel.parcelContour[i].x());
+		child.setAttribute("y", parcel.parcelContour[i].y());
+		child.setAttribute("z", parcel.parcelContour[i].z());
+		node.appendChild(child);
+	}
 }
 
 void BlockSet::generateMesh(VBORenderManager& rendManager) {
@@ -89,7 +134,9 @@ void BlockSet::generateMesh(VBORenderManager& rendManager) {
 	modified = false;
 
 	rendManager.removeStaticGeometry("3d_sidewalk");
-	
+	rendManager.removeStaticGeometry("3d_parcel");
+
+	/*
 	for(int bN=0;bN<blocks.size();bN++){
 		std::vector<Vertex> vert;
 
@@ -107,8 +154,13 @@ void BlockSet::generateMesh(VBORenderManager& rendManager) {
 		}
 		//rendManager.addStaticGeometry("3d_sidewalk",vert,"",GL_POINTS,1|mode_AdaptTerrain);
 		rendManager.addStaticGeometry("3d_sidewalk",vert,"",GL_LINES,1|mode_AdaptTerrain);
-
 	}
+	*/
+
+	for (int bN=0;bN<blocks.size();bN++){
+		//blocks[bN].generateMesh(rendManager);
+	}
+
 }
 
 int BlockSet::select(const QVector2D& pos) {

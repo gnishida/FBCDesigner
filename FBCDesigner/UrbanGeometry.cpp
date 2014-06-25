@@ -8,6 +8,7 @@
 #include "GraphUtil.h"
 #include "MainWindow.h"
 #include "Util.h"
+#include "VBOPm.h"
 
 UrbanGeometry::UrbanGeometry(MainWindow* mainWin) {
 	this->mainWin = mainWin;
@@ -82,7 +83,8 @@ void UrbanGeometry::clearRoads() {
 
 void UrbanGeometry::loadBlocks(const QString& filename) {
 	blocks.load(filename);
-	blocks.generateMesh(mainWin->glWidget->vboRenderManager);
+	VBOPm::generateBlockMesh(mainWin->glWidget->vboRenderManager, blocks);
+	//blocks.generateMesh(mainWin->glWidget->vboRenderManager);
 }
 
 void UrbanGeometry::saveBlocks(const QString& filename) {

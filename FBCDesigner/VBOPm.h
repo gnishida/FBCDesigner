@@ -29,9 +29,11 @@ public:
 
 	static PlaceTypesMainClass placeTypes;
 
-	static bool generateGeometry(VBORenderManager& rendManager, RoadGraph &roadGraph, BlockSet& blocks);
-	static bool generateSidewalks(VBORenderManager& rendManager, BlockSet& blocks);
+	static bool generateBlocks(VBORenderManager& rendManager, RoadGraph &roadGraph, BlockSet& blocks);
 	static bool generateParcels(VBORenderManager& rendManager, BlockSet& blocks);
+	static bool generateBuildings(VBORenderManager& rendManager, BlockSet& blocks);
+	static bool generateVegetation(VBORenderManager& rendManager, BlockSet& blocks);
+	static void generateBlockMesh(VBORenderManager& rendManager, BlockSet& block);
 private:
 
 };

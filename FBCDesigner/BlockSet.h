@@ -6,6 +6,7 @@
 #include <QDomNode>
 #include <QVector2D>
 #include "VBOBlock.h"
+#include "VBOParcel.h"
 
 class BlockSet {
 public:
@@ -31,7 +32,8 @@ public:
 private:
 	void loadBlock(QDomNode& node, Block& block);
 	void saveBlock(QDomDocument& doc, QDomNode& node, Block& block);
-
+	void loadParcel(QDomNode& node, Block& block);
+	void saveParcel(QDomDocument& doc, QDomNode& node, Parcel& parcel);
 
 };
 

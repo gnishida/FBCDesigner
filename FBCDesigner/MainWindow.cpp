@@ -42,9 +42,9 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags) : QMainWindow(parent, 
 	connect(ui.actionModeBlock, SIGNAL(triggered()), this, SLOT(onModeBlock()));
 
 	connect(ui.actionGenerateBlocks, SIGNAL(triggered()), this, SLOT(onGenerateBlocks()));
-	connect(ui.actionGenerateSidewalks, SIGNAL(triggered()), this, SLOT(onGenerateSidewalks()));
 	connect(ui.actionGenerateParcels, SIGNAL(triggered()), this, SLOT(onGenerateParcels()));
 	connect(ui.actionGenerateBuildings, SIGNAL(triggered()), this, SLOT(onGenerateBuildings()));
+	connect(ui.actionGenerateBuildings, SIGNAL(triggered()), this, SLOT(onGenerateVegetation()));
 	connect(ui.actionGenerate3D, SIGNAL(triggered()), this, SLOT(onGenerate3D()));
 	connect(ui.actionControlWidget, SIGNAL(triggered()), this, SLOT(onShowControlWidget()));
 	connect(ui.actionPropertyWidget, SIGNAL(triggered()), this, SLOT(onShowPropertyWidget()));
@@ -196,12 +196,7 @@ void MainWindow::onModeBlock() {
 }
 
 void MainWindow::onGenerateBlocks() {
-	VBOPm::generateGeometry(glWidget->vboRenderManager, urbanGeometry->roads, urbanGeometry->blocks);
-	glWidget->updateGL();
-}
-
-void MainWindow::onGenerateSidewalks() {
-	VBOPm::generateSidewalks(glWidget->vboRenderManager, urbanGeometry->blocks);
+	VBOPm::generateBlocks(glWidget->vboRenderManager, urbanGeometry->roads, urbanGeometry->blocks);
 	glWidget->updateGL();
 }
 
@@ -211,6 +206,8 @@ void MainWindow::onGenerateParcels() {
 }
 
 void MainWindow::onGenerateBuildings() {
+	VBOPm::generateBuildings(glWidget->vboRenderManager, urbanGeometry->blocks);
+	glWidget->updateGL();
 }
 
 void MainWindow::onGenerate3D() {

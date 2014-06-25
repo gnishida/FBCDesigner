@@ -233,3 +233,66 @@ void Block::computeMyBBox3D(void)
 	}
 }
 
+/*static std::vector<QString> grassFileNames;
+static std::vector<QString> sideWalkFileNames;
+static std::vector<QVector3D> sideWalkScale;
+
+void Block::generateMesh(VBORenderManager& rendManager) {
+	// sidewalks
+	{
+		if (isPark==true) {
+			// PARK
+			int randPark=qrand()%grassFileNames.size();
+			rendManager.addStaticGeometry2("3d_sidewalk",blockContour.contour,0.5f,false,grassFileNames[randPark],GL_QUADS,2|mode_AdaptTerrain,QVector3D(0.05f,0.05f,0.05f),QVector3D());
+		} else {
+			// NORMAL
+			int randSidewalk=qrand()%sideWalkFileNames.size();
+
+			rendManager.addStaticGeometry2("3d_sidewalk",blockContour.contour,1.5f,false,sideWalkFileNames[randSidewalk],GL_QUADS,2|mode_AdaptTerrain,sideWalkScale[randSidewalk],QVector3D());
+			//sides
+			std::vector<Vertex> vert;
+			for(int sN=0;sN<blockContour.contour.size();sN++){
+				int ind1=sN;
+				int ind2=(sN+1)%blockContour.contour.size();
+				QVector3D dir=blockContour.contour[ind2]-blockContour.contour[ind1];
+				float length=dir.length();
+				dir/=length;
+				//printf("z %f\n",blocks[bN].blockContour.contour[ind1].z());
+				QVector3D p1=blockContour.contour[ind1]+QVector3D(0,0, 1.0f);
+				QVector3D p2=blockContour.contour[ind2]+QVector3D(0,0, 1.0f);
+				QVector3D p3=blockContour.contour[ind2]+QVector3D(0,0, 1.5f);
+				QVector3D p4=blockContour.contour[ind1]+QVector3D(0,0, 1.5f);
+				QVector3D normal=QVector3D::crossProduct(p2-p1,p4-p1).normalized();
+				vert.push_back(Vertex(p1,QVector3D(0.5f,0.5f,0.5f),normal,QVector3D()));
+				vert.push_back(Vertex(p2,QVector3D(0.5f,0.5f,0.5f),normal,QVector3D()));
+				vert.push_back(Vertex(p3,QVector3D(0.5f,0.5f,0.5f),normal,QVector3D()));
+				vert.push_back(Vertex(p4,QVector3D(0.5f,0.5f,0.5f),normal,QVector3D()));
+			}
+			rendManager.addStaticGeometry("3d_sidewalk",vert,"",GL_QUADS,1|mode_Lighting|mode_AdaptTerrain);
+		}
+	}
+
+	// parcels
+	{
+
+
+		parcelGraphVertexIter vi, viEnd;
+
+		if (isPark) return;
+
+		for (boost::tie(vi, viEnd) = boost::vertices(myParcels); vi != viEnd; ++vi) {
+			std::vector<Vertex> vert;
+			QVector3D color(0.6f, 0.6f, 0.6f);
+
+			for (int j = 0; j < myParcels[*vi].parcelContour.contour.size(); ++j) {
+				int next = (j+1) % myParcels[*vi].parcelContour.contour.size();
+
+				vert.push_back(Vertex(QVector3D(myParcels[*vi].parcelContour.contour[j].x(), myParcels[*vi].parcelContour.contour[j].y(), 10), color, QVector3D(), QVector3D()));
+				vert.push_back(Vertex(QVector3D(myParcels[*vi].parcelContour.contour[next].x(), myParcels[*vi].parcelContour.contour[next].y(), 10), color, QVector3D(), QVector3D()));
+			}
+			
+			rendManager.addStaticGeometry("3d_parcel", vert, "", GL_LINES, 1|mode_AdaptTerrain);
+		}
+	}
+}
+*/

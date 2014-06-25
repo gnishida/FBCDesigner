@@ -65,9 +65,9 @@
      <string>PM</string>
     </property>
     <addaction name="actionGenerateBlocks"/>
-    <addaction name="actionGenerateSidewalks"/>
     <addaction name="actionGenerateParcels"/>
     <addaction name="actionGenerateBuildings"/>
+    <addaction name="actionGenerateVegetation"/>
     <addaction name="actionGenerate3D"/>
    </widget>
    <widget class="QMenu" name="menuMode">
@@ -246,11 +246,6 @@
     <string>Clear Roads</string>
    </property>
   </action>
-  <action name="actionGenerateSidewalks">
-   <property name="text">
-    <string>Generate Sidewalks</string>
-   </property>
-  </action>
   <action name="actionGenerateParcels">
    <property name="text">
     <string>Generate Parcels</string>
@@ -259,6 +254,11 @@
   <action name="actionGenerateBuildings">
    <property name="text">
     <string>Generate Buildings</string>
+   </property>
+  </action>
+  <action name="actionGenerateVegetation">
+   <property name="text">
+    <string>Generate Vegetation</string>
    </property>
   </action>
  </widget>

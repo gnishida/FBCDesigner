@@ -519,7 +519,7 @@ void GLWidget3D::generate3DGeometry(bool justRoads){
 
 	//VBORoadGraph::updateRoadGraph(vboRenderManager, mainWin->urbanGeometry->roads);
 	//2. generate blocks, parcels and buildings and vegetation
-	VBOPm::generateGeometry(vboRenderManager, mainWin->urbanGeometry->roads, mainWin->urbanGeometry->blocks);
+	VBOPm::generateBlocks(vboRenderManager, mainWin->urbanGeometry->roads, mainWin->urbanGeometry->blocks);
 
 	shadow.makeShadowMap(this);
 

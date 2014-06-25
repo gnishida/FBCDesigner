@@ -8,6 +8,7 @@
 #include <boost/graph/adjacency_list.hpp>
 #endif
 
+#include "VBORenderManager.h"
 #include "VBOParcel.h"
 #include <QVector3D>
 #include "Polygon3D.h"
@@ -139,6 +140,8 @@ public:
 		float roadSegmentWidth, BBox3D roadSegmentBBox3D, std::list<Parcel> &blockParcels);
 
 	bool areParcelsAdjacent(parcelGraphVertexIter &p0, parcelGraphVertexIter &p1);
+	
+	//void generateMesh(VBORenderManager& rendManager);
 
 	parcelGraph myParcels;
 

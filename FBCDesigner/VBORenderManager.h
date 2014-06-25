@@ -8,6 +8,7 @@
 #include "VBOWater.h"
 #include "VBOSkyBox.h"
 #include "VBOTerrain.h"
+#include "VBOModel.h"
 
 #include "VBOModel_StreetElements.h"
 

@@ -52,7 +52,6 @@ public slots:
 	void onModeBlock();
 
 	void onGenerateBlocks();
-	void onGenerateSidewalks();
 	void onGenerateParcels();
 	void onGenerateBuildings();
 	void onGenerate3D();
