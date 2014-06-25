@@ -87,7 +87,8 @@ void GLWidget3D::mousePressEvent(QMouseEvent *event) {
 				if (selectedIndex >= 0) {
 					mainWin->propertyWidget->setBlock(selectedIndex, mainWin->urbanGeometry->blocks[selectedIndex]);
 				}
-				mainWin->urbanGeometry->blocks.generateMesh(vboRenderManager);
+				//mainWin->urbanGeometry->blocks.generateMesh(vboRenderManager);
+				VBOPm::generateBlockMesh(mainWin->glWidget->vboRenderManager, mainWin->urbanGeometry->blocks, true, false);
 				updateGL();
 				break;
 			}
@@ -253,10 +254,15 @@ void GLWidget3D::drawScene(int drawMode) {
 
 			glLineWidth(10);
 			vboRenderManager.renderStaticGeometry(QString("3d_sidewalk"));
-			vboRenderManager.renderStaticGeometry(QString("3d_parcel"));			
-			vboRenderManager.renderStaticGeometry(QString("3d_roads"));
+	
+			if (mainWin->mode == MainWindow::MODE_BLOCK) {
+				vboRenderManager.renderStaticGeometry(QString("3d_parcel"));			
+			} else {
+				vboRenderManager.renderStaticGeometry(QString("3d_building"));
+				vboRenderManager.renderStaticGeometry(QString("3d_building_fac"));
+			}
 
-			
+			vboRenderManager.renderStaticGeometry(QString("3d_roads"));			
 			vboRenderManager.renderStaticGeometry(QString("3d_roads_inter"));//
 			vboRenderManager.renderStaticGeometry(QString("3d_roads_interCom"));//
 
@@ -266,6 +272,7 @@ void GLWidget3D::drawScene(int drawMode) {
 		
 		vboRenderManager.vboTerrain.render(vboRenderManager);
 		vboRenderManager.vboWater.render(vboRenderManager);
+
 
 		// draw the selected vertex and edge
 		if (vertexSelected) {
@@ -519,7 +526,7 @@ void GLWidget3D::generate3DGeometry(bool justRoads){
 
 	//VBORoadGraph::updateRoadGraph(vboRenderManager, mainWin->urbanGeometry->roads);
 	//2. generate blocks, parcels and buildings and vegetation
-	VBOPm::generateBlocks(vboRenderManager, mainWin->urbanGeometry->roads, mainWin->urbanGeometry->blocks);
+	VBOPm::generateBlocks(vboRenderManager, mainWin->urbanGeometry->roads, mainWin->urbanGeometry->blocks, mainWin->urbanGeometry->placeTypes);
 
 	shadow.makeShadowMap(this);
 

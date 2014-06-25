@@ -14,7 +14,7 @@ class MainWindow : public QMainWindow
 	Q_OBJECT
 
 public:
-	static enum { MODE_DEFAULT = 0, MODE_BLOCK };
+	static enum { MODE_DEFAULT = 0, MODE_BLOCK, MODE_PARCEL };
 
 public:
 	Ui::MainWindow ui;
@@ -50,10 +50,12 @@ public slots:
 
 	void onModeDefault();
 	void onModeBlock();
+	void onModeParcel();
 
 	void onGenerateBlocks();
 	void onGenerateParcels();
 	void onGenerateBuildings();
+	void onGenerateVegetation();
 	void onGenerate3D();
 
 	void onShowControlWidget();

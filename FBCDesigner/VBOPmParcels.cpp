@@ -16,7 +16,7 @@ bool subdivideParcel(Block &block, Parcel parcel, float areaMean, float areaVar,
 void setParcelsAsParks(PlaceTypesMainClass &placeTypesIn, std::vector< Block > &blocks);
 
 
-void assignPlaceTypeToParcels(PlaceTypesMainClass &placeTypesIn, std::vector< Block > &blocks);
+//void assignPlaceTypeToParcels(PlaceTypesMainClass &placeTypesIn, std::vector< Block > &blocks);
 
 bool VBOPmParcels::generateParcels(
 	PlaceTypesMainClass &placeTypesIn,
@@ -197,7 +197,7 @@ bool compareFirstPartTuple (const std::pair<float,Parcel*> &i, const std::pair<f
 }//
 
 
-void assignPlaceTypeToParcels(PlaceTypesMainClass &placeTypesIn, std::vector< Block > &blocks)
+void VBOPmParcels::assignPlaceTypeToParcels(PlaceTypesMainClass &placeTypesIn, std::vector< Block > &blocks)
 {
 	bool useSamePlaceTypeForEntireBlock = false;
 

@@ -76,6 +76,7 @@
     </property>
     <addaction name="actionModeDefault"/>
     <addaction name="actionModeBlock"/>
+    <addaction name="actionModeParcel"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuMode"/>
@@ -207,11 +208,17 @@
    </property>
   </action>
   <action name="actionModeDefault">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Default</string>
    </property>
   </action>
   <action name="actionModeBlock">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Block</string>
    </property>
@@ -259,6 +266,11 @@
   <action name="actionGenerateVegetation">
    <property name="text">
     <string>Generate Vegetation</string>
+   </property>
+  </action>
+  <action name="actionModeParcel">
+   <property name="text">
+    <string>Parcel</string>
    </property>
   </action>
  </widget>

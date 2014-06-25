@@ -27,13 +27,15 @@ public:
 	static bool initializedLC;
 	static void initLC();
 
-	static PlaceTypesMainClass placeTypes;
+	//static PlaceTypesMainClass placeTypes;
 
-	static bool generateBlocks(VBORenderManager& rendManager, RoadGraph &roadGraph, BlockSet& blocks);
-	static bool generateParcels(VBORenderManager& rendManager, BlockSet& blocks);
-	static bool generateBuildings(VBORenderManager& rendManager, BlockSet& blocks);
-	static bool generateVegetation(VBORenderManager& rendManager, BlockSet& blocks);
-	static void generateBlockMesh(VBORenderManager& rendManager, BlockSet& block);
+	static bool generateBlocks(VBORenderManager& rendManager, RoadGraph &roadGraph, BlockSet& blocks, PlaceTypesMainClass& placeTypes);
+	static bool generateParcels(VBORenderManager& rendManager, BlockSet& blocks, PlaceTypesMainClass& placeTypes);
+	static bool generateBuildings(VBORenderManager& rendManager, BlockSet& blocks, PlaceTypesMainClass& placeTypes);
+	static bool generateVegetation(VBORenderManager& rendManager, BlockSet& blocks, PlaceTypesMainClass& placeTypes);
+	static void generateBlockMesh(VBORenderManager& rendManager, BlockSet& block, bool blockEditing = false, bool parcelEditing = false);
+
+
 private:
 
 };

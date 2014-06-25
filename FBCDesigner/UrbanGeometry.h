@@ -5,6 +5,7 @@
 #include "VBORenderManager.h"
 #include "RoadGraph.h"
 #include "BlockSet.h"
+#include "VBOPlaceType.h"
 
 class MainWindow;
 
@@ -13,6 +14,8 @@ public:
 	int width;
 	int depth;
 	MainWindow* mainWin;
+
+	PlaceTypesMainClass placeTypes;
 	RoadGraph roads;
 	BlockSet blocks;
 

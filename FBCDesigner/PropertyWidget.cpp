@@ -98,6 +98,8 @@ void PropertyWidget::setBlock(int id, Block& block) {
 	str.setNum(id);
 	ui.lineEditBlockId->setText(str);
 	ui.lineEditBlockIsPark->setText(block.isPark ? "yes" : "no");
+	str.setNum(block.getMyPlaceTypeIdx());
+	ui.lineEditBlockPlaceType->setText(str);
 }
 
 void PropertyWidget::resetRoadVertex() {

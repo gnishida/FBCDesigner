@@ -41,6 +41,7 @@ void BlockSet::save(const QString& filename) {
 		QDomElement node = doc.createElement("block");
 		node.setAttribute("id", i);
 		node.setAttribute("isPark", blocks[i].isPark ? "yes" : "no");
+		node.setAttribute("placeTypeIdx", blocks[i].getMyPlaceTypeIdx());
 
 		saveBlock(doc, node, blocks[i]);
 
@@ -53,6 +54,7 @@ void BlockSet::save(const QString& filename) {
 
 void BlockSet::loadBlock(QDomNode& node, Block& block) {
 	block.isPark = node.toElement().attribute("isPark") == "yes" ? true : false;
+	block.setMyPlaceTypeIdx(node.toElement().attribute("placeTypeIdx").toInt());
 
 	QDomNode child = node.firstChild();
 	while (!child.isNull()) {
@@ -100,6 +102,7 @@ void BlockSet::saveBlock(QDomDocument& doc, QDomNode& node, Block& block) {
 
 void BlockSet::loadParcel(QDomNode& node, Block& block) {
 	Parcel parcel;
+	Polygon3D polygon;
 
 	QDomNode child = node.firstChild();
 	while (!child.isNull()) {
@@ -108,11 +111,14 @@ void BlockSet::loadParcel(QDomNode& node, Block& block) {
 			pt.setX(child.toElement().attribute("x").toFloat());
 			pt.setY(child.toElement().attribute("y").toFloat());
 			pt.setZ(child.toElement().attribute("z").toFloat());
-			parcel.parcelContour.push_back(pt);			
+			polygon.push_back(pt);
+			//parcel.parcelContour.push_back(pt);			
 		}
 
 		child = child.nextSibling();
 	}
+
+	parcel.setContour(polygon);
 
 	Block::parcelGraphVertexDesc v_desc = boost::add_vertex(block.myParcels);
 	block.myParcels[v_desc] = parcel;

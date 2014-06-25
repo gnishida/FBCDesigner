@@ -40,6 +40,7 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags) : QMainWindow(parent, 
 
 	connect(ui.actionModeDefault, SIGNAL(triggered()), this, SLOT(onModeDefault()));
 	connect(ui.actionModeBlock, SIGNAL(triggered()), this, SLOT(onModeBlock()));
+	connect(ui.actionModeParcel, SIGNAL(triggered()), this, SLOT(onModeParcel()));
 
 	connect(ui.actionGenerateBlocks, SIGNAL(triggered()), this, SLOT(onGenerateBlocks()));
 	connect(ui.actionGenerateParcels, SIGNAL(triggered()), this, SLOT(onGenerateParcels()));
@@ -189,24 +190,38 @@ void MainWindow::onResetCamera() {
 
 void MainWindow::onModeDefault() {
 	mode = MODE_DEFAULT;
+	VBOPm::generateBlockMesh(glWidget->vboRenderManager, urbanGeometry->blocks, false, false);
 }
 
 void MainWindow::onModeBlock() {
 	mode = MODE_BLOCK;
+	VBOPm::generateBlockMesh(glWidget->vboRenderManager, urbanGeometry->blocks, true, false);
+}
+
+void MainWindow::onModeParcel() {
+	mode = MODE_PARCEL;
+	VBOPm::generateBlockMesh(glWidget->vboRenderManager, urbanGeometry->blocks, false, true);
 }
 
 void MainWindow::onGenerateBlocks() {
-	VBOPm::generateBlocks(glWidget->vboRenderManager, urbanGeometry->roads, urbanGeometry->blocks);
+	VBOPm::generateBlocks(glWidget->vboRenderManager, urbanGeometry->roads, urbanGeometry->blocks, urbanGeometry->placeTypes);
+	VBOPm::generateBlockMesh(glWidget->vboRenderManager, urbanGeometry->blocks, mode == MODE_BLOCK, mode == MODE_PARCEL);
 	glWidget->updateGL();
 }
 
 void MainWindow::onGenerateParcels() {
-	VBOPm::generateParcels(glWidget->vboRenderManager, urbanGeometry->blocks);
+	VBOPm::generateParcels(glWidget->vboRenderManager, urbanGeometry->blocks, urbanGeometry->placeTypes);
+	VBOPm::generateBlockMesh(glWidget->vboRenderManager, urbanGeometry->blocks, mode == MODE_BLOCK, mode == MODE_PARCEL);
 	glWidget->updateGL();
 }
 
 void MainWindow::onGenerateBuildings() {
-	VBOPm::generateBuildings(glWidget->vboRenderManager, urbanGeometry->blocks);
+	VBOPm::generateBuildings(glWidget->vboRenderManager, urbanGeometry->blocks, urbanGeometry->placeTypes);
+	glWidget->updateGL();
+}
+
+void MainWindow::onGenerateVegetation() {
+	VBOPm::generateVegetation(glWidget->vboRenderManager, urbanGeometry->blocks, urbanGeometry->placeTypes);
 	glWidget->updateGL();
 }
 
