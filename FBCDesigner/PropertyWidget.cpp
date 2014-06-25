@@ -102,6 +102,14 @@ void PropertyWidget::setBlock(int id, Block& block) {
 	ui.lineEditBlockPlaceType->setText(str);
 }
 
+void PropertyWidget::setParcel(int blockId, int parcelId, Block& block) {
+	setBlock(blockId, block);
+
+	QString str;
+	str.setNum(parcelId);
+	ui.lineEditParcelId->setText(str);
+}
+
 void PropertyWidget::resetRoadVertex() {
 	ui.lineEditVertexDesc->setText("");
 	ui.lineEditVertexPos->setText("");

@@ -172,6 +172,8 @@ bool VBOPm::generateBuildings(VBORenderManager& rendManager, BlockSet& blocks, P
 		}
 	}
 	printf("Building generation: %d ms\n",timer.elapsed());
+
+	return true;
 }
 
 bool VBOPm::generateVegetation(VBORenderManager& rendManager, BlockSet& blocks, PlaceTypesMainClass& placeTypes) {
@@ -180,7 +182,7 @@ bool VBOPm::generateVegetation(VBORenderManager& rendManager, BlockSet& blocks, 
 	return true;
 }
 
-void VBOPm::generateBlockMesh(VBORenderManager& rendManager, BlockSet& blocks, bool blockEditing, bool parcelEditing) {
+void VBOPm::generateBlockMesh(VBORenderManager& rendManager, BlockSet& blocks) {
 	if(initialized==false){
 		init();//init placetypes
 	}
@@ -189,48 +191,56 @@ void VBOPm::generateBlockMesh(VBORenderManager& rendManager, BlockSet& blocks, b
 	}
 
 	rendManager.removeStaticGeometry("3d_sidewalk");
+	rendManager.removeStaticGeometry("3d_block");
 	rendManager.removeStaticGeometry("3d_parcel");
 
 	for (int i = 0; i < blocks.size(); ++i) {
-		// sidewalks
-		if (blockEditing) { // blocks
-			for(int bN=0;bN<blocks.size();bN++){
-				std::vector<Vertex> vert;
+		// blocks
+		{
+			std::vector<Vertex> vert;
 
+			QVector3D color(0.6f, 0.6f, 0.6f);
+			if (i == blocks.selectedBlockIndex) {
+				color = QVector3D(1.0f, 1.0f, 1.0f);
+			}
+
+			for(int sN=0;sN<blocks[i].blockContour.contour.size();sN++){
+				int next = (sN+1) % blocks[i].blockContour.contour.size();
+				vert.push_back(Vertex(QVector3D(blocks[i].blockContour.contour[sN].x(),blocks[i].blockContour.contour[sN].y(), 1),
+					color,QVector3D(),QVector3D()));
+				vert.push_back(Vertex(QVector3D(blocks[i].blockContour.contour[next].x(),blocks[i].blockContour.contour[next].y(), 1),
+					color,QVector3D(),QVector3D()));
+			}
+			//rendManager.addStaticGeometry("3d_sidewalk",vert,"",GL_POINTS,1|mode_AdaptTerrain);
+			rendManager.addStaticGeometry("3d_block",vert,"",GL_LINES,1|mode_AdaptTerrain);
+		}
+	
+		// parcels
+		if (!blocks[i].isPark) {
+			Block::parcelGraphVertexIter vi, viEnd;
+			
+			int cnt = 0;
+			for (boost::tie(vi, viEnd) = boost::vertices(blocks[i].myParcels); vi != viEnd; ++vi, ++cnt) {
+				std::vector<Vertex> vert;
 				QVector3D color(0.6f, 0.6f, 0.6f);
-				if (bN == blocks.selectedIndex) {
+
+				if (i == blocks.selectedBlockIndex && cnt == blocks.selectedParcelIndex) {
 					color = QVector3D(1.0f, 1.0f, 1.0f);
 				}
-
-				for(int sN=0;sN<blocks[bN].blockContour.contour.size();sN++){
-					int next = (sN+1) % blocks[bN].blockContour.contour.size();
-					vert.push_back(Vertex(QVector3D(blocks[bN].blockContour.contour[sN].x(),blocks[bN].blockContour.contour[sN].y(), 0.5),
-						color,QVector3D(),QVector3D()));
-					vert.push_back(Vertex(QVector3D(blocks[bN].blockContour.contour[next].x(),blocks[bN].blockContour.contour[next].y(), 0.5),
-						color,QVector3D(),QVector3D()));
-				}
-				//rendManager.addStaticGeometry("3d_sidewalk",vert,"",GL_POINTS,1|mode_AdaptTerrain);
-				rendManager.addStaticGeometry("3d_sidewalk",vert,"",GL_LINES,1|mode_AdaptTerrain);
-			}
-		} else if (parcelEditing) { // parcels
-			Block::parcelGraphVertexIter vi, viEnd;
-
-			if (blocks[i].isPark) return;
-
-			for (boost::tie(vi, viEnd) = boost::vertices(blocks[i].myParcels); vi != viEnd; ++vi) {
-				std::vector<Vertex> vert;
-				QVector3D color(0.6f, 0.6f, 0.6f);
 
 				for (int j = 0; j < blocks[i].myParcels[*vi].parcelContour.contour.size(); ++j) {
 					int next = (j+1) % blocks[i].myParcels[*vi].parcelContour.contour.size();
 
-					vert.push_back(Vertex(QVector3D(blocks[i].myParcels[*vi].parcelContour.contour[j].x(), blocks[i].myParcels[*vi].parcelContour.contour[j].y(), 1), color, QVector3D(), QVector3D()));
-					vert.push_back(Vertex(QVector3D(blocks[i].myParcels[*vi].parcelContour.contour[next].x(), blocks[i].myParcels[*vi].parcelContour.contour[next].y(), 1), color, QVector3D(), QVector3D()));
+					vert.push_back(Vertex(QVector3D(blocks[i].myParcels[*vi].parcelContour.contour[j].x(), blocks[i].myParcels[*vi].parcelContour.contour[j].y(), 2), color, QVector3D(), QVector3D()));
+					vert.push_back(Vertex(QVector3D(blocks[i].myParcels[*vi].parcelContour.contour[next].x(), blocks[i].myParcels[*vi].parcelContour.contour[next].y(), 2), color, QVector3D(), QVector3D()));
 				}
 			
 				rendManager.addStaticGeometry("3d_parcel", vert, "", GL_LINES, 1|mode_AdaptTerrain);
 			}
-		} else {
+		}
+		
+		// sidewalk
+		{
 			if (blocks[i].isPark==true) {
 				// PARK
 				int randPark=qrand()%grassFileNames.size();

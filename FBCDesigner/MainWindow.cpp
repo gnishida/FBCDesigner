@@ -190,28 +190,40 @@ void MainWindow::onResetCamera() {
 
 void MainWindow::onModeDefault() {
 	mode = MODE_DEFAULT;
-	VBOPm::generateBlockMesh(glWidget->vboRenderManager, urbanGeometry->blocks, false, false);
+	ui.actionModeBlock->setChecked(false);
+	ui.actionModeParcel->setChecked(false);
+
+	VBOPm::generateBlockMesh(glWidget->vboRenderManager, urbanGeometry->blocks);
+	glWidget->updateGL();
 }
 
 void MainWindow::onModeBlock() {
 	mode = MODE_BLOCK;
-	VBOPm::generateBlockMesh(glWidget->vboRenderManager, urbanGeometry->blocks, true, false);
+	ui.actionModeDefault->setChecked(false);
+	ui.actionModeParcel->setChecked(false);
+
+	VBOPm::generateBlockMesh(glWidget->vboRenderManager, urbanGeometry->blocks);
+	glWidget->updateGL();
 }
 
 void MainWindow::onModeParcel() {
 	mode = MODE_PARCEL;
-	VBOPm::generateBlockMesh(glWidget->vboRenderManager, urbanGeometry->blocks, false, true);
+	ui.actionModeDefault->setChecked(false);
+	ui.actionModeBlock->setChecked(false);
+
+	VBOPm::generateBlockMesh(glWidget->vboRenderManager, urbanGeometry->blocks);
+	glWidget->updateGL();
 }
 
 void MainWindow::onGenerateBlocks() {
 	VBOPm::generateBlocks(glWidget->vboRenderManager, urbanGeometry->roads, urbanGeometry->blocks, urbanGeometry->placeTypes);
-	VBOPm::generateBlockMesh(glWidget->vboRenderManager, urbanGeometry->blocks, mode == MODE_BLOCK, mode == MODE_PARCEL);
+	VBOPm::generateBlockMesh(glWidget->vboRenderManager, urbanGeometry->blocks);
 	glWidget->updateGL();
 }
 
 void MainWindow::onGenerateParcels() {
 	VBOPm::generateParcels(glWidget->vboRenderManager, urbanGeometry->blocks, urbanGeometry->placeTypes);
-	VBOPm::generateBlockMesh(glWidget->vboRenderManager, urbanGeometry->blocks, mode == MODE_BLOCK, mode == MODE_PARCEL);
+	VBOPm::generateBlockMesh(glWidget->vboRenderManager, urbanGeometry->blocks);
 	glWidget->updateGL();
 }
 

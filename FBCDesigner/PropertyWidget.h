@@ -21,6 +21,7 @@ public:
 	void setRoadVertex(RoadGraph &roads, RoadVertexDesc vertexDesc, RoadVertexPtr selectedVertex);
 	void setRoadEdge(RoadGraph &roads, RoadEdgeDesc edgeDesc, RoadEdgePtr selectedEdge);
 	void setBlock(int id, Block& block);
+	void setParcel(int blockId, int parcelId, Block& block);
 	void resetRoadVertex();
 	void resetRoadEdge();
 

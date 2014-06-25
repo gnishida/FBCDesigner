@@ -169,7 +169,7 @@ void BlockSet::generateMesh(VBORenderManager& rendManager) {
 
 }
 
-int BlockSet::select(const QVector2D& pos) {
+int BlockSet::selectBlock(const QVector2D& pos) {
 	for (int i = 0; i < blocks.size(); ++i) {
 		Polygon2D polygon;
 		for (int j = 0; j < blocks[i].blockContour.contour.size(); ++j) {
@@ -177,8 +177,8 @@ int BlockSet::select(const QVector2D& pos) {
 		}
 
 		if (polygon.contains(pos)) {
-			if (selectedIndex != i) {
-				selectedIndex = i;
+			if (selectedBlockIndex != i) {
+				selectedBlockIndex = i;
 				modified = true;
 			}
 
@@ -186,20 +186,51 @@ int BlockSet::select(const QVector2D& pos) {
 		}
 	}
 
-	if (selectedIndex != -1) {
-		selectedIndex = -1;
+	if (selectedBlockIndex != -1) {
+		selectedBlockIndex = -1;
 		modified = true;
 	}
 
 	return -1;
 }
 
+std::pair<int, int> BlockSet::selectParcel(const QVector2D& pos) {
+	for (int i = 0; i < blocks.size(); ++i) {
+		Block::parcelGraphVertexIter vi, viEnd;
+		int id = 0;
+		for (boost::tie(vi, viEnd) = boost::vertices(blocks[i].myParcels); vi != viEnd; ++vi, ++id) {
+			Polygon2D polygon;
+			for (int j = 0; j < blocks[i].myParcels[*vi].parcelContour.contour.size(); ++j) {
+				polygon.push_back(QVector2D(blocks[i].myParcels[*vi].parcelContour[j]));
+			}
+
+			if (polygon.contains(pos)) {
+				if (selectedBlockIndex != i && selectedParcelIndex != id) {
+					selectedBlockIndex = i;
+					selectedParcelIndex = id;
+					modified = true;
+				}
+
+				return std::make_pair(selectedBlockIndex, selectedParcelIndex);
+			}
+		}
+	}
+
+	if (selectedBlockIndex != -1) {
+		selectedBlockIndex = -1;
+		selectedParcelIndex = -1;
+		modified = true;
+	}
+
+	return std::make_pair(-1, -1);
+}
+
 void BlockSet::removeSelectedBlock() {
-	if (selectedIndex < 0 || selectedIndex >= blocks.size()) return;
+	if (selectedBlockIndex < 0 || selectedBlockIndex >= blocks.size()) return;
 
-	blocks.erase(blocks.begin() + selectedIndex);
+	blocks.erase(blocks.begin() + selectedBlockIndex);
 
-	selectedIndex = -1;
+	selectedBlockIndex = -1;
 
 	modified = true;
 }

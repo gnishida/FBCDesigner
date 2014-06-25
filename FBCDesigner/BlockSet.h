@@ -11,18 +11,20 @@
 class BlockSet {
 public:
 	std::vector<Block> blocks;
-	int selectedIndex;
+	int selectedBlockIndex;
+	int selectedParcelIndex;
 	bool modified;
 
 public:
-	BlockSet() : selectedIndex(-1), modified(false) {}
+	BlockSet() : selectedBlockIndex(-1), selectedParcelIndex(-1), modified(false) {}
 
 	void setModified() { modified = true; }
 	void load(const QString& filename);
 	void save(const QString& filename);
 	void generateMesh(VBORenderManager& rendManager);
 
-	int select(const QVector2D& pos);
+	int selectBlock(const QVector2D& pos);
+	std::pair<int, int> selectParcel(const QVector2D& pos);
 	void removeSelectedBlock();
 
 	Block& operator[](int index) { return blocks[index]; }

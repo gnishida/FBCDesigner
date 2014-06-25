@@ -33,7 +33,7 @@ public:
 	static bool generateParcels(VBORenderManager& rendManager, BlockSet& blocks, PlaceTypesMainClass& placeTypes);
 	static bool generateBuildings(VBORenderManager& rendManager, BlockSet& blocks, PlaceTypesMainClass& placeTypes);
 	static bool generateVegetation(VBORenderManager& rendManager, BlockSet& blocks, PlaceTypesMainClass& placeTypes);
-	static void generateBlockMesh(VBORenderManager& rendManager, BlockSet& block, bool blockEditing = false, bool parcelEditing = false);
+	static void generateBlockMesh(VBORenderManager& rendManager, BlockSet& block);
 
 
 private:

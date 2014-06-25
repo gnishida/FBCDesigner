@@ -63,6 +63,9 @@ void GLWidget3D::mousePressEvent(QMouseEvent *event) {
 	if (event->buttons() & Qt::LeftButton) {
 		if (altPressed) {
 			float xM, yM, radi, change;
+			int selectedIndex;
+			std::pair<int, int> selectedIndexPair;
+
 			switch (mainWin->mode) {
 			case MainWindow::MODE_DEFAULT: // terrain editing
 				// normal Gaussian edition
@@ -83,13 +86,23 @@ void GLWidget3D::mousePressEvent(QMouseEvent *event) {
 				updateGL();
 				break;
 			case MainWindow::MODE_BLOCK: // select a block
-				int selectedIndex = mainWin->urbanGeometry->blocks.select(pos);
+				selectedIndex = mainWin->urbanGeometry->blocks.selectBlock(pos);
 				if (selectedIndex >= 0) {
 					mainWin->propertyWidget->setBlock(selectedIndex, mainWin->urbanGeometry->blocks[selectedIndex]);
 				}
-				//mainWin->urbanGeometry->blocks.generateMesh(vboRenderManager);
-				VBOPm::generateBlockMesh(mainWin->glWidget->vboRenderManager, mainWin->urbanGeometry->blocks, true, false);
+
+				VBOPm::generateBlockMesh(mainWin->glWidget->vboRenderManager, mainWin->urbanGeometry->blocks);
 				updateGL();
+				break;
+			case MainWindow::MODE_PARCEL:
+				selectedIndexPair = mainWin->urbanGeometry->blocks.selectParcel(pos);
+				if (selectedIndexPair.first >= 0) {
+					mainWin->propertyWidget->setParcel(selectedIndexPair.first, selectedIndexPair.second, mainWin->urbanGeometry->blocks[selectedIndexPair.first]);
+				}
+				
+				VBOPm::generateBlockMesh(mainWin->glWidget->vboRenderManager, mainWin->urbanGeometry->blocks);
+				updateGL();
+
 				break;
 			}
 		} else {
@@ -247,17 +260,19 @@ void GLWidget3D::paintGL() {
 void GLWidget3D::drawScene(int drawMode) {
 	///////////////////////////////////
 	// GEN MODE
-	if(G::global().getInt("3d_render_mode")==0){
+	//if(G::global().getInt("3d_render_mode")==0){
 		glDisable(GL_CULL_FACE);
 
 			vboRenderManager.renderStaticGeometry(QString("sky"));
 
 			glLineWidth(10);
-			vboRenderManager.renderStaticGeometry(QString("3d_sidewalk"));
 	
 			if (mainWin->mode == MainWindow::MODE_BLOCK) {
+				vboRenderManager.renderStaticGeometry(QString("3d_block"));
+			} else if (mainWin->mode == MainWindow::MODE_PARCEL) {
 				vboRenderManager.renderStaticGeometry(QString("3d_parcel"));			
 			} else {
+				vboRenderManager.renderStaticGeometry(QString("3d_sidewalk"));
 				vboRenderManager.renderStaticGeometry(QString("3d_building"));
 				vboRenderManager.renderStaticGeometry(QString("3d_building_fac"));
 			}
@@ -284,7 +299,10 @@ void GLWidget3D::drawScene(int drawMode) {
 			RendererHelper::renderPolyline(vboRenderManager, "selected_edge_lines", "selected_edge_points", polyline, QColor(0, 0, 255));
 		}
 
-	}
+	//}
+
+	return;
+
 	///////////////////////////////////
 	// LC MODE
 	if(G::global().getInt("3d_render_mode")==1||G::global().getInt("3d_render_mode")==2){//LC HATCH
