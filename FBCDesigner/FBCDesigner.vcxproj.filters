@@ -399,4 +399,12 @@
       <Filter>Main Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\data\shaders\lc_fragment_sk.glsl">
+      <Filter>VBO</Filter>
+    </None>
+    <None Include="..\data\shaders\lc_vertex_sk.glsl">
+      <Filter>VBO</Filter>
+    </None>
+  </ItemGroup>
 </Project>

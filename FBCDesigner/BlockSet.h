@@ -30,6 +30,7 @@ public:
 	Block& operator[](int index) { return blocks[index]; }
 	const Block& operator[](int index) const { return blocks[index]; }
 	size_t size() const { return blocks.size(); }
+	void clear();
 
 private:
 	void loadBlock(QDomNode& node, Block& block);

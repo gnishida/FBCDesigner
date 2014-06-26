@@ -36,7 +36,8 @@
 		//////////////////
 		// TERRAIN LAYER
 		if(initialized==false){
-			terrainLayer.init(minPos,maxPos,0,0,0,200,200);
+			//terrainLayer.init(minPos,maxPos,0,0,0,200,200);
+			terrainLayer.init(minPos, maxPos, resolutionX, resolutionY, 0, resolutionX, resolutionY);
 
 			glActiveTexture(GL_TEXTURE7);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);

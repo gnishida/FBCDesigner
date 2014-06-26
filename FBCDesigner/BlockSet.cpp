@@ -236,6 +236,14 @@ void BlockSet::removeSelectedBlock() {
 	blocks.erase(blocks.begin() + selectedBlockIndex);
 
 	selectedBlockIndex = -1;
+	selectedParcelIndex = -1;
+	modified = true;
+}
 
+void BlockSet::clear() {
+	blocks.clear();
+
+	selectedBlockIndex = -1;
+	selectedParcelIndex = -1;
 	modified = true;
 }

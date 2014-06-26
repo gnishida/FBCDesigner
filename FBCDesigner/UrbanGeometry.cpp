@@ -127,6 +127,10 @@ void UrbanGeometry::saveRoads(const QString &filename) {
 
 void UrbanGeometry::clearRoads() {
 	roads.clear();
+	roads.updateRoadGraph(mainWin->glWidget->vboRenderManager);
+
+	blocks.clear();
+	VBOPm::generateBlockMesh(mainWin->glWidget->vboRenderManager, blocks);
 }
 
 void UrbanGeometry::loadBlocks(const QString& filename) {
