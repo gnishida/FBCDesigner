@@ -301,25 +301,6 @@ bool VBOPmBlocks::generateBlocks(PlaceTypesMainClass &placeTypesIn, RoadGraph &r
 		blocks[i].blockContour.getBBox3D(blocks[i].bbox.minPt, blocks[i].bbox.maxPt);
 		
 		blockAreas.push_back(insetArea);
-
-		//assign place type to block ------------
-		//int validClosestPlaceTypeIdx = -1;
-
-		float distToValidClosestPlaceType = FLT_MAX;
-
-		/*
-		QVector3D testPt;
-		testPt = blocks[i].bbox.midPt();
-
-		//NEW WAY!
-		for(int k=G::global().getInt("num_place_types")-1; k>=0; --k){			
-			if( placeTypesIn.myPlaceTypes.at(k).containsPoint(testPt) ){				
-				validClosestPlaceTypeIdx = k;
-			}			
-		}
-		*/
-
-//		blocks[i].setMyPlaceTypeIdx( validClosestPlaceTypeIdx );
 	}
 
 	//Remove the largest block
@@ -352,8 +333,6 @@ bool VBOPmBlocks::generateBlocks(PlaceTypesMainClass &placeTypesIn, RoadGraph &r
 		blockWithPark.insert(ind);
 		blocks[ind].isPark=true;
 	}
-
-	blocks.setModified();
 
 	return true;
 }//

@@ -279,19 +279,17 @@ void GLWidget3D::drawScene(int drawMode) {
 				vboRenderManager.renderStaticGeometry(QString("3d_trees"));//hatch
 				vboRenderManager.renderAllStreetElementName("tree");//LC
 				vboRenderManager.renderAllStreetElementName("streetLamp");//LC
+
+				vboRenderManager.renderStaticGeometry(QString("3d_roads"));			
+				vboRenderManager.renderStaticGeometry(QString("3d_roads_inter"));//
+				vboRenderManager.renderStaticGeometry(QString("3d_roads_interCom"));//
 			}
-
-			vboRenderManager.renderStaticGeometry(QString("3d_roads"));			
-			vboRenderManager.renderStaticGeometry(QString("3d_roads_inter"));//
-			vboRenderManager.renderStaticGeometry(QString("3d_roads_interCom"));//
-
 
 		glEnable(GL_CULL_FACE);
 
-		
+	
 		vboRenderManager.vboTerrain.render(vboRenderManager);
 		vboRenderManager.vboWater.render(vboRenderManager);
-
 
 		// draw the selected vertex and edge
 		if (vertexSelected) {
@@ -419,7 +417,8 @@ void GLWidget3D::keyPressEvent( QKeyEvent *e ){
 			}
 		} else if (mainWin->mode == MainWindow::MODE_BLOCK) {
 			mainWin->urbanGeometry->blocks.removeSelectedBlock();
-			mainWin->urbanGeometry->blocks.generateMesh(vboRenderManager);
+			VBOPm::generateBlockMesh(mainWin->glWidget->vboRenderManager, mainWin->urbanGeometry->blocks);
+			//mainWin->urbanGeometry->blocks.generateMesh(vboRenderManager);
 			updateGL();
 		}
 		break;

@@ -13,15 +13,14 @@ public:
 	std::vector<Block> blocks;
 	int selectedBlockIndex;
 	int selectedParcelIndex;
-	bool modified;
+	//bool modified;
 
 public:
-	BlockSet() : selectedBlockIndex(-1), selectedParcelIndex(-1), modified(false) {}
+	BlockSet() : selectedBlockIndex(-1), selectedParcelIndex(-1) {}
 
-	void setModified() { modified = true; }
+	//void setModified() { modified = true; }
 	void load(const QString& filename);
 	void save(const QString& filename);
-	void generateMesh(VBORenderManager& rendManager);
 
 	int selectBlock(const QVector2D& pos);
 	std::pair<int, int> selectParcel(const QVector2D& pos);

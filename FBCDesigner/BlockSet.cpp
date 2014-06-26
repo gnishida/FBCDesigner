@@ -25,7 +25,7 @@ void BlockSet::load(const QString& filename) {
 		node = node.nextSibling();
 	}
 
-	modified = true;
+	//modified = true;
 }
 
 void BlockSet::save(const QString& filename) {
@@ -139,40 +139,7 @@ void BlockSet::saveParcel(QDomDocument& doc, QDomNode& node, Parcel& parcel) {
 	}
 }
 
-void BlockSet::generateMesh(VBORenderManager& rendManager) {
-	if (!modified) return;
 
-	modified = false;
-
-	rendManager.removeStaticGeometry("3d_sidewalk");
-	rendManager.removeStaticGeometry("3d_parcel");
-
-	/*
-	for(int bN=0;bN<blocks.size();bN++){
-		std::vector<Vertex> vert;
-
-		QVector3D color(0.6f, 0.6f, 0.6f);
-		if (bN == selectedIndex) {
-			color = QVector3D(1.0f, 1.0f, 1.0f);
-		}
-
-		for(int sN=0;sN<blocks[bN].blockContour.contour.size();sN++){
-			int next = (sN+1) % blocks[bN].blockContour.contour.size();
-			vert.push_back(Vertex(QVector3D(blocks[bN].blockContour.contour[sN].x(),blocks[bN].blockContour.contour[sN].y(),5),
-				color,QVector3D(),QVector3D()));
-			vert.push_back(Vertex(QVector3D(blocks[bN].blockContour.contour[next].x(),blocks[bN].blockContour.contour[next].y(),5),
-				color,QVector3D(),QVector3D()));
-		}
-		//rendManager.addStaticGeometry("3d_sidewalk",vert,"",GL_POINTS,1|mode_AdaptTerrain);
-		rendManager.addStaticGeometry("3d_sidewalk",vert,"",GL_LINES,1|mode_AdaptTerrain);
-	}
-	*/
-
-	for (int bN=0;bN<blocks.size();bN++){
-		//blocks[bN].generateMesh(rendManager);
-	}
-
-}
 
 int BlockSet::selectBlock(const QVector2D& pos) {
 	for (int i = 0; i < blocks.size(); ++i) {
@@ -185,7 +152,7 @@ int BlockSet::selectBlock(const QVector2D& pos) {
 		if (polygon.contains(pos)) {
 			if (selectedBlockIndex != i) {
 				selectedBlockIndex = i;
-				modified = true;
+				//modified = true;
 			}
 
 			return i;
@@ -194,7 +161,7 @@ int BlockSet::selectBlock(const QVector2D& pos) {
 
 	if (selectedBlockIndex != -1) {
 		selectedBlockIndex = -1;
-		modified = true;
+		//modified = true;
 	}
 
 	return -1;
@@ -209,12 +176,13 @@ std::pair<int, int> BlockSet::selectParcel(const QVector2D& pos) {
 			for (int j = 0; j < blocks[i].myParcels[*vi].parcelContour.contour.size(); ++j) {
 				polygon.push_back(QVector2D(blocks[i].myParcels[*vi].parcelContour[j]));
 			}
+			polygon.correct();
 
 			if (polygon.contains(pos)) {
 				if (selectedBlockIndex != i && selectedParcelIndex != id) {
 					selectedBlockIndex = i;
 					selectedParcelIndex = id;
-					modified = true;
+					//modified = true;
 				}
 
 				return std::make_pair(selectedBlockIndex, selectedParcelIndex);
@@ -225,7 +193,7 @@ std::pair<int, int> BlockSet::selectParcel(const QVector2D& pos) {
 	if (selectedBlockIndex != -1) {
 		selectedBlockIndex = -1;
 		selectedParcelIndex = -1;
-		modified = true;
+		//modified = true;
 	}
 
 	return std::make_pair(-1, -1);
@@ -238,7 +206,7 @@ void BlockSet::removeSelectedBlock() {
 
 	selectedBlockIndex = -1;
 	selectedParcelIndex = -1;
-	modified = true;
+	//modified = true;
 }
 
 void BlockSet::clear() {
@@ -246,5 +214,5 @@ void BlockSet::clear() {
 
 	selectedBlockIndex = -1;
 	selectedParcelIndex = -1;
-	modified = true;
+	//modified = true;
 }
