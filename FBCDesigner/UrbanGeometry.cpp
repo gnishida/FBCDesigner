@@ -16,7 +16,6 @@ UrbanGeometry::UrbanGeometry(MainWindow* mainWin) {
 	this->mainWin = mainWin;
 
 	placeTypes.load("placetypes.xml");
-	//placeTypes.load("placetypes_10.xml");
 }
 
 UrbanGeometry::~UrbanGeometry() {

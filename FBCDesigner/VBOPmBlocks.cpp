@@ -35,7 +35,7 @@ struct output_visitor : public boost::planar_face_traversal_visitor
 {
 	void begin_face()
 	{
-		//std::cout << "face: " << face_index++ << std::endl;
+		std::cout << "face: " << face_index++ << std::endl;
 		
 		blockContourTmp.clear();
 		blockContourWidths.clear();
