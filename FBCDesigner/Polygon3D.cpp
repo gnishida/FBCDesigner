@@ -354,12 +354,14 @@ float Polygon3D::computeInset(std::vector<float> &offsetDistances, Loop3D &pgonI
 			ClipperOffset co;
 			co.AddPath(subj, jtSquare, etClosedPolygon);
 			co.Execute(solution, -1000*7.5);
-			pgonInset.resize(solution[0].size());
-			for(int sN=0;sN<solution[0].size();sN++){
-				pgonInset[sN]=QVector3D(solution[0][sN].X/1000.0f,solution[0][sN].Y/1000.0f,0);
+			if (solution.size() > 0) { // GEN: we have to check whether the solution exists.
+				pgonInset.resize(solution[0].size());
+				for(int sN=0;sN<solution[0].size();sN++){
+					pgonInset[sN]=QVector3D(solution[0][sN].X/1000.0f,solution[0][sN].Y/1000.0f,0);
+				}
+				//printf("Solutions %d\n",solution.size());
+				return Area(solution[0]);
 			}
-			//printf("Solutions %d\n",solution.size());
-			return Area(solution[0]);
 		}
 
 	}

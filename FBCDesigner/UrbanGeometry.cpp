@@ -40,15 +40,15 @@ UrbanGeometry::UrbanGeometry(MainWindow* mainWin) {
 	tmpPlaceType["pt_loc_edges_lengthV"] =	0.01f*50;
 	tmpPlaceType["pt_cur_edges_count"] = 0;
 	//----- parcels -----
-	tmpPlaceType["pt_parcel_area_mean"] = 5000.0f;//3600;
+	tmpPlaceType["pt_parcel_area_mean"] = 500.0f;//3600;
 	tmpPlaceType["pt_parcel_area_deviation"] =	49;
 	tmpPlaceType["pt_parcel_split_deviation"] =	0.19;
-	tmpPlaceType["pt_park_percentage"] =0.0f;
+	tmpPlaceType["pt_park_percentage"] =0.1f;
 	//----- buildings -----
-	tmpPlaceType["pt_parcel_setback_front"] =15.0f;
+	tmpPlaceType["pt_parcel_setback_front"] = 5.0f;
 	tmpPlaceType["pt_parcel_setback_sides"] = 2.0f;
-	tmpPlaceType["pt_building_height_mean"] = 12;
-	tmpPlaceType["pt_building_height_deviation"] =	90;
+	tmpPlaceType["pt_building_height_mean"] = 2; // This represents the mean stories!! not the height!!
+	tmpPlaceType["pt_building_height_deviation"] = 90;//90;
 	tmpPlaceType["pt_building_max_frontage"] =0;
 	tmpPlaceType["pt_parcel_setback_rear"] =0;
 	tmpPlaceType["pt_building_max_depth"] =0;

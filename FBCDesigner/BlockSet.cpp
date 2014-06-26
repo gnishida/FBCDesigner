@@ -180,6 +180,7 @@ int BlockSet::selectBlock(const QVector2D& pos) {
 		for (int j = 0; j < blocks[i].blockContour.contour.size(); ++j) {
 			polygon.push_back(QVector2D(blocks[i].blockContour[j]));
 		}
+		polygon.correct();
 
 		if (polygon.contains(pos)) {
 			if (selectedBlockIndex != i) {

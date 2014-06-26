@@ -20,10 +20,6 @@ class VBORenderManager;
 class VBOPm
 {
 public:
-
-	static bool initialized;
-	static void init();
-
 	static bool initializedLC;
 	static void initLC();
 

@@ -201,12 +201,7 @@ bool removeIntersectingEdges(RoadGraph &roadGraph)
 //
 // Given a road network, this function extracts the blocks
 //
-bool VBOPmBlocks::generateBlocks(
-	PlaceTypesMainClass &placeTypesIn,
-	RoadGraph &roadGraph,
-	BlockSet &blocks)
-{
-
+bool VBOPmBlocks::generateBlocks(PlaceTypesMainClass &placeTypesIn, RoadGraph &roadGraph, BlockSet &blocks) {
 	GraphUtil::normalizeLoop(roadGraph);
 
 	//printf("b1.1\n");
@@ -276,7 +271,9 @@ bool VBOPmBlocks::generateBlocks(
 	std::vector<float> blockAreas;
 
 	Loop3D blockContourInset;
-	for(int i=0; i<blocks.size(); ++i){
+	for (int i = 0; i < blocks.size(); ++i) {
+		std::cout << "block: " << i << std::endl;
+
 		//assign default place type
 		blocks[i].setMyPlaceTypeIdx(-1);
 		//Reorient faces
