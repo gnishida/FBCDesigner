@@ -56,7 +56,7 @@ public slots:
 	void onGenerateParcels();
 	void onGenerateBuildings();
 	void onGenerateVegetation();
-	void onGenerate3D();
+	void onGenerateAll();
 
 	void onShowControlWidget();
 	void onShowPropertyWidget();

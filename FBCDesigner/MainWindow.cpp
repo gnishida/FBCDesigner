@@ -14,10 +14,11 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags) : QMainWindow(parent, 
 	propertyWidget = new PropertyWidget(this);
 
 	// setup the toolbar
-	ui.fileToolBar->addAction(ui.actionNewTerrain);
-	ui.fileToolBar->addAction(ui.actionOpenTerrain);
-	ui.areaToolBar->addAction(ui.actionModeDefault);
-	ui.areaToolBar->addAction(ui.actionModeBlock);
+	ui.fileToolBar->addAction(ui.actionLoadRoads);
+	ui.fileToolBar->addAction(ui.actionSaveRoads);
+	ui.modeToolBar->addAction(ui.actionModeDefault);
+	ui.modeToolBar->addAction(ui.actionModeBlock);
+	ui.modeToolBar->addAction(ui.actionModeParcel);
 
 	ui.actionModeDefault->setChecked(true);
 
@@ -46,7 +47,7 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags) : QMainWindow(parent, 
 	connect(ui.actionGenerateParcels, SIGNAL(triggered()), this, SLOT(onGenerateParcels()));
 	connect(ui.actionGenerateBuildings, SIGNAL(triggered()), this, SLOT(onGenerateBuildings()));
 	connect(ui.actionGenerateVegetation, SIGNAL(triggered()), this, SLOT(onGenerateVegetation()));
-	connect(ui.actionGenerate3D, SIGNAL(triggered()), this, SLOT(onGenerate3D()));
+	connect(ui.actionGenerateAll, SIGNAL(triggered()), this, SLOT(onGenerateAll()));
 	connect(ui.actionControlWidget, SIGNAL(triggered()), this, SLOT(onShowControlWidget()));
 	connect(ui.actionPropertyWidget, SIGNAL(triggered()), this, SLOT(onShowPropertyWidget()));
 
@@ -240,8 +241,14 @@ void MainWindow::onGenerateVegetation() {
 	glWidget->updateGL();
 }
 
-void MainWindow::onGenerate3D() {
-	glWidget->generate3DGeometry();
+void MainWindow::onGenerateAll() {
+	VBOPm::generateBlocks(glWidget->vboRenderManager, urbanGeometry->roads, urbanGeometry->blocks, urbanGeometry->placeTypes);
+	VBOPm::generateParcels(glWidget->vboRenderManager, urbanGeometry->blocks, urbanGeometry->placeTypes);
+	VBOPm::generateBlockMesh(glWidget->vboRenderManager, urbanGeometry->blocks);
+	VBOPm::generateBuildings(glWidget->vboRenderManager, urbanGeometry->blocks, urbanGeometry->placeTypes);
+	VBOPm::generateVegetation(glWidget->vboRenderManager, urbanGeometry->blocks, urbanGeometry->placeTypes);
+	glWidget->shadow.makeShadowMap(glWidget);
+
 	glWidget->updateGL();
 }
 

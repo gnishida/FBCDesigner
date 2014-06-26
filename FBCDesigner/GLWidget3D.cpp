@@ -35,9 +35,6 @@ GLWidget3D::GLWidget3D(MainWindow* mainWin) : QGLWidget(QGLFormat(QGL::SampleBuf
 	shadowEnabled=true;
 }
 
-GLWidget3D::~GLWidget3D() {
-}
-
 QSize GLWidget3D::minimumSizeHint() const {
 	return QSize(200, 200);
 }
@@ -556,7 +553,7 @@ void GLWidget3D::updateCamera(){
 	glUniform3f(glGetUniformLocation(vboRenderManager.program, "lightDir"),light_dir.x(),light_dir.y(),light_dir.z());
 }//
 
-void GLWidget3D::generate3DGeometry(bool justRoads){
+/*void GLWidget3D::generate3DGeometry(bool justRoads){
 	GraphUtil::cleanEdges(mainWin->urbanGeometry->roads);
 	GraphUtil::clean(mainWin->urbanGeometry->roads);
 
@@ -578,4 +575,4 @@ void GLWidget3D::generate3DGeometry(bool justRoads){
 	shadow.makeShadowMap(this);
 
 	printf("<<generate3DGeometry\n");
-}//
+}*/

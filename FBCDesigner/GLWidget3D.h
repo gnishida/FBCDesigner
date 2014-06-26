@@ -62,18 +62,12 @@ public:
 
 public:
 	GLWidget3D(MainWindow *parent);
-	~GLWidget3D();
+	~GLWidget3D() {}
 
-	void updateMe();
 	QSize minimumSizeHint() const;
 	QSize sizeHint() const;
 	void keyPressEvent(QKeyEvent* e);
 	void keyReleaseEvent(QKeyEvent* e);
-
-	void resetMyCam();
-
-	void setLightPosition(double altitude, double azimuth);
-	void setLightPosition(GLfloat x, GLfloat y, GLfloat z);
 
 	void mouseTo2D(int x, int y, QVector2D &result);
 
@@ -82,8 +76,7 @@ public:
 	void selectEdge(RoadGraph &roads, RoadEdgeDesc e_desc);
 
 	void updateCamera();
-	void generate3DGeometry(bool justRoads=false);
-
+	//void generate3DGeometry(bool justRoads=false);
 
 protected:
 	void initializeGL();
@@ -94,8 +87,5 @@ protected:
 	void mousePressEvent(QMouseEvent *e);
 	void mouseMoveEvent(QMouseEvent *e);
 	void mouseReleaseEvent(QMouseEvent *e);
-
-
-
 };
 

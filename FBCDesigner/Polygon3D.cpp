@@ -341,7 +341,6 @@ float Polygon3D::computeInset(std::vector<float> &offsetDistances, Loop3D &pgonI
 		}
 		// IT FAILED TRY SECOND METHOD
 		{
-			std::cout << "Failed!" << std::endl;
 			Path subj;
 			Paths solution;
 			for(int cur=0; cur<cSz; ++cur){

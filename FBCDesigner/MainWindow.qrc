@@ -1,4 +1,6 @@
 <RCC>
-    <qresource prefix="MainWindow">
-    </qresource>
+  <qresource prefix="MainWindow">
+    <file>Resources/Save_24x24.png</file>
+    <file>Resources/Open_24x24.png</file>
+  </qresource>
 </RCC>
