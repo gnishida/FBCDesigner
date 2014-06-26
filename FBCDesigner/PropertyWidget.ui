@@ -42,7 +42,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>Type</string>
+      <string>Type:</string>
      </property>
     </widget>
     <widget class="QLineEdit" name="lineEditEdgeType">
@@ -65,7 +65,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>Lanes</string>
+      <string>Lanes:</string>
      </property>
     </widget>
     <widget class="QLineEdit" name="lineEditEdgeLanes">
@@ -88,7 +88,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>One Way</string>
+      <string>One Way:</string>
      </property>
     </widget>
     <widget class="QLineEdit" name="lineEditEdgeOneWay">
@@ -121,7 +121,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>Link</string>
+      <string>Link:</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_10">
@@ -134,7 +134,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>Roundabout</string>
+      <string>Roundabout:</string>
      </property>
     </widget>
     <widget class="QLineEdit" name="lineEditEdgeRoundabout">
@@ -152,12 +152,12 @@
       <rect>
        <x>10</x>
        <y>20</y>
-       <width>31</width>
+       <width>41</width>
        <height>16</height>
       </rect>
      </property>
      <property name="text">
-      <string>Source</string>
+      <string>Source:</string>
      </property>
     </widget>
     <widget class="QLineEdit" name="lineEditEdgeSource">
@@ -185,12 +185,12 @@
       <rect>
        <x>10</x>
        <y>40</y>
-       <width>31</width>
+       <width>41</width>
        <height>16</height>
       </rect>
      </property>
      <property name="text">
-      <string>Target</string>
+      <string>Target:</string>
      </property>
     </widget>
    </widget>
@@ -216,7 +216,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>ID</string>
+      <string>ID:</string>
      </property>
     </widget>
     <widget class="QLineEdit" name="lineEditVertexDesc">
@@ -239,7 +239,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>Location</string>
+      <string>Location:</string>
      </property>
     </widget>
     <widget class="QLineEdit" name="lineEditVertexPos">
@@ -262,7 +262,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>Neighbors</string>
+      <string>Neighbors:</string>
      </property>
     </widget>
     <widget class="QTextEdit" name="textEditVertexNeighbors">
@@ -308,7 +308,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>Deadend</string>
+      <string>Deadend:</string>
      </property>
     </widget>
     <widget class="QLineEdit" name="lineEditVertexDeadend">
@@ -367,7 +367,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>ID</string>
+      <string>ID:</string>
      </property>
     </widget>
     <widget class="QLineEdit" name="lineEditBlockId">
@@ -390,7 +390,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>Park</string>
+      <string>Park:</string>
      </property>
     </widget>
     <widget class="QLineEdit" name="lineEditBlockIsPark">
@@ -413,7 +413,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>Place Type</string>
+      <string>Place Type:</string>
      </property>
     </widget>
     <widget class="QLineEdit" name="lineEditBlockPlaceType">
@@ -449,7 +449,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>ID</string>
+      <string>ID:</string>
      </property>
     </widget>
     <widget class="QLineEdit" name="lineEditParcelId">
@@ -460,6 +460,29 @@
        <width>81</width>
        <height>20</height>
       </rect>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="comboBoxParcelType">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>40</y>
+       <width>81</width>
+       <height>22</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_16">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>40</y>
+       <width>46</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Type:</string>
      </property>
     </widget>
    </widget>

@@ -9,6 +9,7 @@
 #include "MainWindow.h"
 #include "Util.h"
 #include "VBOPm.h"
+#include "VBOPmBlocks.h"
 #include "VBOPmParcels.h"
 
 UrbanGeometry::UrbanGeometry(MainWindow* mainWin) {
@@ -130,7 +131,8 @@ void UrbanGeometry::clearRoads() {
 
 void UrbanGeometry::loadBlocks(const QString& filename) {
 	blocks.load(filename);
-	VBOPmParcels::assignPlaceTypeToParcels(placeTypes, blocks.blocks);
+	VBOPmBlocks::assignPlaceTypeToBlocks(placeTypes, blocks);
+	//VBOPmParcels::assignPlaceTypeToParcels(placeTypes, blocks.blocks);
 	VBOPm::generateBlockMesh(mainWin->glWidget->vboRenderManager, blocks);
 	//blocks.generateMesh(mainWin->glWidget->vboRenderManager);
 }

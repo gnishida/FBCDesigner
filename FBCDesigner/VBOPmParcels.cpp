@@ -18,15 +18,17 @@ void setParcelsAsParks(PlaceTypesMainClass &placeTypesIn, std::vector< Block > &
 
 //void assignPlaceTypeToParcels(PlaceTypesMainClass &placeTypesIn, std::vector< Block > &blocks);
 
-bool VBOPmParcels::generateParcels(
-	PlaceTypesMainClass &placeTypesIn,
-	std::vector< Block > &blocks){
+bool VBOPmParcels::generateParcels(PlaceTypesMainClass &placeTypesIn, std::vector< Block > &blocks) {
 
 	//std::cout << "\n";
 	std::cout << "start #"<<blocks.size()<<"...";
 	for(int i=0; i<blocks.size(); ++i){	
 		//std::cout << i << " out of " << blocks.size() << "\n"; fflush(stdout);
 		subdivideBlockIntoParcels(blocks[i], placeTypesIn);
+
+		if (G::global().getInt("num_place_types") > 0) {
+			assignPlaceTypeToParcels(placeTypesIn, blocks[i]);
+		}
 	}
 	std::cout << "end...";
 
@@ -35,7 +37,7 @@ bool VBOPmParcels::generateParcels(
 	if(G::global().getInt("num_place_types")>0){
 		//std::cout << "\n Park percentage:" << parkPercentage << "\n";
 		//assign parcels place type index
-		assignPlaceTypeToParcels(placeTypesIn, blocks);
+		//assignPlaceTypeToParcels(placeTypesIn, blocks);
 		//parks
 		setParcelsAsParks(placeTypesIn, blocks);
 		//std::cout << "\n Landmark\n";
@@ -197,11 +199,33 @@ bool compareFirstPartTuple (const std::pair<float,Parcel*> &i, const std::pair<f
 }//
 
 
-void VBOPmParcels::assignPlaceTypeToParcels(PlaceTypesMainClass &placeTypesIn, std::vector< Block > &blocks)
+void VBOPmParcels::assignPlaceTypeToParcels(PlaceTypesMainClass &placeTypesIn, Block& block)
 {
 	bool useSamePlaceTypeForEntireBlock = false;
 
+
 	Block::parcelGraphVertexIter vi, viEnd;
+	for (boost::tie(vi, viEnd) = boost::vertices(block.myParcels); vi != viEnd; ++vi) {
+		if (useSamePlaceTypeForEntireBlock) {
+			block.myParcels[*vi].setMyPlaceTypeIdx(block.getMyPlaceTypeIdx());
+		} else {
+			QVector3D testPt = block.myParcels[*vi].bbox.midPt();
+
+			int validClosestPlaceTypeIdx = -1;
+			for (int k = 0; k < G::global().getInt("num_place_types"); ++k) {
+				if (placeTypesIn.myPlaceTypes[k].containsPoint(testPt)) {
+					validClosestPlaceTypeIdx = k;
+					break;
+				}					
+			}
+			block.myParcels[*vi].setMyPlaceTypeIdx(validClosestPlaceTypeIdx);
+		}
+	}
+
+
+
+
+	/*Block::parcelGraphVertexIter vi, viEnd;
 	for(int j=0; j<blocks.size(); ++j){		
 		for(boost::tie(vi, viEnd) = boost::vertices(blocks.at(j).myParcels); vi != viEnd; ++vi){
 			blocks.at(j).myParcels[*vi].setMyPlaceTypeIdx(-1);
@@ -209,7 +233,7 @@ void VBOPmParcels::assignPlaceTypeToParcels(PlaceTypesMainClass &placeTypesIn, s
 	}
 
 	//New way
-	for(int k=G::global().getInt("num_place_types")/*placeTypesIn.myPlaceTypes.size()*/-1; k>=0; --k){		
+	for(int k=G::global().getInt("num_place_types")-1; k>=0; --k){		
 		for(int j=0; j<blocks.size(); ++j){				
 			for(boost::tie(vi, viEnd) = boost::vertices(blocks.at(j).myParcels); vi != viEnd; ++vi)
 			{
@@ -225,7 +249,7 @@ void VBOPmParcels::assignPlaceTypeToParcels(PlaceTypesMainClass &placeTypesIn, s
 				}
 			}			
 		}
-	}
+	}*/
 }//
 
 void setParcelsAsParks(PlaceTypesMainClass &placeTypesIn, std::vector< Block > &blocks)

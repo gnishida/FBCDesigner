@@ -10,6 +10,7 @@
 #include <QStringList>
 #include "GraphUtil.h"
 #include "Util.h"
+#include "VBOPmParcels.h"
 
 ///////////////////////////////////////////////////////////////
 // BLOCKS
@@ -305,9 +306,11 @@ bool VBOPmBlocks::generateBlocks(
 		blockAreas.push_back(insetArea);
 
 		//assign place type to block ------------
-		int validClosestPlaceTypeIdx = -1;
+		//int validClosestPlaceTypeIdx = -1;
 
 		float distToValidClosestPlaceType = FLT_MAX;
+
+		/*
 		QVector3D testPt;
 		testPt = blocks[i].bbox.midPt();
 
@@ -317,8 +320,9 @@ bool VBOPmBlocks::generateBlocks(
 				validClosestPlaceTypeIdx = k;
 			}			
 		}
+		*/
 
-		blocks[i].setMyPlaceTypeIdx( validClosestPlaceTypeIdx );
+//		blocks[i].setMyPlaceTypeIdx( validClosestPlaceTypeIdx );
 	}
 
 	//Remove the largest block
@@ -337,6 +341,8 @@ bool VBOPmBlocks::generateBlocks(
 		blocks.blocks.erase(blocks.blocks.begin()+maxAreaIdx);
 		blockAreas.erase(blockAreas.begin()+maxAreaIdx);
 	}
+
+	assignPlaceTypeToBlocks(placeTypesIn, blocks);
 
 	// block park
 	qsrand(blocks.size());
@@ -411,3 +417,41 @@ void VBOPmBlocks::buildEmbedding(RoadGraph &roads, std::vector<std::vector<RoadE
 	}
 }
 */
+
+void VBOPmBlocks::assignPlaceTypeToBlocks(PlaceTypesMainClass &placeTypesIn, BlockSet& blocks) {
+	bool useSamePlaceTypeForEntireBlock = false;
+
+	for (int i = 0; i < blocks.size(); ++i) {
+		// assign placetype to the block
+		{
+			QVector3D testPt = blocks[i].bbox.midPt();
+
+			int validClosestPlaceTypeIdx = -1;
+			for (int k = 0; k < G::global().getInt("num_place_types"); ++k) {
+				if (placeTypesIn.myPlaceTypes[k].containsPoint(testPt)) {
+					validClosestPlaceTypeIdx = k;
+					break;
+				}
+			}
+			blocks[i].setMyPlaceTypeIdx(validClosestPlaceTypeIdx);
+		}
+
+		// assign placetype to each parcel
+		VBOPmParcels::assignPlaceTypeToParcels(placeTypesIn, blocks[i]);
+		/*
+		Block::parcelGraphVertexIter vi, viEnd;
+		for (boost::tie(vi, viEnd) = boost::vertices(blocks[i].myParcels); vi != viEnd; ++vi) {
+			QVector3D testPt = blocks[i].myParcels[*vi].bbox.midPt();
+
+			int validClosestPlaceTypeIdx = -1;
+			for (int k = 0; k < G::global().getInt("num_place_types"); ++k) {
+				if (placeTypesIn.myPlaceTypes[k].containsPoint(testPt)) {
+					validClosestPlaceTypeIdx = k;
+					break;
+				}					
+			}
+			blocks[i].myParcels[*vi].setMyPlaceTypeIdx(validClosestPlaceTypeIdx);
+		}
+		*/
+	}
+}//

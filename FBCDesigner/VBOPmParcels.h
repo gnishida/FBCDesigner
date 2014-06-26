@@ -15,5 +15,5 @@ public:
 		PlaceTypesMainClass &placeTypesIn,
 		std::vector< Block > &blocks);
 
-	static void assignPlaceTypeToParcels(PlaceTypesMainClass &placeTypesIn, std::vector< Block > &blocks);
+	static void assignPlaceTypeToParcels(PlaceTypesMainClass &placeTypesIn, Block& blocks);
 };

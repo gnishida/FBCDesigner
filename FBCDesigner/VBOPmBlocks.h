@@ -28,6 +28,7 @@ public:
 		BlockSet &blocks);
 
 	static void buildEmbedding(RoadGraph &roads, std::vector<std::vector<RoadEdgeDesc> > &embedding);
+	static void assignPlaceTypeToBlocks(PlaceTypesMainClass &placeTypesIn, BlockSet& blocks);
 };
 
 

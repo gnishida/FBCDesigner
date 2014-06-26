@@ -42,6 +42,7 @@ public:
 		myBuilding = ref.myBuilding;
 		bbox = ref.bbox;
 		myPlaceTypeIdx = ref.myPlaceTypeIdx;
+		parcelType = ref.parcelType;
 		initializeParcel();
 	}
 
@@ -54,6 +55,7 @@ public:
 		bbox = ref.bbox;
 		initializeParcel();
 		myPlaceTypeIdx = ref.myPlaceTypeIdx;
+		parcelType = ref.parcelType;
 		initializeParcel();
 		return (*this);
 	}

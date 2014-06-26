@@ -91,6 +91,8 @@ void BlockSet::saveBlock(QDomDocument& doc, QDomNode& node, Block& block) {
 	for (boost::tie(vi, viEnd) = boost::vertices(block.myParcels); vi != viEnd; ++vi) {
 		QDomElement child = doc.createElement("parcel");
 		child.setAttribute("id", id++);
+		child.setAttribute("parcelType", block.myParcels[*vi].parcelType);
+		child.setAttribute("placeTypeIdx", block.myParcels[*vi].getMyPlaceTypeIdx());
 
 		saveParcel(doc, child, block.myParcels[*vi]);
 
@@ -103,6 +105,9 @@ void BlockSet::saveBlock(QDomDocument& doc, QDomNode& node, Block& block) {
 void BlockSet::loadParcel(QDomNode& node, Block& block) {
 	Parcel parcel;
 	Polygon3D polygon;
+
+	parcel.parcelType = node.toElement().attribute("parcelType").toInt();
+	parcel.setMyPlaceTypeIdx(node.toElement().attribute("placeTypeIdx").toInt());
 
 	QDomNode child = node.firstChild();
 	while (!child.isNull()) {

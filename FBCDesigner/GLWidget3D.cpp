@@ -275,6 +275,10 @@ void GLWidget3D::drawScene(int drawMode) {
 				vboRenderManager.renderStaticGeometry(QString("3d_sidewalk"));
 				vboRenderManager.renderStaticGeometry(QString("3d_building"));
 				vboRenderManager.renderStaticGeometry(QString("3d_building_fac"));
+
+				vboRenderManager.renderStaticGeometry(QString("3d_trees"));//hatch
+				vboRenderManager.renderAllStreetElementName("tree");//LC
+				vboRenderManager.renderAllStreetElementName("streetLamp");//LC
 			}
 
 			vboRenderManager.renderStaticGeometry(QString("3d_roads"));			

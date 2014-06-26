@@ -7,6 +7,8 @@ PropertyWidget::PropertyWidget(MainWindow* mainWin) : QDockWidget("Property Widg
 
 	// set up the UI
 	ui.setupUi(this);
+	ui.comboBoxParcelType->insertItem(0, "Park");
+	ui.comboBoxParcelType->insertItem(1, "Building");
 
 	// register the event handlers
 	connect(ui.pushButtonVertexSearch, SIGNAL(clicked()), this, SLOT(searchVertex()));
@@ -108,6 +110,15 @@ void PropertyWidget::setParcel(int blockId, int parcelId, Block& block) {
 	QString str;
 	str.setNum(parcelId);
 	ui.lineEditParcelId->setText(str);
+
+	Block::parcelGraphVertexIter vi, viEnd;
+	int cnt = 0;
+	for (boost::tie(vi, viEnd) = boost::vertices(block.myParcels); vi != viEnd; ++vi, ++cnt) {
+		if (cnt == parcelId) {
+			ui.comboBoxParcelType->setCurrentIndex(block.myParcels[*vi].parcelType);
+			break;
+		}
+	}
 }
 
 void PropertyWidget::resetRoadVertex() {

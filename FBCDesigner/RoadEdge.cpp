@@ -29,7 +29,7 @@ void RoadEdge::addPoint(const QVector2D &pt) {
 }
 
 float RoadEdge::getWidth(float widthPerLane) {
-	return widthPerLane * getWidthUnit();
+	return widthPerLane * getWidthUnit() + 1.5;
 }
 
 int RoadEdge::getWidthUnit() {
