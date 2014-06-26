@@ -101,6 +101,7 @@ void MainWindow::onLoadRoads() {
 	if (filename.isEmpty()) return;
 
 	urbanGeometry->loadRoads(filename);
+	glWidget->shadow.makeShadowMap(glWidget);
 
 	glWidget->updateGL();
 }

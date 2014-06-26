@@ -195,51 +195,50 @@ void GLWidget3D::initializeGL() {
 
 	//qglClearColor(QColor(113, 112, 117));
 	qglClearColor(QColor(0, 0, 0));
-	////////////////////////////////////////
-		//---- GLEW extensions ----
-		GLenum err = glewInit();
-		if (GLEW_OK != err){// Problem: glewInit failed, something is seriously wrong.
-			qDebug() << "Error: " << glewGetErrorString(err);
-		}
-		qDebug() << "Status: Using GLEW " << glewGetString(GLEW_VERSION);
-		if (glewIsSupported("GL_VERSION_4_2"))
-			printf("Ready for OpenGL 4.2\n");
-		else {
-			printf("OpenGL 4.2 not supported\n");
-			exit(1);
-		}
-		const GLubyte* text=
-			glGetString(GL_VERSION);
-		printf("VERSION: %s\n",text);
 
-		glEnable(GL_DEPTH_TEST);
-		glDepthFunc(GL_LEQUAL);
+	//---- GLEW extensions ----
+	GLenum err = glewInit();
+	if (GLEW_OK != err){// Problem: glewInit failed, something is seriously wrong.
+		qDebug() << "Error: " << glewGetErrorString(err);
+	}
+	qDebug() << "Status: Using GLEW " << glewGetString(GLEW_VERSION);
+	if (glewIsSupported("GL_VERSION_4_2"))
+		printf("Ready for OpenGL 4.2\n");
+	else {
+		printf("OpenGL 4.2 not supported\n");
+		exit(1);
+	}
+	const GLubyte* text=
+		glGetString(GL_VERSION);
+	printf("VERSION: %s\n",text);
 
-		glEnable(GL_CULL_FACE);
-		glCullFace(GL_BACK);
-		glPointSize(10.0f);
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LEQUAL);
 
-		////////////////////////////////
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+	glPointSize(10.0f);
 
-		G::global()["3d_render_mode"]=0;
-		// init hatch tex
-		std::vector<QString> hatchFiles;
-		for(int i=0;i<=6;i++){//5 hatch + perlin + water normals
-			hatchFiles.push_back("../data/textures/LC/hatch/h"+QString::number(i)+"b.png");
-		}
-		for(int i=0;i<=0;i++){//1 win (3 channels)
-			hatchFiles.push_back("../data/textures/LC/hatch/win"+QString::number(i)+"b.png");//win0b
-		}
-		vboRenderManager.loadArrayTexture("hatching_array",hatchFiles);
+	////////////////////////////////
+	G::global()["3d_render_mode"]=0;
+	// init hatch tex
+	std::vector<QString> hatchFiles;
+	for(int i=0;i<=6;i++){//5 hatch + perlin + water normals
+		hatchFiles.push_back("../data/textures/LC/hatch/h"+QString::number(i)+"b.png");
+	}
+	for(int i=0;i<=0;i++){//1 win (3 channels)
+		hatchFiles.push_back("../data/textures/LC/hatch/win"+QString::number(i)+"b.png");//win0b
+	}
+	vboRenderManager.loadArrayTexture("hatching_array",hatchFiles);
 
-
-		///
-		vboRenderManager.init();
-		updateCamera();
-		shadow.initShadow(vboRenderManager.program,this);
-		glUniform1i(glGetUniformLocation(vboRenderManager.program,"shadowState"), 0);//SHADOW: Disable
-		glUniform1i(glGetUniformLocation(vboRenderManager.program, "terrainMode"),1);//FLAT
+	///
+	vboRenderManager.init();
+	updateCamera();
+	shadow.initShadow(vboRenderManager.program,this);
+	glUniform1i(glGetUniformLocation(vboRenderManager.program,"shadowState"), 0);//SHADOW: Disable
+	glUniform1i(glGetUniformLocation(vboRenderManager.program, "terrainMode"),1);//FLAT
 		
+	shadow.makeShadowMap(this);
 }
 
 void GLWidget3D::resizeGL(int width, int height) {

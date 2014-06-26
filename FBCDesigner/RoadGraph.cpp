@@ -61,7 +61,7 @@ void RoadGraph::adaptToTerrain(VBORenderManager* vboRenderManager) {
 }
 
 void RoadGraph::updateRoadGraph(VBORenderManager& rendManager) {
-	const int renderRoadType=2;
+	const int renderRoadType=1;
 	float deltaZ=G::global().getFloat("3d_road_deltaZ");//avoid road intersect with terrain
 	// 0 No polylines No intersection
 	// 1 Polylines Circle Intersection --> GOOD
@@ -193,7 +193,7 @@ void RoadGraph::updateRoadGraph(VBORenderManager& rendManager) {
 
 	//////////////////////////////////////////
 	// TYPE=3  Circle+Complex
-	{
+	if (renderRoadType == 3) {
 		// 2. INTERSECTIONS
 		std::vector<Vertex> intersectCirclesV;
 
