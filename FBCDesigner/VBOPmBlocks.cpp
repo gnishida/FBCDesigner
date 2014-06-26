@@ -323,6 +323,13 @@ bool VBOPmBlocks::generateBlocks(PlaceTypesMainClass &placeTypesIn, RoadGraph &r
 	assignPlaceTypeToBlocks(placeTypesIn, blocks);
 
 	// block park
+	for (int i = 0; i < blocks.size(); ++i) {
+		if (Util::genRand() < placeTypesIn.myPlaceTypes[blocks[i].getMyPlaceTypeIdx()].getFloat("park_percentage")) {
+			blocks[i].isPark = true;
+		}
+	}
+
+	/*
 	qsrand(blocks.size());
 	float park_percentage=G::global().getInt("2d_parkPer")*0.01f;//tmpPlaceType["park_percentage"]
 	int numBlockParks=park_percentage*blocks.size();
@@ -333,6 +340,7 @@ bool VBOPmBlocks::generateBlocks(PlaceTypesMainClass &placeTypesIn, RoadGraph &r
 		blockWithPark.insert(ind);
 		blocks[ind].isPark=true;
 	}
+	*/
 
 	return true;
 }//

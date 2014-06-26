@@ -7,7 +7,7 @@
         <attribute type="float" value="10" name="building_stories_mean"/>
         <attribute type="float" value="0" name="building_max_depth"/>
         <attribute type="float" value="8" name="parcel_setback_front"/>
-        <attribute type="float" value="0.1" name="park_percentage"/>
+        <attribute type="float" value="0.0" name="park_percentage"/>
         <attribute type="float" value="0" name="building_max_frontage"/>
         <attribute type="float" value="0.19" name="parcel_split_deviation"/>
         <attribute type="float" value="0" name="parcel_setback_rear"/>

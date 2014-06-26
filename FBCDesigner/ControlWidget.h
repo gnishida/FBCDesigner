@@ -17,7 +17,6 @@ public:
 
 public slots:
 	void updateTerrainLabels(int newValue);
-	void updateRender2D(int newValue);
 	void smoothTerrain();
 };
 

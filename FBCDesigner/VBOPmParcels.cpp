@@ -200,7 +200,7 @@ void setParcelsAsParks(PlaceTypesMainClass &placeTypesIn, std::vector< Block > &
 
 		srand(seedOfFirstBlock);
 
-		float parkPercentage = placeTypesIn.myPlaceTypes.at(k).getFloat("park_percentage");
+		float parkPercentage = placeTypesIn.myPlaceTypes[k].getFloat("park_percentage");
 
 		//shuffle and select first parkPercentage %
 		int numToSetAsParks = (int)(parkPercentage*( (float)(parcelPtrs.size()) ));
