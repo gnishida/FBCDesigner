@@ -1,0 +1,19 @@
+<placeTypes>
+	<placeType>
+		<attribute name="pt_parcel_area_mean" type="float" value="500" />
+		<attribute name="pt_parcel_area_deviation" type="float" value="49" />
+		<attribute name="pt_parcel_split_deviation" type="float" value="0.19" />
+		<attribute name="pt_park_percentage" type="float" value="0.1" />
+		<attribute name="pt_parcel_setback_front" type="float" value="5" />
+		<attribute name="pt_parcel_setback_sides" type="float" value="2" />
+		<attribute name="pt_building_height_mean" type="float" value="2" />
+		<attribute name="pt_building_height_deviation" type="float" value="90" />
+		<attribute name="pt_building_max_frontage" type="float" value="0" />
+		<attribute name="pt_parcel_setback_rear" type="float" value="0" />
+		<attribute name="pt_building_max_depth" type="float" value="0" />
+		<point x="-2500" y="-2500" />
+		<point x="2500" y="-2500" />
+		<point x="2500" y="2500" />
+		<point x="-2500" y="2500" />
+	</placeType>
+</placeTypes>

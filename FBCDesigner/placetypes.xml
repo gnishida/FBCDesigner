@@ -1,0 +1,36 @@
+<blocks>
+    <placeType>
+        <attribute type="float" value="2000" name="parcel_area_mean"/>
+        <attribute type="float" value="2" name="parcel_setback_sides"/>
+        <attribute type="float" value="90" name="building_stories_deviation"/>
+        <attribute type="float" value="49" name="parcel_area_deviation"/>
+        <attribute type="float" value="5" name="building_stories_mean"/>
+        <attribute type="float" value="0" name="building_max_depth"/>
+        <attribute type="float" value="5" name="parcel_setback_front"/>
+        <attribute type="float" value="0.3" name="park_percentage"/>
+        <attribute type="float" value="0" name="building_max_frontage"/>
+        <attribute type="float" value="0.19" name="parcel_split_deviation"/>
+        <attribute type="float" value="0" name="parcel_setback_rear"/>
+        <point x="-2500" y="0"/>
+        <point x="2500" y="0"/>
+        <point x="2500" y="2500"/>
+        <point x="-2500" y="2500"/>
+    </placeType>
+    <placeType>
+        <attribute type="float" value="500" name="parcel_area_mean"/>
+        <attribute type="float" value="2" name="parcel_setback_sides"/>
+        <attribute type="float" value="90" name="building_stories_deviation"/>
+        <attribute type="float" value="49" name="parcel_area_deviation"/>
+        <attribute type="float" value="2" name="building_stories_mean"/>
+        <attribute type="float" value="0" name="building_max_depth"/>
+        <attribute type="float" value="5" name="parcel_setback_front"/>
+        <attribute type="float" value="0.1" name="park_percentage"/>
+        <attribute type="float" value="0" name="building_max_frontage"/>
+        <attribute type="float" value="0.19" name="parcel_split_deviation"/>
+        <attribute type="float" value="0" name="parcel_setback_rear"/>
+        <point x="-2500" y="-2500"/>
+        <point x="2500" y="-2500"/>
+        <point x="2500" y="2500"/>
+        <point x="-2500" y="2500"/>
+    </placeType>
+</blocks>

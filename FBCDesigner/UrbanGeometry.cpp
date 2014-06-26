@@ -17,10 +17,7 @@ UrbanGeometry::UrbanGeometry(MainWindow* mainWin) {
 
 	/////////////////////////////////////////
 	// INIT PLACETYPE
-	placeTypes.myPlaceTypes.clear();
-	//std::vector<PlaceType> *placeTypesPtr = &(placeTypes.myPlaceTypes);
-	//placeTypesPtr->clear();
-
+	/*
 	PlaceType tmpPlaceType;
 	//----- place type category ----
 	tmpPlaceType["pt_category"]= 0;
@@ -54,11 +51,15 @@ UrbanGeometry::UrbanGeometry(MainWindow* mainWin) {
 	tmpPlaceType["pt_building_max_depth"] =0;
 	//-------------------
 	tmpPlaceType["pt_pt"]= QVector3D(   0.0f,    0.0f, 0.0f);
+	tmpPlaceType.area.push_back(
 
-	placeTypes.myPlaceTypes.push_back(tmpPlaceType);
+	placeTypes.myPlaceTypes.push_back(tmpPlaceType);*/
 	//placeTypesPtr->push_back(tmpPlaceType);
 
-	G::global()["num_place_types"]=1;
+	placeTypes.load("placetypes.xml");
+
+	G::global()["num_place_types"] = placeTypes.myPlaceTypes.size();
+
 
 }
 

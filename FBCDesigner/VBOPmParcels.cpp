@@ -63,9 +63,9 @@ void subdivideBlockIntoParcels(Block &block, PlaceTypesMainClass &placeTypesIn){
 	} else {
 		//start recursive subdivision
 		subdivideParcel(block, tmpParcel,
-			placeTypesIn.myPlaceTypes.at(block.getMyPlaceTypeIdx()).getFloat("pt_parcel_area_mean"),
-			placeTypesIn.myPlaceTypes.at(block.getMyPlaceTypeIdx()).getFloat("pt_parcel_area_deviation")/100.0f,
-			placeTypesIn.myPlaceTypes.at(block.getMyPlaceTypeIdx()).getFloat("pt_parcel_split_deviation"),
+			placeTypesIn.myPlaceTypes.at(block.getMyPlaceTypeIdx()).getFloat("parcel_area_mean"),
+			placeTypesIn.myPlaceTypes.at(block.getMyPlaceTypeIdx()).getFloat("parcel_area_deviation")/100.0f,
+			placeTypesIn.myPlaceTypes.at(block.getMyPlaceTypeIdx()).getFloat("parcel_split_deviation"),
 			tmpParcels);
 	}
 
@@ -213,7 +213,7 @@ void VBOPmParcels::assignPlaceTypeToParcels(PlaceTypesMainClass &placeTypesIn, B
 
 			int validClosestPlaceTypeIdx = -1;
 			for (int k = 0; k < G::global().getInt("num_place_types"); ++k) {
-				if (placeTypesIn.myPlaceTypes[k].containsPoint(testPt)) {
+				if (placeTypesIn.myPlaceTypes[k].containsPoint(QVector2D(testPt))) {
 					validClosestPlaceTypeIdx = k;
 					break;
 				}					
@@ -221,36 +221,7 @@ void VBOPmParcels::assignPlaceTypeToParcels(PlaceTypesMainClass &placeTypesIn, B
 			block.myParcels[*vi].setMyPlaceTypeIdx(validClosestPlaceTypeIdx);
 		}
 	}
-
-
-
-
-	/*Block::parcelGraphVertexIter vi, viEnd;
-	for(int j=0; j<blocks.size(); ++j){		
-		for(boost::tie(vi, viEnd) = boost::vertices(blocks.at(j).myParcels); vi != viEnd; ++vi){
-			blocks.at(j).myParcels[*vi].setMyPlaceTypeIdx(-1);
-		}
-	}
-
-	//New way
-	for(int k=G::global().getInt("num_place_types")-1; k>=0; --k){		
-		for(int j=0; j<blocks.size(); ++j){				
-			for(boost::tie(vi, viEnd) = boost::vertices(blocks.at(j).myParcels); vi != viEnd; ++vi)
-			{
-				if(useSamePlaceTypeForEntireBlock){
-					blocks.at(j).myParcels[*vi].setMyPlaceTypeIdx( blocks.at(j).getMyPlaceTypeIdx() );
-				} else {					
-					QVector3D testPt;
-					testPt = blocks.at(j).myParcels[*vi].bbox.midPt();
-
-					if( placeTypesIn.myPlaceTypes.at(k).containsPoint(testPt) ){						
-						blocks.at(j).myParcels[*vi].setMyPlaceTypeIdx( k );
-					}					
-				}
-			}			
-		}
-	}*/
-}//
+}
 
 void setParcelsAsParks(PlaceTypesMainClass &placeTypesIn, std::vector< Block > &blocks)
 {
@@ -283,7 +254,7 @@ void setParcelsAsParks(PlaceTypesMainClass &placeTypesIn, std::vector< Block > &
 
 		srand(seedOfFirstBlock);
 
-		float parkPercentage = placeTypesIn.myPlaceTypes.at(k).getFloat("pt_park_percentage");
+		float parkPercentage = placeTypesIn.myPlaceTypes.at(k).getFloat("park_percentage");
 		//std::cout << "\n Park Percentage " << parkPercentage << "\n";
 		//parkPercentage = 0.20f;
 

@@ -132,9 +132,9 @@ bool generateParcelBuildings(Block &inBlock, Parcel &inParcel, PlaceTypesMainCla
 
 	//Compute buildable area polygon
 	float bldgFootprintArea = inParcel.computeBuildableArea(
-		placeTypesIn.myPlaceTypes.at(inParcel.getMyPlaceTypeIdx()).getFloat("pt_parcel_setback_front"),
-		placeTypesIn.myPlaceTypes.at(inParcel.getMyPlaceTypeIdx()).getFloat("pt_parcel_setback_rear"),
-		placeTypesIn.myPlaceTypes.at(inParcel.getMyPlaceTypeIdx()).getFloat("pt_parcel_setback_sides"),
+		placeTypesIn.myPlaceTypes.at(inParcel.getMyPlaceTypeIdx()).getFloat("parcel_setback_front"),
+		placeTypesIn.myPlaceTypes.at(inParcel.getMyPlaceTypeIdx()).getFloat("parcel_setback_rear"),
+		placeTypesIn.myPlaceTypes.at(inParcel.getMyPlaceTypeIdx()).getFloat("parcel_setback_sides"),
 		frontEdges, rearEdges, sideEdges,
 		inParcel.parcelBuildableAreaContour.contour);
 	//printf("parcelBuilsable %d\n",inParcel.parcelBuildableAreaContour.contour.size());
@@ -145,8 +145,8 @@ bool generateParcelBuildings(Block &inBlock, Parcel &inParcel, PlaceTypesMainCla
 
 	//compute building footprint polygon
 	if(!computeBuildingFootprintPolygon(
-		placeTypesIn.myPlaceTypes.at(inParcel.getMyPlaceTypeIdx()).getFloat("pt_building_max_frontage"),
-		placeTypesIn.myPlaceTypes.at(inParcel.getMyPlaceTypeIdx()).getFloat("pt_building_max_depth"),
+		placeTypesIn.myPlaceTypes.at(inParcel.getMyPlaceTypeIdx()).getFloat("building_max_frontage"),
+		placeTypesIn.myPlaceTypes.at(inParcel.getMyPlaceTypeIdx()).getFloat("building_max_depth"),
 		frontEdges, rearEdges, sideEdges,
 		inParcel.parcelBuildableAreaContour.contour,
 		inParcel.myBuilding.buildingFootprint.contour))
@@ -157,12 +157,12 @@ bool generateParcelBuildings(Block &inBlock, Parcel &inParcel, PlaceTypesMainCla
 
 	// stoties
 	float heightDev = 
-		(placeTypesIn.myPlaceTypes.at(inParcel.getMyPlaceTypeIdx()).getFloat("pt_building_height_deviation")/100.0f)*
+		(placeTypesIn.myPlaceTypes.at(inParcel.getMyPlaceTypeIdx()).getFloat("building_stories_deviation")/100.0f)*
 		(((float)qrand()/RAND_MAX)*2.0f-1.0f)* //LC::misctools::genRand(-1.0f,1.0f)*
-		placeTypesIn.myPlaceTypes.at(inParcel.getMyPlaceTypeIdx()).getFloat("pt_building_height_mean");
+		placeTypesIn.myPlaceTypes.at(inParcel.getMyPlaceTypeIdx()).getFloat("building_stories_mean");
 
 	int bldgNumStories = (int)
-		placeTypesIn.myPlaceTypes.at(inParcel.getMyPlaceTypeIdx()).getFloat("pt_building_height_mean") +
+		placeTypesIn.myPlaceTypes.at(inParcel.getMyPlaceTypeIdx()).getFloat("building_stories_mean") +
 		heightDev;
 
 	//Set building

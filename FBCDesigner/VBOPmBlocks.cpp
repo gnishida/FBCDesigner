@@ -324,7 +324,7 @@ bool VBOPmBlocks::generateBlocks(PlaceTypesMainClass &placeTypesIn, RoadGraph &r
 
 	// block park
 	qsrand(blocks.size());
-	float park_percentage=G::global().getInt("2d_parkPer")*0.01f;//tmpPlaceType["pt_park_percentage"]
+	float park_percentage=G::global().getInt("2d_parkPer")*0.01f;//tmpPlaceType["park_percentage"]
 	int numBlockParks=park_percentage*blocks.size();
 	QSet<int> blockWithPark;
 
@@ -404,7 +404,7 @@ void VBOPmBlocks::assignPlaceTypeToBlocks(PlaceTypesMainClass &placeTypesIn, Blo
 
 			int validClosestPlaceTypeIdx = -1;
 			for (int k = 0; k < G::global().getInt("num_place_types"); ++k) {
-				if (placeTypesIn.myPlaceTypes[k].containsPoint(testPt)) {
+				if (placeTypesIn.myPlaceTypes[k].containsPoint(QVector2D(testPt))) {
 					validClosestPlaceTypeIdx = k;
 					break;
 				}

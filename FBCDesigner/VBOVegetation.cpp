@@ -137,7 +137,7 @@ bool VBOVegetation::generateVegetation(VBORenderManager& rendManager,
 		srand(blocks.at(i).randSeed);
 
 
-		//blockSetback = placeTypesIn.myPlaceTypes.at(0).getFloat("pt_parcel_setback_front");
+		//blockSetback = placeTypesIn.myPlaceTypes.at(0).getFloat("parcel_setback_front");
 
 
 		//blockSetback = 2.0f;
