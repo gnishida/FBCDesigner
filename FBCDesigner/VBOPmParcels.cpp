@@ -148,7 +148,7 @@ bool subdivideParcel(Block &block, Parcel parcel, float areaMean, float areaStd,
 
 	if( parcel.parcelContour.splitMeWithPolyline(splitLine, pgon1.contour, pgon2.contour) ){
 
-		if(true ){//|| LC::misctools::Global::global()->force_street_access == true){
+		if(false ){//|| LC::misctools::Global::global()->force_street_access == true){
 			//CHECK FOR STREET ACCESS
 			//check if parcels have street access
 			if(

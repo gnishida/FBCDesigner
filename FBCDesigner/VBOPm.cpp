@@ -199,9 +199,13 @@ void VBOPm::generateBlockMesh(VBORenderManager& rendManager, BlockSet& blocks) {
 		{
 			std::vector<Vertex> vert;
 
-			QVector3D color(0.6f, 0.6f, 0.6f);
+			QVector3D color;
 			if (i == blocks.selectedBlockIndex) {
 				color = QVector3D(1.0f, 1.0f, 1.0f);
+			} else if (blocks[i].isPark) {
+				color = QVector3D(0.8f, 0.8f, 0.0f);
+			} else {
+				color = QVector3D(0.0f, 0.5f, 0.8f);
 			}
 
 			for(int sN=0;sN<blocks[i].blockContour.contour.size();sN++){
@@ -222,10 +226,14 @@ void VBOPm::generateBlockMesh(VBORenderManager& rendManager, BlockSet& blocks) {
 			int cnt = 0;
 			for (boost::tie(vi, viEnd) = boost::vertices(blocks[i].myParcels); vi != viEnd; ++vi, ++cnt) {
 				std::vector<Vertex> vert;
-				QVector3D color(0.6f, 0.6f, 0.6f);
+				QVector3D color;
 
 				if (i == blocks.selectedBlockIndex && cnt == blocks.selectedParcelIndex) {
 					color = QVector3D(1.0f, 1.0f, 1.0f);
+				} else if (blocks[i].myParcels[*vi].parcelType == PAR_PARK) {
+					color = QVector3D(0.8f, 0.8f, 0.0f);
+				} else {
+					color = QVector3D(0.0f, 0.5f, 0.8f);
 				}
 
 				for (int j = 0; j < blocks[i].myParcels[*vi].parcelContour.contour.size(); ++j) {
