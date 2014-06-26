@@ -63,7 +63,6 @@ ModelSpec addStreetLap( QVector3D pos,QVector3D contourDir){
 	return stEl;
 }
 
-
 bool VBOVegetation::generateVegetation(VBORenderManager& rendManager,
 		PlaceTypesMainClass &placeTypesIn,std::vector< Block > &blocks){
 
@@ -122,8 +121,6 @@ bool VBOVegetation::generateVegetation(VBORenderManager& rendManager,
 			}
 		}
 	}
-		
-
 
 	//generate trees along streets
 	float blockSetback;
@@ -132,57 +129,47 @@ bool VBOVegetation::generateVegetation(VBORenderManager& rendManager,
 	float segmentLength;
 	int numTreesAlongSegment;
 	std::vector <QVector3D> *contourPtr;
-	for(int i=0; i<blocks.size(); ++i){
 
+	for (int i = 0; i < blocks.size(); ++i) {
 		srand(blocks.at(i).randSeed);
 
+		contourPtr = &(blocks.at(i).blockContour.contour);
 
-		//blockSetback = placeTypesIn.myPlaceTypes.at(0).getFloat("parcel_setback_front");
+		for (int j = 0; j < contourPtr->size(); ++j) {
+			ptThis = contourPtr->at(j);
+			ptNext = contourPtr->at((j+1)%contourPtr->size());
+			segmentVector = ptNext - ptThis;
+			segmentLength = segmentVector.length();
+			segmentVector/=segmentLength;
 
+			QVector3D perpV=QVector3D::crossProduct(segmentVector,QVector3D(0,0,1));
+			ptThis=ptThis-perpV*2.0f;//5.5f;
 
-		//blockSetback = 2.0f;
-
-		//if(blockSetback >= 2.0f){ //add trees along road only if there's enough space
-
-			contourPtr = &(blocks.at(i).blockContour.contour);
-
-			for(int j=0; j<contourPtr->size(); ++j){
-				ptThis = contourPtr->at(j);
-				ptNext = contourPtr->at((j+1)%contourPtr->size());
-				segmentVector = ptNext - ptThis;
-				segmentLength = segmentVector.length();
-				segmentVector/=segmentLength;
-
-				QVector3D perpV=QVector3D::crossProduct(segmentVector,QVector3D(0,0,1));
-				ptThis=ptThis-perpV*2.0f;//5.5f;
-
-				// Trees
-				float distFromSegmentStart = 0.0f;
-				while(true){					
-					distFromSegmentStart += distanceBetweenTrees*(0.8f+(0.4f*qrand()/RAND_MAX));
-					if(distFromSegmentStart > segmentLength){
-						break;
-					}
-					pos = ptThis + segmentVector*distFromSegmentStart;
-					pos.setZ(1.0f);//pavement at 1.5f
-					rendManager.addStreetElementModel("tree",addTree(pos));
-
+			// Trees
+			float distFromSegmentStart = 0.0f;
+			while(true){					
+				distFromSegmentStart += distanceBetweenTrees*(0.8f+(0.4f*qrand()/RAND_MAX));
+				if(distFromSegmentStart > segmentLength){
+					break;
 				}
-				// StreetLamps
-				int numStreetLamps=ceil((segmentLength-1.0f)/distanceBetweenStreetLamps);//-1.0 to leave space at the beginning
-				if(numStreetLamps<2)numStreetLamps=2;
-				float distanceBetweenPosts=(segmentLength-1.0f)/(numStreetLamps-1);
-				for(int i=0;i<numStreetLamps-1;i++){//not in the end (avoid two in the corner)
-					pos = ptThis + segmentVector*(0.5f+i*distanceBetweenPosts);
-
-					//blocks[i].streetElementInfo.push_back(addStreetLap(pos,segmentVector));
-					rendManager.addStreetElementModel("streetLamp",addStreetLap(pos,segmentVector));
-				}
+				pos = ptThis + segmentVector*distFromSegmentStart;
+				pos.setZ(1.0f);//pavement at 1.5f
+				rendManager.addStreetElementModel("tree",addTree(pos));
 
 			}
-		//}
+			// StreetLamps
+			int numStreetLamps=ceil((segmentLength-1.0f)/distanceBetweenStreetLamps);//-1.0 to leave space at the beginning
+			if(numStreetLamps<2)numStreetLamps=2;
+			float distanceBetweenPosts=(segmentLength-1.0f)/(numStreetLamps-1);
+			for (int i = 0; i < numStreetLamps - 1; i++) { //not in the end (avoid two in the corner)
+				pos = ptThis + segmentVector*(0.5f+i*distanceBetweenPosts);
+
+				//blocks[i].streetElementInfo.push_back(addStreetLap(pos,segmentVector));
+				rendManager.addStreetElementModel("streetLamp",addStreetLap(pos,segmentVector));
+			}
+		}
 	}
 
 	std::cout << "\t" << tim.elapsed() << " ms\n";
 	return true;
-}//
+}

@@ -69,27 +69,23 @@ bool VBOPm::generateBlocks(VBORenderManager& rendManager,RoadGraph &roadGraph, B
 
 	//////////////////////////////////////////////
 	// 1. BLOCKS
-	//std::vector< Block > blocks;
-	if(VBOPmBlocks::generateBlocks(placeTypes,roadGraph,blocks)==false){
+	if (!VBOPmBlocks::generateBlocks(placeTypes,roadGraph,blocks)) {
 		printf("ERROR: generateBlocks\n");
 		return false;
 	}
 	printf(">>Num Blocks %d\n",blocks.blocks.size());
 	
-	//blocks.generateMesh(rendManager);
 	return true;
-}//
+}
 
 
 bool VBOPm::generateParcels(VBORenderManager& rendManager, BlockSet& blocks, PlaceTypesMainClass& placeTypes) {
-	if(VBOPmParcels::generateParcels(placeTypes, blocks.blocks)==false){
+	if (!VBOPmParcels::generateParcels(placeTypes, blocks.blocks)) {
 		printf("ERROR: generateParcels\n");
 		return false;
 	}
 	printf(">>Parcels were generated.\n");
-	
-	//generateBlockMesh(rendManager, blocks);
-	
+		
 	return true;
 }
 
@@ -98,7 +94,7 @@ bool VBOPm::generateBuildings(VBORenderManager& rendManager, BlockSet& blocks, P
 
 	//////////////////////////////////////////////
 	// 4. BUILDINGS
-	if(VBOPmBuildings::generateBuildings(placeTypes, blocks.blocks)==false){
+	if (!VBOPmBuildings::generateBuildings(placeTypes, blocks.blocks)) {
 		printf("ERROR: generateBuildings\n");
 		return false;
 	}
@@ -130,7 +126,7 @@ bool VBOPm::generateVegetation(VBORenderManager& rendManager, BlockSet& blocks, 
 }
 
 void VBOPm::generateBlockMesh(VBORenderManager& rendManager, BlockSet& blocks) {
-	if(initializedLC==false){//&&G::global().getInt("3d_render_mode")==0){
+	if (!initializedLC) {
 		initLC();//init LC textures
 	}
 

@@ -55,6 +55,8 @@ public:
 	PlaceTypesMainClass() {}
 	~PlaceTypesMainClass() {}
 
+	size_t size() const { return myPlaceTypes.size(); }
+
 	void save(const QString& filename);
 	void load(const QString& filename );
 };

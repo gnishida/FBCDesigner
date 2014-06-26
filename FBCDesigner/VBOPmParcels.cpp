@@ -8,50 +8,34 @@
 
 
 void subdivideBlockIntoParcels(Block &block, PlaceTypesMainClass &placeTypesIn);
-
-bool subdivideParcel(Block &block, Parcel parcel, float areaMean, float areaVar, float splitIrregularity,
-	std::vector<Parcel> &outParcels); 
-
-
+bool subdivideParcel(Block &block, Parcel parcel, float areaMean, float areaVar, float splitIrregularity, std::vector<Parcel> &outParcels); 
 void setParcelsAsParks(PlaceTypesMainClass &placeTypesIn, std::vector< Block > &blocks);
 
-
-//void assignPlaceTypeToParcels(PlaceTypesMainClass &placeTypesIn, std::vector< Block > &blocks);
-
 bool VBOPmParcels::generateParcels(PlaceTypesMainClass &placeTypesIn, std::vector< Block > &blocks) {
-
-	//std::cout << "\n";
 	std::cout << "start #"<<blocks.size()<<"...";
-	for(int i=0; i<blocks.size(); ++i){	
-		//std::cout << i << " out of " << blocks.size() << "\n"; fflush(stdout);
+	for (int i = 0; i < blocks.size(); ++i) {
 		subdivideBlockIntoParcels(blocks[i], placeTypesIn);
 
-		if (G::global().getInt("num_place_types") > 0) {
+		if (placeTypesIn.size() > 0) {
 			assignPlaceTypeToParcels(placeTypesIn, blocks[i]);
 		}
 	}
 	std::cout << "end...";
 
-	//once all parcels have been generated, randomly select a percentage of them
-	//	and set their land use to parks
-	if(G::global().getInt("num_place_types")>0){
-		//std::cout << "\n Park percentage:" << parkPercentage << "\n";
-		//assign parcels place type index
-		//assignPlaceTypeToParcels(placeTypesIn, blocks);
-		//parks
+	if (placeTypesIn.size() > 0) {
 		setParcelsAsParks(placeTypesIn, blocks);
-		//std::cout << "\n Landmark\n";
 	}
-	return true;
-}//
 
-void subdivideBlockIntoParcels(Block &block, PlaceTypesMainClass &placeTypesIn){	
-	//std::cout << "h0 ";	std::fflush(stdout);
+	return true;
+}
+
+void subdivideBlockIntoParcels(Block &block, PlaceTypesMainClass &placeTypesIn) {
 	srand(block.randSeed);
 	std::vector<Parcel> tmpParcels;
 
 	//Empty parcels in block
 	block.myParcels.clear();
+
 	//Make the initial parcel of the block be the block itself
 	//Parcel
 	Parcel tmpParcel;
@@ -146,36 +130,7 @@ bool subdivideParcel(Block &block, Parcel parcel, float areaMean, float areaStd,
 
 	float kDistTol = 0.01f;
 
-	if( parcel.parcelContour.splitMeWithPolyline(splitLine, pgon1.contour, pgon2.contour) ){
-
-		if(false ){//|| LC::misctools::Global::global()->force_street_access == true){
-			//CHECK FOR STREET ACCESS
-			//check if parcels have street access
-			if(
-				//check if new contours of pgon1 and pgon2 "touch" the boundary of the block (
-				Polygon3D::distanceXYfromContourAVerticesToContourB ( pgon1.contour,
-				block.blockContour.contour ) > kDistTol 
-				||
-				Polygon3D::distanceXYfromContourAVerticesToContourB ( pgon2.contour,
-				block.blockContour.contour ) > kDistTol  )
-			{
-				splitLine.clear();
-				pgon1.contour.clear();
-				pgon2.contour.clear();			
-
-				//if they don't have street access, rotate split line by 90 degrees and recompute
-				dirVectorOrthogonal.setX( -dirVector.y() );
-				dirVectorOrthogonal.setY(  dirVector.x() );
-
-				slEndPoint = midPt + 10000.0f*dirVectorOrthogonal;
-				splitLine.push_back(slEndPoint);
-				slEndPoint = midPt - 10000.0f*dirVectorOrthogonal;
-				splitLine.push_back(slEndPoint);			
-
-				parcel.parcelContour.splitMeWithPolyline(splitLine, pgon1.contour, pgon2.contour);
-			}
-		}
-
+	if (parcel.parcelContour.splitMeWithPolyline(splitLine, pgon1.contour, pgon2.contour)) {
 		Parcel parcel1;
 		Parcel parcel2;
 
@@ -185,25 +140,21 @@ bool subdivideParcel(Block &block, Parcel parcel, float areaMean, float areaStd,
 		//call recursive function for both parcels
 		subdivideParcel(block, parcel1, areaMean, areaStd, splitIrregularity, outParcels);
 		subdivideParcel(block, parcel2, areaMean, areaStd, splitIrregularity, outParcels);
-
-
 	} else {
 		return false;
 	}
 
 	return true;
-}//
+}
 
 bool compareFirstPartTuple (const std::pair<float,Parcel*> &i, const std::pair<float,Parcel*> &j) {
 	return (i.first<j.first);
-}//
+}
 
 
-void VBOPmParcels::assignPlaceTypeToParcels(PlaceTypesMainClass &placeTypesIn, Block& block)
-{
+void VBOPmParcels::assignPlaceTypeToParcels(PlaceTypesMainClass &placeTypesIn, Block& block) {
 	bool useSamePlaceTypeForEntireBlock = false;
-
-
+	
 	Block::parcelGraphVertexIter vi, viEnd;
 	for (boost::tie(vi, viEnd) = boost::vertices(block.myParcels); vi != viEnd; ++vi) {
 		if (useSamePlaceTypeForEntireBlock) {
@@ -212,7 +163,7 @@ void VBOPmParcels::assignPlaceTypeToParcels(PlaceTypesMainClass &placeTypesIn, B
 			QVector3D testPt = block.myParcels[*vi].bbox.midPt();
 
 			int validClosestPlaceTypeIdx = -1;
-			for (int k = 0; k < G::global().getInt("num_place_types"); ++k) {
+			for (int k = 0; k < placeTypesIn.size(); ++k) {
 				if (placeTypesIn.myPlaceTypes[k].containsPoint(QVector2D(testPt))) {
 					validClosestPlaceTypeIdx = k;
 					break;
@@ -223,10 +174,8 @@ void VBOPmParcels::assignPlaceTypeToParcels(PlaceTypesMainClass &placeTypesIn, B
 	}
 }
 
-void setParcelsAsParks(PlaceTypesMainClass &placeTypesIn, std::vector< Block > &blocks)
-{
-	for(int k=0; k<G::global().getInt("num_place_types")/*placeTypesIn.myPlaceTypes.size()*/; ++k){
-
+void setParcelsAsParks(PlaceTypesMainClass &placeTypesIn, std::vector< Block > &blocks) {
+	for (int k = 0; k < placeTypesIn.size(); ++k) {
 		std::vector<Parcel*> parcelPtrs;
 
 		bool isFirst = true;
@@ -235,11 +184,8 @@ void setParcelsAsParks(PlaceTypesMainClass &placeTypesIn, std::vector< Block > &
 		//get all the parcels of that place type in an array
 		for(int j=0; j<blocks.size(); ++j){			
 			Block::parcelGraphVertexIter vi, viEnd;
-			for(boost::tie(vi, viEnd) = boost::vertices(blocks.at(j).myParcels); vi != viEnd; ++vi)
-			{
-				if( blocks.at(j).myParcels[*vi].getMyPlaceTypeIdx() == k ){
-
-
+			for (boost::tie(vi, viEnd) = boost::vertices(blocks.at(j).myParcels); vi != viEnd; ++vi) {
+				if (blocks.at(j).myParcels[*vi].getMyPlaceTypeIdx() == k) {
 					if(isFirst){
 						seedOfFirstBlock = blocks.at(j).randSeed;
 						isFirst = false;
@@ -255,8 +201,6 @@ void setParcelsAsParks(PlaceTypesMainClass &placeTypesIn, std::vector< Block > &
 		srand(seedOfFirstBlock);
 
 		float parkPercentage = placeTypesIn.myPlaceTypes.at(k).getFloat("park_percentage");
-		//std::cout << "\n Park Percentage " << parkPercentage << "\n";
-		//parkPercentage = 0.20f;
 
 		//shuffle and select first parkPercentage %
 		int numToSetAsParks = (int)(parkPercentage*( (float)(parcelPtrs.size()) ));
@@ -267,4 +211,4 @@ void setParcelsAsParks(PlaceTypesMainClass &placeTypesIn, std::vector< Block > &
 			(parcelPtrs.at(i))->parcelType=PAR_PARK;
 		}
 	}
-}//
+}

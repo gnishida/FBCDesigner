@@ -362,38 +362,6 @@ void VBOPmBlocks::buildEmbedding(RoadGraph &roads, std::vector<std::vector<RoadE
 	std::cout << "embedding was built. Elapsed time: " << (double)(end-start)/CLOCKS_PER_SEC << "[sec]" << std::endl;
 }
 
-/*
-void VBOPmBlocks::buildEmbedding(RoadGraph &roads, std::vector<std::vector<RoadEdgeDesc> > &embedding) {
-	RoadVertexIter vi, vend;
-	for (boost::tie(vi, vend) = boost::vertices(roads.graph); vi != vend; ++vi) {
-		if (*vi == 1090 || *vi == 1089) {
-			int xxx = 0;
-		}
-
-		std::map<float, RoadEdgeDesc> edges;
-
-		RoadOutEdgeIter ei, eend;
-		for (boost::tie(ei, eend) = boost::out_edges(*vi, roads.graph); ei != eend; ++ei) {
-			Polyline2D polyline = GraphUtil::orderPolyLine(roads, *ei, *vi);
-			//QVector2D vec = roads.graph[*ei]->polyline[1] - roads.graph[*ei]->polyline[0];
-			if (polyline.size() <= 1) {
-				int xxx = 0;
-			}
-			QVector2D vec = polyline[1] - polyline[0];
-			//QVector2D vec = roads.graph[*ei]->polyline.back() - roads.graph[*ei]->polyline.front();
-			edges[-atan2f(vec.y(), vec.x())] = *ei;
-		}
-
-		std::vector<RoadEdgeDesc> edge_descs;
-		for (std::map<float, RoadEdgeDesc>::iterator it = edges.begin(); it != edges.end(); ++it) {
-			edge_descs.push_back(it->second);
-		}
-
-		embedding.push_back(edge_descs);
-	}
-}
-*/
-
 void VBOPmBlocks::assignPlaceTypeToBlocks(PlaceTypesMainClass &placeTypesIn, BlockSet& blocks) {
 	bool useSamePlaceTypeForEntireBlock = false;
 
@@ -403,7 +371,7 @@ void VBOPmBlocks::assignPlaceTypeToBlocks(PlaceTypesMainClass &placeTypesIn, Blo
 			QVector3D testPt = blocks[i].bbox.midPt();
 
 			int validClosestPlaceTypeIdx = -1;
-			for (int k = 0; k < G::global().getInt("num_place_types"); ++k) {
+			for (int k = 0; k < placeTypesIn.size(); ++k) {
 				if (placeTypesIn.myPlaceTypes[k].containsPoint(QVector2D(testPt))) {
 					validClosestPlaceTypeIdx = k;
 					break;
@@ -414,20 +382,5 @@ void VBOPmBlocks::assignPlaceTypeToBlocks(PlaceTypesMainClass &placeTypesIn, Blo
 
 		// assign placetype to each parcel
 		VBOPmParcels::assignPlaceTypeToParcels(placeTypesIn, blocks[i]);
-		/*
-		Block::parcelGraphVertexIter vi, viEnd;
-		for (boost::tie(vi, viEnd) = boost::vertices(blocks[i].myParcels); vi != viEnd; ++vi) {
-			QVector3D testPt = blocks[i].myParcels[*vi].bbox.midPt();
-
-			int validClosestPlaceTypeIdx = -1;
-			for (int k = 0; k < G::global().getInt("num_place_types"); ++k) {
-				if (placeTypesIn.myPlaceTypes[k].containsPoint(testPt)) {
-					validClosestPlaceTypeIdx = k;
-					break;
-				}					
-			}
-			blocks[i].myParcels[*vi].setMyPlaceTypeIdx(validClosestPlaceTypeIdx);
-		}
-		*/
 	}
-}//
+}
