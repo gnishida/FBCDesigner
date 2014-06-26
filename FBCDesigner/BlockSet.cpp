@@ -70,6 +70,8 @@ void BlockSet::loadBlock(QDomNode& node, Block& block) {
 
 		child = child.nextSibling();
 	}
+
+	block.computeMyBBox3D();
 }
 
 void BlockSet::saveBlock(QDomDocument& doc, QDomNode& node, Block& block) {
@@ -150,19 +152,12 @@ int BlockSet::selectBlock(const QVector2D& pos) {
 		polygon.correct();
 
 		if (polygon.contains(pos)) {
-			if (selectedBlockIndex != i) {
-				selectedBlockIndex = i;
-				//modified = true;
-			}
-
+			selectedBlockIndex = i;
 			return i;
 		}
 	}
 
-	if (selectedBlockIndex != -1) {
-		selectedBlockIndex = -1;
-		//modified = true;
-	}
+	selectedBlockIndex = -1;
 
 	return -1;
 }
@@ -170,8 +165,7 @@ int BlockSet::selectBlock(const QVector2D& pos) {
 std::pair<int, int> BlockSet::selectParcel(const QVector2D& pos) {
 	for (int i = 0; i < blocks.size(); ++i) {
 		Block::parcelGraphVertexIter vi, viEnd;
-		int id = 0;
-		for (boost::tie(vi, viEnd) = boost::vertices(blocks[i].myParcels); vi != viEnd; ++vi, ++id) {
+		for (boost::tie(vi, viEnd) = boost::vertices(blocks[i].myParcels); vi != viEnd; ++vi) {
 			Polygon2D polygon;
 			for (int j = 0; j < blocks[i].myParcels[*vi].parcelContour.contour.size(); ++j) {
 				polygon.push_back(QVector2D(blocks[i].myParcels[*vi].parcelContour[j]));
@@ -179,22 +173,16 @@ std::pair<int, int> BlockSet::selectParcel(const QVector2D& pos) {
 			polygon.correct();
 
 			if (polygon.contains(pos)) {
-				if (selectedBlockIndex != i && selectedParcelIndex != id) {
-					selectedBlockIndex = i;
-					selectedParcelIndex = id;
-					//modified = true;
-				}
+				selectedBlockIndex = i;
+				selectedParcelIndex = *vi;
 
 				return std::make_pair(selectedBlockIndex, selectedParcelIndex);
 			}
 		}
 	}
 
-	if (selectedBlockIndex != -1) {
-		selectedBlockIndex = -1;
-		selectedParcelIndex = -1;
-		//modified = true;
-	}
+	selectedBlockIndex = -1;
+	selectedParcelIndex = -1;
 
 	return std::make_pair(-1, -1);
 }

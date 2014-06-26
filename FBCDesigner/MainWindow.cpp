@@ -229,11 +229,13 @@ void MainWindow::onGenerateParcels() {
 
 void MainWindow::onGenerateBuildings() {
 	VBOPm::generateBuildings(glWidget->vboRenderManager, urbanGeometry->blocks, urbanGeometry->placeTypes);
+	glWidget->shadow.makeShadowMap(glWidget);
 	glWidget->updateGL();
 }
 
 void MainWindow::onGenerateVegetation() {
 	VBOPm::generateVegetation(glWidget->vboRenderManager, urbanGeometry->blocks, urbanGeometry->placeTypes);
+	glWidget->shadow.makeShadowMap(glWidget);
 	glWidget->updateGL();
 }
 
