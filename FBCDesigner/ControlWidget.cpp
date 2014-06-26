@@ -47,14 +47,6 @@ void ControlWidget::updateRender2D(int newValue){
 	}
 }//
 
-void ControlWidget::changeTerrainShader(int){
-	G::global()["shader2D"] = false;
-	printf("terrainMode %d\n",1);
-	//mainWin->glWidget->vboRenderManager.changeTerrainShader(1);//could have used !shader2D
-	mainWin->urbanGeometry->adaptToTerrain();
-	mainWin->glWidget->updateGL();
-}//
-
 void ControlWidget::smoothTerrain(){
 	mainWin->glWidget->vboRenderManager.vboTerrain.smoothTerrain();
 	mainWin->urbanGeometry->adaptToTerrain();

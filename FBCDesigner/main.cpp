@@ -2,14 +2,6 @@
 #include <QtGui/QApplication>
 
 int main(int argc, char *argv[]) {
-	G::global()["showTerrain"] = true;
-	G::global()["showRoads"] = true;
-	G::global()["showBlocks"] = true;
-	G::global()["showParcels"] = true;
-	G::global()["showBuildings"] = true;
-	G::global()["showParcels"] = true;
-	G::global()["showTrees"] = true;
-
 	G::global()["parcelAreaMean"] = 3600;
 	G::global()["parcelAreaDeviation"] = 49;
 	G::global()["parcelSplitDeviation"] = 0.19;
@@ -25,12 +17,7 @@ int main(int argc, char *argv[]) {
 	G::global()["minBuildingArea"] = 10.0f;
 
 
-
-	G::global()["seaLevelForAvenue"] = 0.1f;
-	G::global()["seaLevelForStreet"] = 48.9f;
-
 	G::global()["MAX_Z"] = 4500.0f;
-	G::global()["shader2D"] = false;
 
 	G::global()["3d_road_deltaZ"]=1.0f;
 
