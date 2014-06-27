@@ -211,6 +211,12 @@
     <ClCompile Include="VBOParcel.cpp">
       <Filter>Main Files</Filter>
     </ClCompile>
+    <ClCompile Include="ColorTable.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="HeatMapColorTable.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="MainWindow.ui">
@@ -397,6 +403,12 @@
     </ClInclude>
     <ClInclude Include="VBOParcel.h">
       <Filter>Main Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorTable.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="HeatMapColorTable.h">
+      <Filter>common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

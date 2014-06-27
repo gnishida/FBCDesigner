@@ -30,7 +30,7 @@ public:
 	static bool generateBuildings(VBORenderManager& rendManager, BlockSet& blocks, PlaceTypesMainClass& placeTypes);
 	static bool generateVegetation(VBORenderManager& rendManager, BlockSet& blocks, PlaceTypesMainClass& placeTypes);
 	static void generateBlockMesh(VBORenderManager& rendManager, BlockSet& block);
-
+	static void generatePopulationJobDistribution(BlockSet& blocks);
 
 private:
 

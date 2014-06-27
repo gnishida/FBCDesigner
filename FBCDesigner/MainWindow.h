@@ -14,7 +14,7 @@ class MainWindow : public QMainWindow
 	Q_OBJECT
 
 public:
-	static enum { MODE_DEFAULT = 0, MODE_BLOCK, MODE_PARCEL };
+	static enum { MODE_DEFAULT = 0, MODE_BLOCK, MODE_PARCEL, MODE_POPULATION, MODE_JOB };
 
 public:
 	Ui::MainWindow ui;

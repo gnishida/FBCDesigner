@@ -71,9 +71,6 @@ void GLWidget3D::mousePressEvent(QMouseEvent *event) {
 				if (event->buttons() & Qt::RightButton) {
 					change = -change;
 				}
-				if (event->buttons() & Qt::MiddleButton) {
-					change=FLT_MAX;//hack: flat terrain
-				}
 				//mainWin->urbanGeometry->vboRenderManager->addValue(pos.x(), pos.y(), change);
 				xM=1.0f-(vboRenderManager.side/2.0f-pos.x())/vboRenderManager.side;
 				yM=1.0f-(vboRenderManager.side/2.0f-pos.y())/vboRenderManager.side;
@@ -262,7 +259,11 @@ void GLWidget3D::drawScene(int drawMode) {
 
 			glLineWidth(10);
 	
-			if (mainWin->mode == MainWindow::MODE_BLOCK) {
+			if (mainWin->mode == MainWindow::MODE_POPULATION) {
+				vboRenderManager.renderStaticGeometry(QString("population"));
+			} else if (mainWin->mode == MainWindow::MODE_JOB) {
+				vboRenderManager.renderStaticGeometry(QString("job"));
+			} else if (mainWin->mode == MainWindow::MODE_BLOCK) {
 				vboRenderManager.renderStaticGeometry(QString("3d_block"));
 			} else if (mainWin->mode == MainWindow::MODE_PARCEL) {
 				vboRenderManager.renderStaticGeometry(QString("3d_parcel"));			

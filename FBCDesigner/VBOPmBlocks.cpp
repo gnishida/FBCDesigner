@@ -272,10 +272,6 @@ bool VBOPmBlocks::generateBlocks(PlaceTypesMainClass &placeTypesIn, RoadGraph &r
 
 	Loop3D blockContourInset;
 	for (int i = 0; i < blocks.size(); ++i) {
-		std::cout << "block: " << i << std::endl;
-
-		//assign default place type
-		blocks[i].setMyPlaceTypeIdx(-1);
 		//Reorient faces
 		if (Polygon3D::reorientFace(blocks[i].blockContour.contour)) {
 			std::reverse(blocks[i].blockContourRoadsWidths.begin(), blocks[i].blockContourRoadsWidths.end() - 1);

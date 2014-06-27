@@ -64,7 +64,7 @@ public:
 	/**
 	* Constructor.
 	**/
-	Block() : isPark(false) {}
+	Block() : myPlaceTypeIdx(-1), isPark(false) {}
 
 	/**
 	* Destructor.
