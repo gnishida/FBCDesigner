@@ -135,6 +135,34 @@ bool VBOVegetation::generateVegetation(VBORenderManager& rendManager,
 
 		contourPtr = &(blocks.at(i).blockContour.contour);
 
+		float distLeftOver = 0.0f;
+		for (int j = 0; j < contourPtr->size(); ++j) {
+			ptThis = contourPtr->at(j);
+			ptNext = contourPtr->at((j+1)%contourPtr->size());
+			segmentVector = ptNext - ptThis;
+			segmentLength = segmentVector.length();
+			segmentVector/=segmentLength;
+
+			QVector3D perpV=QVector3D::crossProduct(segmentVector,QVector3D(0,0,1));
+			ptThis=ptThis-perpV*2.0f;//5.5f;
+
+			float distFromSegmentStart = distLeftOver;//0.0f;
+			while (true) {
+				if (distFromSegmentStart > segmentLength) {
+					distLeftOver = distFromSegmentStart - segmentLength;
+					break;
+				}
+
+				pos = ptThis + segmentVector * distFromSegmentStart;
+				pos.setZ(1.0f);//pavement at 1.5f
+				rendManager.addStreetElementModel("tree", addTree(pos));
+
+				distFromSegmentStart += distanceBetweenTrees*(0.8f+(0.4f*qrand()/RAND_MAX));
+			}
+		}
+
+
+		/*
 		for (int j = 0; j < contourPtr->size(); ++j) {
 			ptThis = contourPtr->at(j);
 			ptNext = contourPtr->at((j+1)%contourPtr->size());
@@ -168,6 +196,7 @@ bool VBOVegetation::generateVegetation(VBORenderManager& rendManager,
 				rendManager.addStreetElementModel("streetLamp",addStreetLap(pos,segmentVector));
 			}
 		}
+		*/
 	}
 
 	std::cout << "\t" << tim.elapsed() << " ms\n";
