@@ -740,16 +740,12 @@ int Polygon3D::cleanLoop(Loop3D &pin, Loop3D &pout, float threshold=1.0f)
 		cur_next = pout[next]-pout[i];
 
 		ang = angleBetweenVectors(cur_prev, cur_next);
-		if( (fabs(ang) < angleThreshold) 
-			|| (fabs(ang - 3.14159265f ) < angleThreshold)
-			|| (!(ang==ang) ) )
-		{
+		if (fabs(ang) < angleThreshold || fabs(ang - 3.14159265f) < angleThreshold) {
 			//std::cout << ang << " ";
 			pout.erase(pout.begin() + i);
 			--i;
 		}
 	}
-
 
 	return 0;
 }//

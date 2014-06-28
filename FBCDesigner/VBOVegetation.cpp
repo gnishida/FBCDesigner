@@ -148,7 +148,7 @@ bool VBOVegetation::generateVegetation(VBORenderManager& rendManager,
 			QVector3D perpV = QVector3D(segmentVector.y(), -segmentVector.x(), 0);//QVector3D::crossProduct(segmentVector,QVector3D(0,0,1));
 			ptThis=ptThis-perpV*2.0f;//5.5f;
 
-			float distFromSegmentStart = distLeftOver;//0.0f;
+			float distFromSegmentStart = distLeftOver;
 			while (true) {
 				if (distFromSegmentStart > segmentLength) {
 					distLeftOver = distFromSegmentStart - segmentLength;
