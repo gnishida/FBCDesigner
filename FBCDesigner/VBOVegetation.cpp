@@ -2,7 +2,7 @@
 
 #include "VBORenderManager.h"
 #include "BBox.h"
-
+#include "Util.h"
 
 VBOVegetation::VBOVegetation(void){
 }
@@ -136,14 +136,16 @@ bool VBOVegetation::generateVegetation(VBORenderManager& rendManager,
 		contourPtr = &(blocks.at(i).blockContour.contour);
 
 		float distLeftOver = 0.0f;
+		int type = 0;
+
 		for (int j = 0; j < contourPtr->size(); ++j) {
 			ptThis = contourPtr->at(j);
 			ptNext = contourPtr->at((j+1)%contourPtr->size());
 			segmentVector = ptNext - ptThis;
 			segmentLength = segmentVector.length();
-			segmentVector/=segmentLength;
+			segmentVector /= segmentLength;
 
-			QVector3D perpV=QVector3D::crossProduct(segmentVector,QVector3D(0,0,1));
+			QVector3D perpV = QVector3D(segmentVector.y(), -segmentVector.x(), 0);//QVector3D::crossProduct(segmentVector,QVector3D(0,0,1));
 			ptThis=ptThis-perpV*2.0f;//5.5f;
 
 			float distFromSegmentStart = distLeftOver;//0.0f;
@@ -153,11 +155,22 @@ bool VBOVegetation::generateVegetation(VBORenderManager& rendManager,
 					break;
 				}
 
-				pos = ptThis + segmentVector * distFromSegmentStart;
-				pos.setZ(1.0f);//pavement at 1.5f
-				rendManager.addStreetElementModel("tree", addTree(pos));
+				if (j == contourPtr->size() - 1) {
+					// For the last segment, don't place a tree close to the last end point
+					if (segmentLength - distFromSegmentStart < distanceBetweenTrees * 0.5f) break;
+				}
 
-				distFromSegmentStart += distanceBetweenTrees*(0.8f+(0.4f*qrand()/RAND_MAX));
+				pos = ptThis + segmentVector * distFromSegmentStart;
+
+				if (type % 2 == 0) {
+					pos.setZ(1.0f);//pavement at 1.5f
+					rendManager.addStreetElementModel("tree", addTree(pos));
+				} else {
+					rendManager.addStreetElementModel("streetLamp", addStreetLap(pos, segmentVector));
+				}
+
+				distFromSegmentStart += distanceBetweenTrees * Util::genRand(0.4, 0.6);
+				type = 1 - type;	
 			}
 		}
 
