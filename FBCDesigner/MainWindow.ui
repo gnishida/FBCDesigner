@@ -37,6 +37,8 @@
     <addaction name="actionOpenTerrain"/>
     <addaction name="actionSaveTerrain"/>
     <addaction name="separator"/>
+    <addaction name="actionLoadPlaceTypes"/>
+    <addaction name="separator"/>
     <addaction name="actionLoadRoads"/>
     <addaction name="actionSaveRoads"/>
     <addaction name="actionClearRoads"/>
@@ -287,6 +289,11 @@
   <action name="actionActionJob">
    <property name="text">
     <string>Job</string>
+   </property>
+  </action>
+  <action name="actionLoadPlaceTypes">
+   <property name="text">
+    <string>Load Place Types</string>
    </property>
   </action>
  </widget>

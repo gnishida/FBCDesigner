@@ -26,6 +26,7 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags) : QMainWindow(parent, 
 	connect(ui.actionNewTerrain, SIGNAL(triggered()), this, SLOT(onNewTerrain()));
 	connect(ui.actionOpenTerrain, SIGNAL(triggered()), this, SLOT(onLoadTerrain()));
 	connect(ui.actionSaveTerrain, SIGNAL(triggered()), this, SLOT(onSaveTerrain()));
+	connect(ui.actionLoadPlaceTypes, SIGNAL(triggered()), this, SLOT(onLoadPlaceTypes()));
 	connect(ui.actionLoadRoads, SIGNAL(triggered()), this, SLOT(onLoadRoads()));
 	connect(ui.actionSaveRoads, SIGNAL(triggered()), this, SLOT(onSaveRoads()));
 	connect(ui.actionClearRoads, SIGNAL(triggered()), this, SLOT(onClearRoads()));
@@ -95,6 +96,15 @@ void MainWindow::onSaveTerrain() {
 	QString filename = QFileDialog::getSaveFileName(this, tr("Save Terrain file..."), "", tr("Terrain Files (*.png)"));
 	if (filename.isEmpty()) return;
 	glWidget->vboRenderManager.vboTerrain.saveTerrain(filename);
+}
+
+void MainWindow::onLoadPlaceTypes() {
+	QString filename = QFileDialog::getOpenFileName(this, tr("Open Place Types file..."), "", tr("Place Types Files (*.xml)"));
+	if (filename.isEmpty()) return;
+
+	urbanGeometry->placeTypes.load(filename);
+
+	glWidget->updateGL();
 }
 
 void MainWindow::onLoadRoads() {
