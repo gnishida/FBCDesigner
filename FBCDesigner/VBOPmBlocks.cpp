@@ -35,7 +35,7 @@ struct output_visitor : public boost::planar_face_traversal_visitor
 {
 	void begin_face()
 	{
-		std::cout << "face: " << face_index++ << std::endl;
+		//std::cout << "face: " << face_index++ << std::endl;
 		
 		blockContourTmp.clear();
 		blockContourWidths.clear();
@@ -185,7 +185,11 @@ bool removeIntersectingEdges(RoadGraph &roadGraph)
 		}		
 	}
 
-	for(int i=0; i<edgesToRemove.size(); ++i){	
+	for(int i=0; i<edgesToRemove.size(); ++i){
+		RoadVertexDesc src = boost::source(*edgesToRemove[i], roadGraph.graph);
+		RoadVertexDesc tgt = boost::target(*edgesToRemove[i], roadGraph.graph);
+
+		std::cout << src << " - " << tgt << std::endl;
 		boost::remove_edge(*(edgesToRemove[i]),roadGraph.graph);
 	}
 
@@ -202,20 +206,19 @@ bool removeIntersectingEdges(RoadGraph &roadGraph)
 // Given a road network, this function extracts the blocks
 //
 bool VBOPmBlocks::generateBlocks(PlaceTypesMainClass &placeTypesIn, RoadGraph &roadGraph, BlockSet &blocks) {
+	std::cout << "normalizing loop of roads." << std::endl;
 	GraphUtil::normalizeLoop(roadGraph);
+	std::cout << "normalizing done." << std::endl;
 
-	//printf("b1.1\n");
 	roadGraphPtr = &roadGraph;
 	blocksPtr = &blocks.blocks;
 	blocksPtr->clear();
-	//printf("b1.2\n");
-	//std::cout << "Init num blocks is: " << blocksPtr->size() << std::endl;
 
 	bool isPlanar = false;
 	bool converges = true;
 
-	GraphUtil::planarify(roadGraph);
-	GraphUtil::clean(roadGraph);
+	//GraphUtil::planarify(roadGraph);
+	//GraphUtil::clean(roadGraph);
 	
 	//Make sure graph is planar
 	typedef std::vector< RoadEdgeDesc > tEdgeDescriptorVector;

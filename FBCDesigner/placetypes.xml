@@ -1,5 +1,6 @@
 <blocks>
     <placeType>
+		<!-- central business district -->
         <attribute type="float" value="6000" name="parcel_area_mean"/>
         <attribute type="float" value="4" name="parcel_setback_sides"/>
         <attribute type="float" value="90" name="building_stories_deviation"/>
@@ -11,16 +12,213 @@
         <attribute type="float" value="2" name="building_max_frontage"/>
         <attribute type="float" value="0.19" name="parcel_split_deviation"/>
         <attribute type="float" value="0" name="parcel_setback_rear"/>
-        <point x="-2500" y="0"/>
-        <point x="-200" y="0"/>
-		<point x="500" y="-1000"/>
-		<point x="2000" y="-1000"/>
-		<point x="2000" y="0"/>
-        <point x="2500" y="0"/>
-        <point x="2500" y="2500"/>
-        <point x="-2500" y="2500"/>
+        <point x="1459" y="285"/>
+        <point x="1605" y="-409"/>
+		<point x="1755" y="-501"/>
+		<point x="2632" y="143"/>
+		<point x="3430" y="497"/>
+        <point x="2310" y="782"/>
+        <point x="2021" y="790"/>
     </placeType>
+	
     <placeType>
+		<!-- low density or park area -->
+        <attribute type="float" value="6000" name="parcel_area_mean"/>
+        <attribute type="float" value="2" name="parcel_setback_sides"/>
+        <attribute type="float" value="90" name="building_stories_deviation"/>
+        <attribute type="float" value="49" name="parcel_area_deviation"/>
+        <attribute type="float" value="4" name="building_stories_mean"/>
+        <attribute type="float" value="0" name="building_max_depth"/>
+        <attribute type="float" value="8" name="parcel_setback_front"/>
+        <attribute type="float" value="0.8" name="park_percentage"/>
+        <attribute type="float" value="2" name="building_max_frontage"/>
+        <attribute type="float" value="0.19" name="parcel_split_deviation"/>
+        <attribute type="float" value="0" name="parcel_setback_rear"/>
+        <point x="1459" y="285"/>
+        <point x="1605" y="-409"/>
+		<point x="1755" y="-501"/>
+		<point x="2632" y="143"/>
+		<point x="3430" y="497"/>
+        <point x="2310" y="782"/>
+        <point x="2021" y="790"/>
+    </placeType>
+	
+    <placeType>
+		<!-- Bugle Rock Park -->
+        <attribute type="float" value="6000" name="parcel_area_mean"/>
+        <attribute type="float" value="2" name="parcel_setback_sides"/>
+        <attribute type="float" value="90" name="building_stories_deviation"/>
+        <attribute type="float" value="49" name="parcel_area_deviation"/>
+        <attribute type="float" value="4" name="building_stories_mean"/>
+        <attribute type="float" value="0" name="building_max_depth"/>
+        <attribute type="float" value="8" name="parcel_setback_front"/>
+        <attribute type="float" value="0.8" name="park_percentage"/>
+        <attribute type="float" value="2" name="building_max_frontage"/>
+        <attribute type="float" value="0.19" name="parcel_split_deviation"/>
+        <attribute type="float" value="0" name="parcel_setback_rear"/>
+        <point x="-1377" y="-2891"/>
+        <point x="-1498" y="-3363"/>
+		<point x="-1171" y="-3349"/>
+		<point x="-1134" y="-3106"/>
+		<point x="-1103" y="-2887"/>
+    </placeType>
+	
+    <placeType>
+		<!-- M.N. Krishna Rao Park -->
+        <attribute type="float" value="6000" name="parcel_area_mean"/>
+        <attribute type="float" value="2" name="parcel_setback_sides"/>
+        <attribute type="float" value="90" name="building_stories_deviation"/>
+        <attribute type="float" value="49" name="parcel_area_deviation"/>
+        <attribute type="float" value="4" name="building_stories_mean"/>
+        <attribute type="float" value="0" name="building_max_depth"/>
+        <attribute type="float" value="8" name="parcel_setback_front"/>
+        <attribute type="float" value="0.8" name="park_percentage"/>
+        <attribute type="float" value="2" name="building_max_frontage"/>
+        <attribute type="float" value="0.19" name="parcel_split_deviation"/>
+        <attribute type="float" value="0" name="parcel_setback_rear"/>
+        <point x="-739" y="-2881"/>
+        <point x="-738" y="-3215"/>
+		<point x="-393" y="-3231"/>
+		<point x="-396" y="-2881"/>
+    </placeType>
+	
+    <placeType>
+		<!-- MAVALLI -->
+        <attribute type="float" value="6000" name="parcel_area_mean"/>
+        <attribute type="float" value="2" name="parcel_setback_sides"/>
+        <attribute type="float" value="90" name="building_stories_deviation"/>
+        <attribute type="float" value="49" name="parcel_area_deviation"/>
+        <attribute type="float" value="4" name="building_stories_mean"/>
+        <attribute type="float" value="0" name="building_max_depth"/>
+        <attribute type="float" value="8" name="parcel_setback_front"/>
+        <attribute type="float" value="0.8" name="park_percentage"/>
+        <attribute type="float" value="2" name="building_max_frontage"/>
+        <attribute type="float" value="0.19" name="parcel_split_deviation"/>
+        <attribute type="float" value="0" name="parcel_setback_rear"/>
+        <point x="-52" y="-2366"/>
+        <point x="-45" y="-2888"/>
+		<point x="508" y="-2904"/>
+		<point x="720" y="-2634"/>
+		<point x="1419" y="-2335"/>
+		<point x="563" y="-1748"/>
+		<point x="155" y="-2225"/>
+    </placeType>
+	
+    <placeType>
+		<!-- Railway Grounds -->
+        <attribute type="float" value="6000" name="parcel_area_mean"/>
+        <attribute type="float" value="2" name="parcel_setback_sides"/>
+        <attribute type="float" value="90" name="building_stories_deviation"/>
+        <attribute type="float" value="49" name="parcel_area_deviation"/>
+        <attribute type="float" value="4" name="building_stories_mean"/>
+        <attribute type="float" value="0" name="building_max_depth"/>
+        <attribute type="float" value="8" name="parcel_setback_front"/>
+        <attribute type="float" value="0.8" name="park_percentage"/>
+        <attribute type="float" value="2" name="building_max_frontage"/>
+        <attribute type="float" value="0.19" name="parcel_split_deviation"/>
+        <attribute type="float" value="0" name="parcel_setback_rear"/>
+        <point x="-2100" y="1473"/>
+        <point x="-2369" y="1260"/>
+		<point x="-2177" y="862"/>
+		<point x="-1831" y="89"/>
+		<point x="-1929" y="-397"/>
+		<point x="-1343" y="-322"/>
+		<point x="-1231" y="400"/>
+		<point x="-1070" y="605"/>
+		<point x="-1084" y="1385"/>
+    </placeType>
+	
+    <placeType>
+		<!-- Muniswamy Garden -->
+        <attribute type="float" value="6000" name="parcel_area_mean"/>
+        <attribute type="float" value="2" name="parcel_setback_sides"/>
+        <attribute type="float" value="90" name="building_stories_deviation"/>
+        <attribute type="float" value="49" name="parcel_area_deviation"/>
+        <attribute type="float" value="4" name="building_stories_mean"/>
+        <attribute type="float" value="0" name="building_max_depth"/>
+        <attribute type="float" value="8" name="parcel_setback_front"/>
+        <attribute type="float" value="0.8" name="park_percentage"/>
+        <attribute type="float" value="2" name="building_max_frontage"/>
+        <attribute type="float" value="0.19" name="parcel_split_deviation"/>
+        <attribute type="float" value="0" name="parcel_setback_rear"/>
+        <point x="2851" y="-376"/>
+        <point x="2707" y="-1639"/>
+		<point x="2167" y="-1797"/>
+		<point x="2736" y="-2165"/>
+		<point x="3406" y="-1954"/>
+		<point x="3471" y="-879"/>
+    </placeType>
+
+    <placeType>
+		<!-- JAYAMAHAL -->
+        <attribute type="float" value="6000" name="parcel_area_mean"/>
+        <attribute type="float" value="2" name="parcel_setback_sides"/>
+        <attribute type="float" value="90" name="building_stories_deviation"/>
+        <attribute type="float" value="49" name="parcel_area_deviation"/>
+        <attribute type="float" value="4" name="building_stories_mean"/>
+        <attribute type="float" value="0" name="building_max_depth"/>
+        <attribute type="float" value="8" name="parcel_setback_front"/>
+        <attribute type="float" value="0.8" name="park_percentage"/>
+        <attribute type="float" value="2" name="building_max_frontage"/>
+        <attribute type="float" value="0.19" name="parcel_split_deviation"/>
+        <attribute type="float" value="0" name="parcel_setback_rear"/>
+        <point x="381" y="5000"/>
+        <point x="424" y="3140"/>
+		<point x="1658" y="2727"/>
+		<point x="1382" y="4016"/>
+    </placeType>
+	
+    <placeType>
+		<!-- Cubbon Park -->
+        <attribute type="float" value="6000" name="parcel_area_mean"/>
+        <attribute type="float" value="2" name="parcel_setback_sides"/>
+        <attribute type="float" value="90" name="building_stories_deviation"/>
+        <attribute type="float" value="49" name="parcel_area_deviation"/>
+        <attribute type="float" value="4" name="building_stories_mean"/>
+        <attribute type="float" value="0" name="building_max_depth"/>
+        <attribute type="float" value="8" name="parcel_setback_front"/>
+        <attribute type="float" value="0.8" name="park_percentage"/>
+        <attribute type="float" value="2" name="building_max_frontage"/>
+        <attribute type="float" value="0.19" name="parcel_split_deviation"/>
+        <attribute type="float" value="0" name="parcel_setback_rear"/>
+        <point x="-244" y="527"/>
+        <point x="805" y="-306"/>
+		<point x="1318" y="-184"/>
+		<point x="1581" y="-319"/>
+		<point x="1498" y="269"/>
+		<point x="2008" y="771"/>
+		<point x="3620" y="461"/>
+		<point x="3700" y="1050"/>
+		<point x="3005" y="1340"/>
+		<point x="2882" y="1007"/>
+		<point x="1389" y="1794"/>
+		<point x="834" y="1702"/>
+		<point x="-374" y="1582"/>
+		<point x="-384" y="1228"/>
+		<point x="147" y="1118"/>
+    </placeType>	
+	
+    <placeType>
+		<!-- Venkataswami Layout -->
+        <attribute type="float" value="6000" name="parcel_area_mean"/>
+        <attribute type="float" value="2" name="parcel_setback_sides"/>
+        <attribute type="float" value="90" name="building_stories_deviation"/>
+        <attribute type="float" value="49" name="parcel_area_deviation"/>
+        <attribute type="float" value="4" name="building_stories_mean"/>
+        <attribute type="float" value="0" name="building_max_depth"/>
+        <attribute type="float" value="8" name="parcel_setback_front"/>
+        <attribute type="float" value="0.8" name="park_percentage"/>
+        <attribute type="float" value="2" name="building_max_frontage"/>
+        <attribute type="float" value="0.19" name="parcel_split_deviation"/>
+        <attribute type="float" value="0" name="parcel_setback_rear"/>
+        <point x="2769" y="-2277"/>
+        <point x="2424" y="-2796"/>
+		<point x="3799" y="-3079"/>
+		<point x="3986" y="-2286"/>
+    </placeType>
+	
+    <placeType>
+		<!-- Default -->
         <attribute type="float" value="500" name="parcel_area_mean"/>
         <attribute type="float" value="2" name="parcel_setback_sides"/>
         <attribute type="float" value="90" name="building_stories_deviation"/>
@@ -32,9 +230,9 @@
         <attribute type="float" value="2" name="building_max_frontage"/>
         <attribute type="float" value="0.19" name="parcel_split_deviation"/>
         <attribute type="float" value="0" name="parcel_setback_rear"/>
-        <point x="-2500" y="-2500"/>
-        <point x="2500" y="-2500"/>
-        <point x="2500" y="2500"/>
-        <point x="-2500" y="2500"/>
+        <point x="-5000" y="-5000"/>
+        <point x="5000" y="-5000"/>
+        <point x="5000" y="5000"/>
+        <point x="-5000" y="5000"/>
     </placeType>
 </blocks>

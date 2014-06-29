@@ -2214,7 +2214,8 @@ void GraphUtil::normalizeLoop(RoadGraph &roads) {
 		split = false;
 
 		RoadEdgeIter ei, eend;
-		for (boost::tie(ei, eend) = boost::edges(roads.graph); ei != eend; ++ei) {
+		int cnt = 0;
+		for (boost::tie(ei, eend) = boost::edges(roads.graph); ei != eend; ++ei, ++cnt) {
 			if (!roads.graph[*ei]->valid) continue;
 
 			RoadVertexDesc src = boost::source(*ei, roads.graph);
@@ -2222,7 +2223,16 @@ void GraphUtil::normalizeLoop(RoadGraph &roads) {
 
 			if (src != tgt) continue;
 
+			if (roads.graph[*ei]->polyline.size() == 2) {
+				roads.graph[*ei]->valid = false;
+				continue;
+			}
+
 			int index = roads.graph[*ei]->polyline.size() / 2;
+
+			if (roads.graph[*ei]->polyline.size() <= 1) {
+				int k = 0;
+			}
 			if (index == 0 || index >= roads.graph[*ei]->polyline.size() - 1) continue;
 
 			RoadVertexDesc v = splitEdge(roads, *ei, roads.graph[*ei]->polyline[index]);

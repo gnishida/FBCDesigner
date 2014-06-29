@@ -87,6 +87,15 @@ bool VBOPm::generateParcels(VBORenderManager& rendManager, BlockSet& blocks, Pla
 		return false;
 	}
 	printf(">>Parcels were generated.\n");
+
+	if (!VBOPmBuildings::generateBuildings(placeTypes, blocks.blocks)) {
+		printf("ERROR: generateBuildings\n");
+		return false;
+	}
+	printf(">>Buildings contours were generated.\n");
+
+	// generate population distribution and job distribution
+	generatePopulationJobDistribution(blocks);
 		
 	return true;
 }
@@ -94,16 +103,6 @@ bool VBOPm::generateParcels(VBORenderManager& rendManager, BlockSet& blocks, Pla
 bool VBOPm::generateBuildings(VBORenderManager& rendManager, BlockSet& blocks, PlaceTypesMainClass& placeTypes) {
 	QTime timer;
 
-	//////////////////////////////////////////////
-	// 4. BUILDINGS
-	if (!VBOPmBuildings::generateBuildings(placeTypes, blocks.blocks)) {
-		printf("ERROR: generateBuildings\n");
-		return false;
-	}
-	printf(">>Buildings contours were generated.\n");
-	
-	//////////////////////////////////////////////
-	// 5. BUILDINGS Geometry
 	rendManager.removeStaticGeometry("3d_building");
 	rendManager.removeStaticGeometry("3d_building_fac");
 	
@@ -117,9 +116,6 @@ bool VBOPm::generateBuildings(VBORenderManager& rendManager, BlockSet& blocks, P
 		}
 	}
 	printf("Building generation: %d ms\n",timer.elapsed());
-
-	// generate population distribution and job distribution
-	generatePopulationJobDistribution(blocks);
 
 	return true;
 }
@@ -231,8 +227,11 @@ void VBOPm::generateBlockMesh(VBORenderManager& rendManager, BlockSet& blocks) {
 void VBOPm::generatePopulationJobDistribution(BlockSet& blocks) {
 	QVector2D cbd(1000, 1000);
 
-	cv::Mat population = cv::Mat(50, 50, CV_32F, cv::Scalar(0.0f));
-	cv::Mat jobs = cv::Mat(50, 50, CV_32F, cv::Scalar(0.0f));
+	int rows = 100;
+	int cols = 100;
+
+	cv::Mat population = cv::Mat(rows, cols, CV_32F, cv::Scalar(0.0f));
+	cv::Mat jobs = cv::Mat(rows, cols, CV_32F, cv::Scalar(0.0f));
 
 	for (int i = 0; i < blocks.size(); ++i) {
 		Block::parcelGraphVertexIter vi, viEnd;
@@ -250,16 +249,16 @@ void VBOPm::generatePopulationJobDistribution(BlockSet& blocks) {
 			float numPeople = area / 10.856f * blocks[i].myParcels[*vi].myBuilding.numStories;
 
 			// position
-			int c = (blocks[i].myParcels[*vi].bbox.midPt().x() + 2500.0f) / 100.0f;
+			int c = (blocks[i].myParcels[*vi].bbox.midPt().x() + 5000.0f) / 100.0f;
 			if (c < 0) c = 0;
-			if (c >= 50) c = 49;
-			int r = (blocks[i].myParcels[*vi].bbox.midPt().y() + 2500.0f) / 100.0f;
+			if (c >= cols) c = cols - 1;
+			int r = (blocks[i].myParcels[*vi].bbox.midPt().y() + 5000.0f) / 100.0f;
 			if (r < 0) r = 0;
-			if (r >= 50) r = 49;
+			if (r >= rows) r = rows - 1;
 
 			// residential / industrial ?
 			float sigma2 = 0.2f;
-			float dist_ratio = (cbd - blocks[i].myParcels[*vi].bbox.midPt()).length() / 2500.0f;
+			float dist_ratio = (cbd - blocks[i].myParcels[*vi].bbox.midPt()).length() / 5000.0f;
 			float rand = expf(-dist_ratio * dist_ratio / 2.0f / sigma2);// / sqrtf(2.0f * M_PI * sigma2);
 			if (rand > 1) rand = 1.0f;
 
@@ -272,8 +271,8 @@ void VBOPm::generatePopulationJobDistribution(BlockSet& blocks) {
 
 	HeatMapColorTable ct(0, 255);
 
-	cv::Mat normalizedJobs(50, 50, CV_8UC3, cv::Scalar(0, 0, 0));
-	cv::Mat normalizedPopulation(50, 50, CV_8UC3, cv::Scalar(0, 0, 0));
+	cv::Mat normalizedJobs(rows, cols, CV_8UC3, cv::Scalar(0, 0, 0));
+	cv::Mat normalizedPopulation(rows, cols, CV_8UC3, cv::Scalar(0, 0, 0));
 	for (int r = 0; r < jobs.rows; ++r) {
 		for (int c = 0; c < jobs.cols; ++c) {
 			int data= jobs.at<float>(r, c) * 255 / 1000;
@@ -286,13 +285,8 @@ void VBOPm::generatePopulationJobDistribution(BlockSet& blocks) {
 		}
 	}
 
-	// extract 30 x 30 
-	cv::Mat roiJobs(normalizedJobs, cv::Rect(10, 10, 30, 30));
-	cv::Mat roiPopulation(normalizedPopulation, cv::Rect(10, 10, 30, 30));
-
-	cv::flip(roiJobs, roiJobs, 0);
-	cv::flip(roiPopulation, roiPopulation, 0);
-	cv::imwrite("jobs.png", roiJobs);
-	cv::imwrite("population.png", roiPopulation);
-
+	cv::flip(normalizedJobs, normalizedJobs, 0);
+	cv::flip(normalizedPopulation, normalizedPopulation, 0);
+	cv::imwrite("jobs.png", normalizedJobs);
+	cv::imwrite("population.png", normalizedPopulation);
 }
