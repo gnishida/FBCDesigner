@@ -45,7 +45,7 @@
 		float fov=45.0f;
 		float aspect=(float)shadowWidth/(float)shadowHeight;
 
-		float zfar=15000.0f;//3800.0
+		float zfar=30000.0f;//3800.0
 		float znear=7000.0f;//1500.0
 
 		//float zfar=3800.0;
