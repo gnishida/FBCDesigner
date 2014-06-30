@@ -9,7 +9,7 @@
         <attribute type="float" value="0" name="building_max_depth"/>
         <attribute type="float" value="8" name="parcel_setback_front"/>
         <attribute type="float" value="0.2" name="park_percentage"/>
-        <attribute type="float" value="0" name="building_max_frontage"/>
+        <attribute type="float" value="2" name="building_max_frontage"/>
         <attribute type="float" value="0.19" name="parcel_split_deviation"/>
         <attribute type="float" value="0" name="parcel_setback_rear"/>
         <point x="1459" y="285"/>
@@ -19,6 +19,31 @@
 		<point x="3430" y="497"/>
         <point x="2310" y="782"/>
         <point x="2021" y="790"/>
+    </placeType>
+	
+    <placeType>
+		<!-- central business district -->
+        <attribute type="float" value="6000" name="parcel_area_mean"/>
+        <attribute type="float" value="10" name="parcel_setback_sides"/>
+        <attribute type="float" value="190" name="building_stories_deviation"/>
+        <attribute type="float" value="49" name="parcel_area_deviation"/>
+        <attribute type="float" value="10" name="building_stories_mean"/>
+        <attribute type="float" value="0" name="building_max_depth"/>
+        <attribute type="float" value="8" name="parcel_setback_front"/>
+        <attribute type="float" value="0.2" name="park_percentage"/>
+        <attribute type="float" value="2" name="building_max_frontage"/>
+        <attribute type="float" value="0.19" name="parcel_split_deviation"/>
+        <attribute type="float" value="0" name="parcel_setback_rear"/>
+        <point x="847" y="1670"/>
+        <point x="414" y="921"/>
+		<point x="60" y="385"/>
+		<point x="673" y="-129"/>
+		<point x="734" y="-126"/>
+		<point x="680" y="-190"/>
+        <point x="696" y="612"/>
+        <point x="945" y="802"/>
+        <point x="1550" y="1364"/>
+        <point x="1279" y="1473"/>
     </placeType>
 	
     <placeType>
@@ -159,22 +184,95 @@
         <attribute type="float" value="2" name="building_max_frontage"/>
         <attribute type="float" value="0.19" name="parcel_split_deviation"/>
         <attribute type="float" value="0" name="parcel_setback_rear"/>
-        <point x="-244" y="527"/>
-        <point x="805" y="-306"/>
-		<point x="1318" y="-184"/>
-		<point x="1581" y="-319"/>
-		<point x="1498" y="269"/>
-		<point x="2008" y="771"/>
+        <point x="1550" y="1364"/>
+        <point x="1148" y="877"/>
+		<point x="724" y="675"/>
+		<point x="734" y="-126"/>
+		<point x="749" y="-306"/>
+		<point x="863" y="-253"/>
+		<point x="1459" y="285"/>
+		<point x="2033" y="790"/>
+		<point x="1801" y="1322"/>
+    </placeType>
+	
+    <placeType>
+		<!-- Cariappa Park -->
+        <attribute type="float" value="6000" name="parcel_area_mean"/>
+        <attribute type="float" value="2" name="parcel_setback_sides"/>
+        <attribute type="float" value="90" name="building_stories_deviation"/>
+        <attribute type="float" value="49" name="parcel_area_deviation"/>
+        <attribute type="float" value="4" name="building_stories_mean"/>
+        <attribute type="float" value="0" name="building_max_depth"/>
+        <attribute type="float" value="8" name="parcel_setback_front"/>
+        <attribute type="float" value="0.4" name="park_percentage"/>
+        <attribute type="float" value="2" name="building_max_frontage"/>
+        <attribute type="float" value="0.19" name="parcel_split_deviation"/>
+        <attribute type="float" value="0" name="parcel_setback_rear"/>
+        <point x="2033" y="790"/>
+        <point x="2310" y="782"/>
+		<point x="2981" y="616"/>
 		<point x="3620" y="461"/>
-		<point x="3700" y="1050"/>
-		<point x="3005" y="1340"/>
-		<point x="2882" y="1007"/>
-		<point x="1389" y="1794"/>
-		<point x="834" y="1702"/>
-		<point x="-374" y="1582"/>
+		<point x="3711" y="746"/>
+		<point x="3741" y="1000"/>
+		<point x="3657" y="1100"/>
+		<point x="3224" y="1260"/>
+		<point x="3005" y="1339"/>
+		<point x="2882" y="1077"/>
+		<point x="2534" y="1202"/>
+		<point x="2484" y="1047"/>
+		<point x="2378" y="1082"/>
+		<point x="2200" y="1120"/>
+		<point x="2261" y="1295"/>
+		<point x="1991" y="1395"/>
+		<point x="1954" y="1275"/>
+		<point x="1801" y="1322"/>
+    </placeType>
+	
+    <placeType>
+		<!-- Freedom Park -->
+        <attribute type="float" value="6000" name="parcel_area_mean"/>
+        <attribute type="float" value="2" name="parcel_setback_sides"/>
+        <attribute type="float" value="90" name="building_stories_deviation"/>
+        <attribute type="float" value="49" name="parcel_area_deviation"/>
+        <attribute type="float" value="4" name="building_stories_mean"/>
+        <attribute type="float" value="0" name="building_max_depth"/>
+        <attribute type="float" value="8" name="parcel_setback_front"/>
+        <attribute type="float" value="0.4" name="park_percentage"/>
+        <attribute type="float" value="2" name="building_max_frontage"/>
+        <attribute type="float" value="0.19" name="parcel_split_deviation"/>
+        <attribute type="float" value="0" name="parcel_setback_rear"/>
+        <point x="147" y="1118"/>
+        <point x="-244" y="527"/>
+		<point x="60" y="385"/>
+		<point x="414" y="921"/>
+    </placeType>
+	
+    <placeType>
+		<!-- Race Course -->
+        <attribute type="float" value="6000" name="parcel_area_mean"/>
+        <attribute type="float" value="2" name="parcel_setback_sides"/>
+        <attribute type="float" value="90" name="building_stories_deviation"/>
+        <attribute type="float" value="49" name="parcel_area_deviation"/>
+        <attribute type="float" value="4" name="building_stories_mean"/>
+        <attribute type="float" value="0" name="building_max_depth"/>
+        <attribute type="float" value="8" name="parcel_setback_front"/>
+        <attribute type="float" value="0.4" name="park_percentage"/>
+        <attribute type="float" value="2" name="building_max_frontage"/>
+        <attribute type="float" value="0.19" name="parcel_split_deviation"/>
+        <attribute type="float" value="0" name="parcel_setback_rear"/>
+        <point x="-202" y="1593"/>
+        <point x="-381" y="1525"/>
+		<point x="-412" y="1460"/>
+		<point x="-394" y="1291"/>
 		<point x="-384" y="1228"/>
+		<point x="-95" y="1202"/>
 		<point x="147" y="1118"/>
-    </placeType>	
+		<point x="428" y="931"/>
+		<point x="823" y="1647"/>
+		<point x="375" y="1607"/>
+		<point x="176" y="1632"/>
+		<point x="50" y="1598"/>
+    </placeType>
 	
     <placeType>
 		<!-- Venkataswami Layout -->

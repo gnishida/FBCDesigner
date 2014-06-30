@@ -6,6 +6,7 @@
 
 #include "glew.h"
 #include "common.h"
+#include "BBox.h"
 #include <vector>
 #include <QVector3D>
 
@@ -30,7 +31,7 @@
 * Classes and functions for geometric data
 **/
 
-struct Loop3D : std::vector<QVector3D>{
+class Loop3D : public std::vector<QVector3D>{
 };
 
 bool isPointWithinLoop(std::vector<QVector3D> &loop, QVector3D &pt);
@@ -39,8 +40,17 @@ bool isPointWithinLoop(std::vector<QVector3D> &loop, QVector3D &pt);
 * Stores a polygon in 3D represented by its
 *     exterior contour.
 **/
-class Polygon3D
-{
+class Polygon3D {
+public:
+	/**
+	* Vector containing 3D points of polygon contour
+	**/
+	Loop3D contour;
+
+private:			
+	QVector3D normalVec;
+	QVector3D centroid;
+
 public:
 	/**
 	* Constructor.
@@ -51,36 +61,7 @@ public:
 		centroid = QVector3D(FLT_MAX, FLT_MAX, FLT_MAX);
 	}
 
-	/**
-	* Destructor.
-	**/
-	~Polygon3D()
-	{
-		contour.clear();
-	}
-
-	/**
-	* Copy constructor.
-	**/
-	Polygon3D(const Polygon3D &ref)
-	{	
-		contour = ref.contour;
-		normalVec = ref.normalVec;
-		centroid = ref.centroid;
-	}
-
 	void clear() { contour.clear(); }
-
-	/**
-	* Assignment operator.
-	**/
-	inline Polygon3D &operator=(const Polygon3D &ref)
-	{				
-		contour = ref.contour;
-		normalVec = ref.normalVec;
-		centroid = ref.centroid;
-		return (*this);
-	}
 
 	/**
 	* Acessor to point at index idx
@@ -154,15 +135,11 @@ public:
 		}
 	}
 
-	/**
-	* Render polygon
-	**/
-	void renderContour(void);
-	void render(void);
-	void renderNonConvex(bool reComputeNormal = true, float nx = 0.0f, float ny = 0.0f, float nz = 1.0f);
-
 	//Is self intersecting
 	bool isSelfIntersecting(void);
+
+	BBox envelope();
+	float area();
 
 	//Only works for polygons with no holes in them
 	bool splitMeWithPolyline(std::vector<QVector3D> &pline, Loop3D &pgon1, Loop3D &pgon2);
@@ -184,10 +161,7 @@ public:
 
 	}//
 
-	/**
-	* Vector containing 3D points of polygon contour
-	**/
-	Loop3D contour;
+
 
 	static QVector3D getLoopNormalVector(const Loop3D &pin);
 
@@ -220,9 +194,7 @@ public:
 	static float distanceXYfromContourAVerticesToContourB(Loop3D &pA, Loop3D &pB);
 
 
-private:			
-	QVector3D normalVec;
-	QVector3D centroid;
+
 };	
 
 class BBox3D{

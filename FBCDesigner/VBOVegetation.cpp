@@ -76,48 +76,51 @@ bool VBOVegetation::generateVegetation(VBORenderManager& rendManager,
 
 	float treesPerSqMeter = 0.002f; //used for trees in parcels
 	float distanceBetweenTrees = 31.0f;//23 N 15.0f; //used for trees along streets
-	float minTreeHeight = 5.0f;
-	float maxTreeHeight = 20.0f;
-	float minTreeRadToHeightRatio = 0.3f;
-	float maxTreeRadToHeightRatio = 0.5f;
-
 	float distanceBetweenStreetLamps = 43.0f;//30 from google but too close
 
-	int numTreesInParcel;
-
-		
-	float rad, height;
-	float parcelBBoxArea;
 	QVector3D pos;
 
-
-	float xmin, xmax, ymin, ymax;
-	float xpos, ypos, zpos;
-
-	BBox3D parcelBBox;
-
 	//generate trees in blocks (park)
-	for(int bN=0;bN<blocks.size();bN++){
-	if(blocks[bN].isPark==false) continue;//skip those without parks
+	for (int bN = 0; bN < blocks.size(); bN++) {
+		if (blocks[bN].isPark) {
 
-		blocks[bN].computeMyBBox3D();
-		parcelBBox = blocks[bN].bbox;
+			BBox parcelBBox = blocks[bN].blockContour.envelope();
 
-		xmin = parcelBBox.minPt.x();
-		xmax = parcelBBox.maxPt.x();
-		ymin = parcelBBox.minPt.y();
-		ymax = parcelBBox.maxPt.y();
+			float xmin = parcelBBox.minPt.x();
+			float xmax = parcelBBox.maxPt.x();
+			float ymin = parcelBBox.minPt.y();
+			float ymax = parcelBBox.maxPt.y();
 
-		parcelBBoxArea = (xmax - xmin)*(ymax - ymin);
+			float parcelBBoxArea = (xmax - xmin)*(ymax - ymin);
 
-		numTreesInParcel = (int)(parcelBBoxArea*treesPerSqMeter);
+			int numTreesInParcel = parcelBBoxArea * treesPerSqMeter;
 
-		for(int i=0; i<numTreesInParcel; ++i){		
-			pos.setX( (float(qrand())/RAND_MAX)*(xmax-xmin)+xmin );
-			pos.setY( (float(qrand())/RAND_MAX)*(ymax-ymin)+ymin );
-			pos.setZ( 0.0f );
-			if(blocks[bN].blockContour.isPointWithinLoop(pos)){
-				rendManager.addStreetElementModel("tree",addTree(pos));
+			for(int i=0; i<numTreesInParcel; ++i){		
+				pos.setX(Util::genRand(xmin, xmax));
+				pos.setY(Util::genRand(ymin, ymax));
+				pos.setZ( 0.0f );
+				if(blocks[bN].blockContour.isPointWithinLoop(pos)){
+					rendManager.addStreetElementModel("tree",addTree(pos));
+				}
+			}
+		} else {
+			Block::parcelGraphVertexIter vi, viEnd;
+			
+			for (boost::tie(vi, viEnd) = boost::vertices(blocks[bN].myParcels); vi != viEnd; ++vi) {
+				if (blocks[bN].myParcels[*vi].parcelType != PAR_PARK) continue;
+				
+				QVector3D minCorner, maxCorner;
+				Polygon3D::getLoopAABB(blocks[bN].myParcels[*vi].parcelContour.contour, minCorner, maxCorner);
+				int numTreesInParcel = blocks[bN].myParcels[*vi].parcelContour.area() * treesPerSqMeter;
+
+				for(int i=0; i<numTreesInParcel; ++i){		
+					pos.setX(Util::genRand(minCorner.x(), maxCorner.x()));
+					pos.setY(Util::genRand(minCorner.y(), maxCorner.y()));
+					pos.setZ( 0.0f );
+					if (blocks[bN].myParcels[*vi].parcelContour.isPointWithinLoop(pos)) {
+						rendManager.addStreetElementModel("tree",addTree(pos));
+					}
+				}
 			}
 		}
 	}

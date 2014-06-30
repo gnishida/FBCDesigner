@@ -188,10 +188,6 @@ bool removeIntersectingEdges(RoadGraph &roadGraph)
 	}
 
 	for(int i=0; i<edgesToRemove.size(); ++i){
-		RoadVertexDesc src = boost::source(*edgesToRemove[i], roadGraph.graph);
-		RoadVertexDesc tgt = boost::target(*edgesToRemove[i], roadGraph.graph);
-
-		std::cout << src << " - " << tgt << std::endl;
 		boost::remove_edge(*(edgesToRemove[i]),roadGraph.graph);
 	}
 
@@ -330,21 +326,8 @@ bool VBOPmBlocks::generateBlocks(PlaceTypesMainClass &placeTypesIn, RoadGraph &r
 		}
 	}
 
-	/*
-	qsrand(blocks.size());
-	float park_percentage=G::global().getInt("2d_parkPer")*0.01f;//tmpPlaceType["park_percentage"]
-	int numBlockParks=park_percentage*blocks.size();
-	QSet<int> blockWithPark;
-
-	while(blockWithPark.size()<numBlockParks){
-		int ind=qrand()%blocks.size();
-		blockWithPark.insert(ind);
-		blocks[ind].isPark=true;
-	}
-	*/
-
 	return true;
-}//
+}
 
 void VBOPmBlocks::buildEmbedding(RoadGraph &roads, std::vector<std::vector<RoadEdgeDesc> > &embedding) {
 	std::cout << "building embedding..." << std::endl;

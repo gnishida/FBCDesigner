@@ -4,134 +4,6 @@
 #include "Util.h"
 
 #include "clipper.hpp"
-//#include "clipper.cpp"
-
-//**** Polygon3D
-void Polygon3D::renderContour(void)
-{	
-	glBegin(GL_LINE_LOOP);
-	for(size_t i=0; i<contour.size(); ++i){
-		glVertex3f(contour[i].x(),
-			contour[i].y(),
-			contour[i].z());
-	}
-	glEnd();	
-
-
-}
-
-
-void Polygon3D::render(void)
-{		
-	glBegin(GL_POLYGON);
-	for(size_t i=0; i<contour.size(); ++i){
-		glVertex3f(contour[i].x(),
-			contour[i].y(),
-			contour[i].z());
-	}
-	glEnd();			
-}
-
-void Polygon3D::renderNonConvex(bool reComputeNormal,
-	float nx, float ny, float nz)
-{
-	QVector3D myNormal;
-	if(reComputeNormal)
-	{
-		myNormal = this->getNormalVector();
-	} else {
-		myNormal.setX(nx);
-		myNormal.setY(ny);
-		myNormal.setZ(nz);
-	}
-
-	//Render inside fill			
-	if(contour.size() == 3){
-		glBegin(GL_TRIANGLES);	
-		for(size_t i=0; i<contour.size(); i++){	
-			glNormal3f(myNormal.x(), myNormal.y(), myNormal.z());
-			glVertex3f(contour[i].x(), contour[i].y(), contour[i].z());			
-		}
-		glEnd();
-	} else if(contour.size() == 4){
-		glBegin(GL_QUADS);	
-		for(int i=0; i<contour.size(); i++){	
-			glNormal3f(myNormal.x(), myNormal.y(), myNormal.z());
-			glVertex3f(contour[i].x(), contour[i].y(), contour[i].z());			
-		}
-		glEnd();
-	} else {
-
-		// create tessellator
-		GLUtesselator *tess = gluNewTess();
-
-		double *vtxData = new double[3*contour.size()];
-		for(size_t i=0; i<contour.size(); i++){
-			vtxData[3*i]=contour[i].x();
-			vtxData[3*i+1]=contour[i].y();
-			vtxData[3*i+2]=contour[i].z();
-		}
-
-		// register callback functions
-		gluTessCallback(tess, GLU_TESS_BEGIN, 
-			(void (__stdcall *)(void))glBegin);
-		gluTessCallback(tess, GLU_TESS_VERTEX,
-			(void (__stdcall *)(void))glVertex3dv);
-		gluTessCallback(tess, GLU_TESS_END, glEnd);
-
-		// describe non-convex polygon
-		gluTessBeginPolygon(tess, NULL);
-
-
-		// contour
-		gluTessBeginContour(tess);
-
-		for(size_t i=0; i<contour.size(); i++){
-			//HACK
-			glNormal3f(myNormal.x(), myNormal.y(), fabs(myNormal.z()));
-			gluTessVertex(tess, &vtxData[3*i], &vtxData[3*i]);
-		}
-		gluTessEndContour(tess);
-
-		gluTessEndPolygon(tess);
-
-		// delete tessellator after processing
-		gluDeleteTess(tess);
-
-		delete [] vtxData;
-	}
-
-	//Render contour wire
-	/*glColor3f(0.5f, 0.5f, 1.0f);			
-	glBegin(GL_LINES);
-	for(int i=0; i<contour.size()-1; ++i){
-	if(i==contour.size()-2)//last
-	glColor3f(0.5f, 1.0f, 1.0f);
-	else
-	glColor3f(0.5f, 0.5f, 1.0f);
-	if(ClientGlobalVariable::gV()->render_adaptGeometry==false){
-	glVertex3f(contour[i].x(),contour[i].y(),contour[i].z());
-	glVertex3f(contour[i+1].x(),contour[i+1].y(),contour[i+1].z());
-	}
-	else{
-	glVertex3f(contour[i].x(),contour[i].y(),0);
-	glVertex3f(contour[i+1].x(),contour[i+1].y(),0);
-	}
-	}*/
-
-	/*
-	glColor3f(0.5f, 0.5f, 1.0f);
-	glBegin(GL_LINE_LOOP);
-	for(size_t i=0; i<contour.size(); ++i){
-
-	if(ClientGlobalVariable::gV()->render_adaptGeometry==false)
-	glVertex3f(contour[i].x(),contour[i].y(),0.0f);
-	else
-	glVertex3f(contour[i].x(),contour[i].y(),contour[i].z());
-	}
-	glEnd();
-	*/
-}
 
 double angleBetweenVectors(QVector3D &vec1, QVector3D &vec2)
 {	
@@ -835,11 +707,29 @@ QVector3D Polygon3D::getLoopAABB(Loop3D &pin, QVector3D &minCorner, QVector3D &m
 		}
 	}
 	return QVector3D(maxCorner - minCorner);
-}//
+}
 
-bool Polygon3D::isSelfIntersecting(void){
+bool Polygon3D::isSelfIntersecting() {
 	boost::geometry::ring_type<Polygon3D>::type bg_pgon;
 	boost::geometry::assign(bg_pgon, this->contour);
 	boost::geometry::correct(bg_pgon);
 	return boost::geometry::intersects(bg_pgon);
-}//
+}
+
+BBox Polygon3D::envelope() {
+	boost::geometry::ring_type<Polygon3D>::type bg_pgon;
+	boost::geometry::assign(bg_pgon, this->contour);
+	boost::geometry::correct(bg_pgon);
+
+	BBox bbox;
+	boost::geometry::envelope(bg_pgon, bbox);
+	return bbox;
+}
+
+float Polygon3D::area() {
+	boost::geometry::ring_type<Polygon3D>::type bg_pgon;
+	boost::geometry::assign(bg_pgon, this->contour);
+	boost::geometry::correct(bg_pgon);
+
+	return boost::geometry::area(bg_pgon);
+}

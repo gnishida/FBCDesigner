@@ -57,29 +57,29 @@ void GLWidget3D::mousePressEvent(QMouseEvent *event) {
 	lastPos = event->pos();
 	mouseTo2D(event->x(), event->y(), pos);
 
-	if (event->buttons() & Qt::LeftButton) {
-		if (altPressed) {
-			float xM, yM, radi, change;
-			int selectedIndex;
-			std::pair<int, int> selectedIndexPair;
+	if (altPressed) {
+		float xM, yM, radi, change;
+		int selectedIndex;
+		std::pair<int, int> selectedIndexPair;
 
-			switch (mainWin->mode) {
-			case MainWindow::MODE_DEFAULT: // terrain editing
-				// normal Gaussian edition
-				change=mainWin->controlWidget->ui.terrainPaint_changeSlider->value()*0.003f;
-				radi=mainWin->controlWidget->ui.terrainPaint_sizeSlider->value()*0.01f;
-				if (event->buttons() & Qt::RightButton) {
-					change = -change;
-				}
-				//mainWin->urbanGeometry->vboRenderManager->addValue(pos.x(), pos.y(), change);
-				xM=1.0f-(vboRenderManager.side/2.0f-pos.x())/vboRenderManager.side;
-				yM=1.0f-(vboRenderManager.side/2.0f-pos.y())/vboRenderManager.side;
-				vboRenderManager.vboTerrain.updateTerrain(xM,yM,change,radi);//rad,change);
-				mainWin->urbanGeometry->adaptToTerrain();/// !! GEN did not have it here (enough in move?)
-				shadow.makeShadowMap(this);
-				updateGL();
-				break;
-			case MainWindow::MODE_BLOCK: // select a block
+		switch (mainWin->mode) {
+		case MainWindow::MODE_DEFAULT: // terrain editing
+			// normal Gaussian edition
+			change=mainWin->controlWidget->ui.terrainPaint_changeSlider->value()*0.003f;
+			radi=mainWin->controlWidget->ui.terrainPaint_sizeSlider->value()*0.01f;
+			if (event->buttons() & Qt::RightButton) {
+				change = -change;
+			}
+			//mainWin->urbanGeometry->vboRenderManager->addValue(pos.x(), pos.y(), change);
+			xM=1.0f-(vboRenderManager.side/2.0f-pos.x())/vboRenderManager.side;
+			yM=1.0f-(vboRenderManager.side/2.0f-pos.y())/vboRenderManager.side;
+			vboRenderManager.vboTerrain.updateTerrain(xM,yM,change,radi);//rad,change);
+			mainWin->urbanGeometry->adaptToTerrain();/// !! GEN did not have it here (enough in move?)
+			shadow.makeShadowMap(this);
+			updateGL();
+			break;
+		case MainWindow::MODE_BLOCK: // select a block
+			if (event->buttons() & Qt::LeftButton) {
 				selectedIndex = mainWin->urbanGeometry->blocks.selectBlock(pos);
 				if (selectedIndex >= 0) {
 					mainWin->propertyWidget->setBlock(selectedIndex, mainWin->urbanGeometry->blocks[selectedIndex]);
@@ -87,8 +87,10 @@ void GLWidget3D::mousePressEvent(QMouseEvent *event) {
 
 				VBOPm::generateBlockMesh(mainWin->glWidget->vboRenderManager, mainWin->urbanGeometry->blocks);
 				updateGL();
-				break;
-			case MainWindow::MODE_PARCEL:
+			}
+			break;
+		case MainWindow::MODE_PARCEL:
+			if (event->buttons() & Qt::LeftButton) {
 				selectedIndexPair = mainWin->urbanGeometry->blocks.selectParcel(pos);
 				if (selectedIndexPair.first >= 0) {
 					mainWin->propertyWidget->setParcel(selectedIndexPair.first, selectedIndexPair.second, mainWin->urbanGeometry->blocks[selectedIndexPair.first]);
@@ -96,10 +98,12 @@ void GLWidget3D::mousePressEvent(QMouseEvent *event) {
 				
 				VBOPm::generateBlockMesh(mainWin->glWidget->vboRenderManager, mainWin->urbanGeometry->blocks);
 				updateGL();
-
-				break;
 			}
-		} else {
+
+			break;
+		}
+	} else {
+		if (event->buttons() & Qt::LeftButton) {
 			if (shiftPressed) {	// select an edge
 				if (GraphUtil::getEdge(mainWin->urbanGeometry->roads, pos, 30, selectedEdgeDesc)) {
 					selectEdge(mainWin->urbanGeometry->roads, selectedEdgeDesc);
@@ -141,7 +145,7 @@ void GLWidget3D::mouseMoveEvent(QMouseEvent *event) {
 	vboRenderManager.mousePos3D=pos.toVector3D();
 
 	if (altPressed) {	// editing
-		if (event->buttons() & Qt::LeftButton) {
+		if ((event->buttons() & Qt::LeftButton) || (event->buttons() & Qt::RightButton) || (event->buttons() & Qt::MiddleButton)) {
 			float xM, yM, radi, change;
 			switch (mainWin->mode) {
 			case MainWindow::MODE_DEFAULT: // terrain editing
