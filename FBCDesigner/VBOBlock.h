@@ -125,5 +125,6 @@ public:
 	bool areParcelsAdjacent(parcelGraphVertexIter &p0, parcelGraphVertexIter &p1);
 	
 	//void generateMesh(VBORenderManager& rendManager);
+	void adaptToTerrain(VBORenderManager* vboRenderManager);
 };
 

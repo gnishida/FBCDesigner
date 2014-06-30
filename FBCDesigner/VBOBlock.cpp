@@ -203,3 +203,20 @@ void Block::computeMyBBox3D(void) {
 	}
 }
 
+/**
+ * adapt this block to the vboRenderManager.
+ */
+void Block::adaptToTerrain(VBORenderManager* vboRenderManager) {
+	for (int i = 0; i < blockContour.contour.size(); ++i) {
+		float z = vboRenderManager->getTerrainHeight(blockContour[i].x(), blockContour[i].x());
+		blockContour.contour[i].setZ(z + 1);
+	}
+
+	Block::parcelGraphVertexIter vi, viEnd;
+	for (boost::tie(vi, viEnd) = boost::vertices(myParcels); vi != viEnd; ++vi) {
+		for (int i = 0; i < myParcels[*vi].parcelContour.contour.size(); ++i) {
+			float z = vboRenderManager->getTerrainHeight(myParcels[*vi].parcelContour[i].x(), myParcels[*vi].parcelContour[i].x());
+			myParcels[*vi].parcelContour.contour[i].setZ(z + 1);
+		}
+	}
+}

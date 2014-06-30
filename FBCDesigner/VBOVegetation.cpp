@@ -63,9 +63,7 @@ ModelSpec addStreetLap( QVector3D pos,QVector3D contourDir){
 	return stEl;
 }
 
-bool VBOVegetation::generateVegetation(VBORenderManager& rendManager,
-		PlaceTypesMainClass &placeTypesIn,std::vector< Block > &blocks){
-
+bool VBOVegetation::generateVegetation(VBORenderManager& rendManager, PlaceTypesMainClass &placeTypesIn,std::vector< Block > &blocks){
 	QTime tim;
 	tim.start();
 
@@ -98,7 +96,7 @@ bool VBOVegetation::generateVegetation(VBORenderManager& rendManager,
 			for(int i=0; i<numTreesInParcel; ++i){		
 				pos.setX(Util::genRand(xmin, xmax));
 				pos.setY(Util::genRand(ymin, ymax));
-				pos.setZ( 0.0f );
+				pos.setZ(rendManager.getTerrainHeight(pos.x(), pos.y()));
 				if(blocks[bN].blockContour.isPointWithinLoop(pos)){
 					rendManager.addStreetElementModel("tree",addTree(pos));
 				}
@@ -116,7 +114,7 @@ bool VBOVegetation::generateVegetation(VBORenderManager& rendManager,
 				for(int i=0; i<numTreesInParcel; ++i){		
 					pos.setX(Util::genRand(minCorner.x(), maxCorner.x()));
 					pos.setY(Util::genRand(minCorner.y(), maxCorner.y()));
-					pos.setZ( 0.0f );
+					pos.setZ(rendManager.getTerrainHeight(pos.x(), pos.y()));
 					if (blocks[bN].myParcels[*vi].parcelContour.isPointWithinLoop(pos)) {
 						rendManager.addStreetElementModel("tree",addTree(pos));
 					}
@@ -166,7 +164,7 @@ bool VBOVegetation::generateVegetation(VBORenderManager& rendManager,
 				pos = ptThis + segmentVector * distFromSegmentStart;
 
 				if (type % 2 == 0) {
-					pos.setZ(1.0f);//pavement at 1.5f
+					pos.setZ(rendManager.getTerrainHeight(pos.x(), pos.y()) + 0.5f);//pavement at 1.5f
 					rendManager.addStreetElementModel("tree", addTree(pos));
 				} else {
 					rendManager.addStreetElementModel("streetLamp", addStreetLap(pos, segmentVector));

@@ -139,7 +139,7 @@ void MainWindow::onLoadBlocks() {
 	if (filename.isEmpty()) return;
 
 	urbanGeometry->loadBlocks(filename);
-
+	urbanGeometry->adaptToTerrain();
 	glWidget->updateGL();
 }
 

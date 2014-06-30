@@ -25,7 +25,7 @@
 		void updateTerrain(float coordX,float coordY,float change,float rad);
 		void updateTerrainNewValue(float coordX,float coordY,float newValue,float rad);
 		void smoothTerrain();
-		float getTerrainHeight(float xM,float yM,bool actual=false);
+		float getTerrainHeight(float xM,float yM);
 		void loadTerrain(QString& fileName);
 		void saveTerrain(QString& fileName);
 

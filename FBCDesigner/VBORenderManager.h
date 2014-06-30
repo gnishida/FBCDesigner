@@ -89,7 +89,7 @@ public:
 	//void updateLayer(QVector3D mouse3D,float change);
 	//void updateTerrain(float coordX,float coordY,float rad,float change);
 	void changeTerrainDimensions(float terrainSide,int resolution);
-	float getTerrainHeight(float xP,float xY,bool actual=false);/// !!
+	float getTerrainHeight(float xP,float xY);/// !!
 	//void changeTerrainShader(int newMode);
 	QVector3D minPos;
 	QVector3D maxPos;

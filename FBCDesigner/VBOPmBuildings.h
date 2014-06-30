@@ -12,7 +12,7 @@
 class VBOPmBuildings{
 public:
 
-	static bool generateBuildings(PlaceTypesMainClass &placeTypesIn,std::vector< Block > &blocks);
+	static bool generateBuildings(VBORenderManager& rendManager, PlaceTypesMainClass &placeTypesIn,std::vector< Block > &blocks);
 
 };
 

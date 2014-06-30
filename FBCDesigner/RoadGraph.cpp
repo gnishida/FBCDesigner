@@ -40,8 +40,8 @@ void RoadGraph::clear() {
 void RoadGraph::adaptToTerrain(VBORenderManager* vboRenderManager) {
 	RoadVertexIter vi, vend;
 	for (boost::tie(vi, vend) = boost::vertices(graph); vi != vend; ++vi) {
-		float z = vboRenderManager->getTerrainHeight(graph[*vi]->pt.x(), graph[*vi]->pt.y(), true);
-		graph[*vi]->pt3D = QVector3D(graph[*vi]->pt.x(), graph[*vi]->pt.y(), z + 2);
+		float z = vboRenderManager->getTerrainHeight(graph[*vi]->pt.x(), graph[*vi]->pt.y());
+		graph[*vi]->pt3D = QVector3D(graph[*vi]->pt.x(), graph[*vi]->pt.y(), z + 1);
 	}
 
 	RoadEdgeIter ei, eend;
@@ -52,8 +52,8 @@ void RoadGraph::adaptToTerrain(VBORenderManager* vboRenderManager) {
 
 		//Polyline2D polyline = GraphUtil::finerEdge(graph[*ei]->polyline, 10.0f);
 		for (int i = 0; i < graph[*ei]->polyline.size(); ++i) {
-			float z = vboRenderManager->getTerrainHeight(graph[*ei]->polyline[i].x(), graph[*ei]->polyline[i].y(), true);
-			graph[*ei]->polyline3D.push_back(QVector3D(graph[*ei]->polyline[i].x(), graph[*ei]->polyline[i].y(), z + 2));
+			float z = vboRenderManager->getTerrainHeight(graph[*ei]->polyline[i].x(), graph[*ei]->polyline[i].y());
+			graph[*ei]->polyline3D.push_back(QVector3D(graph[*ei]->polyline[i].x(), graph[*ei]->polyline[i].y(), z + 1));
 		}
 	}
 
@@ -116,8 +116,8 @@ void RoadGraph::updateRoadGraph(VBORenderManager& rendManager) {
 				bool bigAngle=false;
 				p0 = edge->polyline3D[pL];
 				p1 = edge->polyline3D[pL+1];
-				p0.setZ(deltaZ);
-				p1.setZ(deltaZ);
+				//p0.setZ(deltaZ);
+				//p1.setZ(deltaZ);
 
 				lastDir=dir;//save to compare
 
@@ -135,12 +135,12 @@ void RoadGraph::updateRoadGraph(VBORenderManager& rendManager) {
 
 				if (pL < edge->polyline3D.size() - 2) {
 					QVector3D p2 = edge->polyline3D[pL + 2];
-					p2.setZ(deltaZ);
+					//p2.setZ(deltaZ);
 					
 					Util::getIrregularBisector(p0, p1, p2, hWidth, hWidth, a2);
 					Util::getIrregularBisector(p0, p1, p2, -hWidth, -hWidth, a1);
-					a1.setZ(deltaZ);
-					a2.setZ(deltaZ);
+					//a1.setZ(deltaZ);
+					//a2.setZ(deltaZ);
 				}
 				
 				float middLenghtR=length;
@@ -187,8 +187,8 @@ void RoadGraph::updateRoadGraph(VBORenderManager& rendManager) {
 		}
 
 		// add all geometry
-		rendManager.addStaticGeometry("3d_roads",vertROAD[0],"../data/textures/roads/road_2lines.jpg",GL_QUADS,2|mode_AdaptTerrain);
-		rendManager.addStaticGeometry("3d_roads",vertROAD[1],"../data/textures/roads/road_4lines.jpg",GL_QUADS,2|mode_AdaptTerrain);
+		rendManager.addStaticGeometry("3d_roads",vertROAD[0],"../data/textures/roads/road_2lines.jpg",GL_QUADS,2);
+		rendManager.addStaticGeometry("3d_roads",vertROAD[1],"../data/textures/roads/road_4lines.jpg",GL_QUADS,2);
 	}
 
 	//////////////////////////////////////////
@@ -229,9 +229,9 @@ void RoadGraph::updateRoadGraph(VBORenderManager& rendManager) {
 				}
 				QVector3D center=graph[*vi]->pt3D;
 				if(outDegree<=2)
-					center.setZ(deltaZ-0.1f);//below
+					center.setZ(center.z() - 0.1f);//deltaZ-0.1f);//below
 				else
-					center.setZ(deltaZ+0.1f);//above
+					center.setZ(center.z() + 0.1f);//deltaZ+0.1f);//above
 
 				float radi1 = max_r /2.0f;
 				//if(outDegree==2)radi1*=1.10f;
@@ -387,8 +387,8 @@ void RoadGraph::updateRoadGraph(VBORenderManager& rendManager) {
 
 					// middle
 					float zOff=0.1f;
-					intPoint2.setZ(deltaZ+zOff);
-					intPoint1.setZ(deltaZ+zOff);
+					intPoint2.setZ(graph[*vi]->pt3D.z() + zOff);//deltaZ+zOff);
+					intPoint1.setZ(graph[*vi]->pt3D.z() + zOff);//deltaZ+zOff);
 					
 					interPoints.push_back(intPoint1);
 					interPoints.push_back(intPoint2);
@@ -427,14 +427,14 @@ void RoadGraph::updateRoadGraph(VBORenderManager& rendManager) {
 						}
 					}
 
-					rendManager.addStaticGeometry2("3d_roads_interCom",interPoints,0.0f,false,"../data/textures/roads/road_0lines.jpg",GL_QUADS,2|mode_AdaptTerrain,QVector3D(1.0f/7.5f,1.0f/7.5f,1),QVector3D());//0.0f (moved before)
+					rendManager.addStaticGeometry2("3d_roads_interCom",interPoints,0.0f,false,"../data/textures/roads/road_0lines.jpg",GL_QUADS,2,QVector3D(1.0f/7.5f,1.0f/7.5f,1),QVector3D());//0.0f (moved before)
 				}
-				rendManager.addStaticGeometry("3d_roads_interCom",interPedX,"../data/textures/roads/road_pedX.jpg",GL_QUADS,2|mode_AdaptTerrain);
-				rendManager.addStaticGeometry("3d_roads_interCom",interPedXLineR,"../data/textures/roads/road_pedXLineR.jpg",GL_QUADS,2|mode_AdaptTerrain);
+				rendManager.addStaticGeometry("3d_roads_interCom",interPedX,"../data/textures/roads/road_pedX.jpg",GL_QUADS,2);
+				rendManager.addStaticGeometry("3d_roads_interCom",interPedXLineR,"../data/textures/roads/road_pedXLineR.jpg",GL_QUADS,2);
 			}
 		}//all vertex
 
-		rendManager.addStaticGeometry("3d_roads_inter",intersectCirclesV,"../data/textures/roads/road_0lines.jpg",GL_TRIANGLES,2|mode_AdaptTerrain);
+		rendManager.addStaticGeometry("3d_roads_inter",intersectCirclesV,"../data/textures/roads/road_0lines.jpg",GL_TRIANGLES,2);
 	}
 
 

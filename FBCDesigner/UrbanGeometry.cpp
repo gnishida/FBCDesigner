@@ -36,6 +36,9 @@ void UrbanGeometry::clearGeometry() {
  */
 void UrbanGeometry::adaptToTerrain() {
 	roads.adaptToTerrain(&mainWin->glWidget->vboRenderManager);
+	for (int i = 0; i < blocks.size(); ++i) {
+		blocks[i].adaptToTerrain(&mainWin->glWidget->vboRenderManager);
+	}
 }
 
 /*void UrbanGeometry::newTerrain(int width, int depth, int cellLength) {

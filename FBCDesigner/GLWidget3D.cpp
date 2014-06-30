@@ -234,7 +234,7 @@ void GLWidget3D::initializeGL() {
 	updateCamera();
 	shadow.initShadow(vboRenderManager.program,this);
 	glUniform1i(glGetUniformLocation(vboRenderManager.program,"shadowState"), 0);//SHADOW: Disable
-	glUniform1i(glGetUniformLocation(vboRenderManager.program, "terrainMode"),1);//FLAT
+	//glUniform1i(glGetUniformLocation(vboRenderManager.program, "terrainMode"),1);//FLAT
 		
 	shadow.makeShadowMap(this);
 }

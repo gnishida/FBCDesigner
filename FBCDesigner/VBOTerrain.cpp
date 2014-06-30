@@ -220,7 +220,7 @@
 			glVertexAttribPointer(2,3,GL_FLOAT,GL_FALSE,sizeof(Vertex),(void*)(6*sizeof(float)));
 			glEnableVertexAttribArray(3);
 			glVertexAttribPointer(3,3,GL_FLOAT,GL_FALSE,sizeof(Vertex),(void*)(9*sizeof(float)));
-			glUniform1i (glGetUniformLocation (program, "mode"), 1|mode_AdaptTerrain);//MODE: color
+			glUniform1i (glGetUniformLocation (program, "mode"), 1);//MODE: color
 
 			//draw points
 			glDrawArrays(GL_POINTS,0,points.size()-numPointsCircle);
@@ -258,10 +258,7 @@
 		glActiveTexture(GL_TEXTURE0);
 	}//
 
-	float VBOTerrain::getTerrainHeight(float xM,float yM,bool actual){
-		if(!actual && (G::global()["3d_render_mode"]==0||G::global()["3d_render_mode"]==3)){//for Gen Mode it is flat
-			return 0.0f;
-		}
+	float VBOTerrain::getTerrainHeight(float xM,float yM){
 		float value255=terrainLayer.getValue(xM,yM);
 		const float maxHeight=7.0;//7=255*7 1785m (change in vertex as well)
 		float height=maxHeight*value255;

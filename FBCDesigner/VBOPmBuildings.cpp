@@ -5,13 +5,13 @@
 
 #include "VBOPmBuildings.h"
 
-bool generateBlockBuildings(Block &inBlock, PlaceTypesMainClass &placeTypesIn);
+bool generateBlockBuildings(VBORenderManager& rendManager, Block &inBlock, PlaceTypesMainClass &placeTypesIn);
 
-bool VBOPmBuildings::generateBuildings(PlaceTypesMainClass &placeTypesIn,std::vector< Block > &blocks){
+bool VBOPmBuildings::generateBuildings(VBORenderManager& rendManager, PlaceTypesMainClass &placeTypesIn,std::vector< Block > &blocks){
 	//For each block
 	for(int i=0; i<blocks.size(); ++i){
 		srand(blocks[i].randSeed);
-		generateBlockBuildings(blocks[i], placeTypesIn);
+		generateBlockBuildings(rendManager, blocks[i], placeTypesIn);
 	}
 	return true;
 }//
@@ -100,7 +100,7 @@ bool computeBuildingFootprintPolygon(float maxFrontage, float maxDepth,
 	return true;
 }
 
-bool generateParcelBuildings(Block &inBlock, Parcel &inParcel, PlaceTypesMainClass &placeTypesIn)
+bool generateParcelBuildings(VBORenderManager& rendManager, Block &inBlock, Parcel &inParcel, PlaceTypesMainClass &placeTypesIn)
 {
 	float probEmptyParcel = 0.0f;
 	Loop3D pContourCpy;
@@ -165,8 +165,22 @@ bool generateParcelBuildings(Block &inBlock, Parcel &inParcel, PlaceTypesMainCla
 		placeTypesIn.myPlaceTypes.at(inParcel.getMyPlaceTypeIdx()).getFloat("building_stories_mean") +
 		heightDev;
 
+	// find the lowest elevation
+	float minZ = std::numeric_limits<float>::max();
+	for (int i = 0; i < inParcel.myBuilding.buildingFootprint.contour.size(); ++i) {
+		float z = rendManager.getTerrainHeight(inParcel.myBuilding.buildingFootprint[i].x(), inParcel.myBuilding.buildingFootprint[i].y());
+		if (z < minZ) {
+			minZ = z;
+		}
+	}
+
+	// set the elevation
+	for (int i = 0; i < inParcel.myBuilding.buildingFootprint.contour.size(); ++i) {
+		inParcel.myBuilding.buildingFootprint[i].setZ(minZ);
+	}
+
 	//Set building
-	inParcel.myBuilding.buildingFootprint=inParcel.myBuilding.buildingFootprint;
+	//inParcel.myBuilding.buildingFootprint=inParcel.myBuilding.buildingFootprint;
 	inParcel.myBuilding.numStories=bldgNumStories;
 	inParcel.myBuilding.bldType=BLDG_WITH_BLDG;
 
@@ -174,14 +188,14 @@ bool generateParcelBuildings(Block &inBlock, Parcel &inParcel, PlaceTypesMainCla
 }
 
 
-bool generateBlockBuildings(Block &inBlock, PlaceTypesMainClass &placeTypesIn)
+bool generateBlockBuildings(VBORenderManager& rendManager, Block &inBlock, PlaceTypesMainClass &placeTypesIn)
 {
 	Block::parcelGraphVertexIter vi, viEnd;	
 
 	//=== First compute parcel frontage and buildable area
 	//For each parcel
 	for(boost::tie(vi, viEnd) = boost::vertices(inBlock.myParcels); vi != viEnd; ++vi){					
-		if(!generateParcelBuildings(inBlock, inBlock.myParcels[*vi], placeTypesIn)){
+		if(!generateParcelBuildings(rendManager, inBlock, inBlock.myParcels[*vi], placeTypesIn)){
 			continue;
 		}
 	}

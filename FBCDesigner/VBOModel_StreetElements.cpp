@@ -58,7 +58,7 @@
 			initStreetElements();
 		}
 		glCullFace(GL_FRONT);
-		glUniform1i (glGetUniformLocation (programId, "mode"), 5|mode_Lighting|mode_AdaptTerrain);//model obj: one color
+		glUniform1i (glGetUniformLocation (programId, "mode"), 5|mode_Lighting);//model obj: one color
 
 		streetElementsModels[treeStr.type].renderModel(programId, treeStr);
 		

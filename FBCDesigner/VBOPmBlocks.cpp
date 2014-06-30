@@ -57,17 +57,17 @@ struct output_visitor : public boost::planar_face_traversal_visitor
 			
 		for (int i = 0; i < blockContourPoints.contour.size(); ++i) {
 			blockContourTmp.push_back(blockContourPoints[i]);
-			blockContourTmp.contour.back().setZ(0);//forze height =0
+			//blockContourTmp.contour.back().setZ(0);//forze height =0
 
 			if ((blockContourLines[i][0] - blockContourPoints[i]).lengthSquared() < (blockContourLines[i].last() - blockContourPoints[i]).lengthSquared()) {
 				for (int j = 1; j < blockContourLines[i].size() - 1; ++j) {
 					blockContourTmp.push_back(blockContourLines[i][j]);
-					blockContourTmp.contour.back().setZ(0);//forze height =0
+					//blockContourTmp.contour.back().setZ(0);//forze height =0
 				}
 			} else {
 				for (int j = blockContourLines[i].size() - 2; j > 0; --j) {
 					blockContourTmp.push_back(blockContourLines[i][j]);
-					blockContourTmp.contour.back().setZ(0);//forze height =0
+					//blockContourTmp.contour.back().setZ(0);//forze height =0
 				}
 			}
 		}

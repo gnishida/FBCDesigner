@@ -97,37 +97,26 @@ void addFirstFloor(VBORenderManager& rendManager,std::vector<QVector3D>& footpri
 		for(int curN=0;curN<footprint.size();curN++){
 			nextN=(curN+1)%footprint.size();
 			normal=QVector3D::crossProduct(footprint[nextN]-footprint[curN],QVector3D(0,0,1)).normalized();
-			sideVert.push_back(Vertex(QVector3D(footprint[curN].x(),footprint[curN].y(),initHeight),floorColor,normal,QVector3D()));
-			sideVert.push_back(Vertex(QVector3D(footprint[nextN].x(),footprint[nextN].y(),initHeight),floorColor,normal,QVector3D()));
-			sideVert.push_back(Vertex(QVector3D(footprint[nextN].x(),footprint[nextN].y(),initHeight+floorHeight),floorColor,normal,QVector3D()));
-			sideVert.push_back(Vertex(QVector3D(footprint[curN].x(),footprint[curN].y(),initHeight+floorHeight),floorColor,normal,QVector3D()));			
+			sideVert.push_back(Vertex(QVector3D(footprint[curN].x(),footprint[curN].y(),footprint[curN].z()+initHeight),floorColor,normal,QVector3D()));
+			sideVert.push_back(Vertex(QVector3D(footprint[nextN].x(),footprint[nextN].y(),footprint[curN].z()+initHeight),floorColor,normal,QVector3D()));
+			sideVert.push_back(Vertex(QVector3D(footprint[nextN].x(),footprint[nextN].y(),footprint[curN].z()+initHeight+floorHeight),floorColor,normal,QVector3D()));
+			sideVert.push_back(Vertex(QVector3D(footprint[curN].x(),footprint[curN].y(),footprint[curN].z()+initHeight+floorHeight),floorColor,normal,QVector3D()));			
 		}
-		rendManager.addStaticGeometry("3d_building",sideVert,"",GL_QUADS,1|mode_Lighting|mode_AdaptTerrain);//|LC::mode_Lighting);
+		rendManager.addStaticGeometry("3d_building",sideVert,"",GL_QUADS,1|mode_Lighting);//|LC::mode_Lighting);
 	}
 }//
 
 void addBox(VBORenderManager& rendManager,std::vector<QVector3D>& roofOffCont,QVector3D boxColor,float initHeight,float boxSize){
-	addTexConvexPoly(rendManager,"3d_building","",GL_QUADS,1|mode_Lighting,//|LC::mode_AdaptTerrain|LC::mode_Lighting,
-		roofOffCont,boxColor,QVector3D(0,0,1.0f),initHeight+boxSize,false,true,QVector3D(1,1,1));
-	addTexConvexPoly(rendManager,"3d_building","",GL_QUADS,1|mode_Lighting,//|LC::mode_AdaptTerrain|LC::mode_Lighting,
-		roofOffCont,boxColor,QVector3D(0,0,-1.0f),initHeight,true,true,QVector3D(1,1,1));
-	/*addTexConvexPoly(-1,
-	roofOffCont,
-	QVector3D(boxColor.redF(), boxColor.greenF(), boxColor.blueF()),
-	QVector3D(0,0,1.0f),
-	height+boxSize,false,true);//no inv yes toZero
-	addTexConvexPoly(-1,
-	roofOffCont,
-	QVector3D(boxColor.redF(), boxColor.greenF(), boxColor.blueF()),
-	QVector3D(0,0,-1.0f),
-	height,true);//inverse loop*/
+	addTexConvexPoly(rendManager,"3d_building","",GL_QUADS,1|mode_Lighting,	roofOffCont,boxColor,QVector3D(0,0,1.0f), initHeight+boxSize, false, true,QVector3D(1,1,1));
+	addTexConvexPoly(rendManager,"3d_building","",GL_QUADS,1|mode_Lighting,	roofOffCont,boxColor,QVector3D(0,0,-1.0f), initHeight, true, true,QVector3D(1,1,1));
+
 	addFirstFloor(rendManager,roofOffCont,boxColor,initHeight,boxSize);
 }//
 
 void addRoof(VBORenderManager& rendManager,std::vector<QVector3D>& roofOffCont,QVector3D boxColor,float initHeight,float boxSize){
-	addTexConvexPoly(rendManager,"3d_building",roofTex[qrand()%roofTex.size()],GL_QUADS,2|mode_Lighting|mode_AdaptTerrain,//|LC::mode_AdaptTerrain|LC::mode_Lighting, "../data/textures/LC/roof/roof0.jpg"
+	addTexConvexPoly(rendManager,"3d_building",roofTex[qrand()%roofTex.size()],GL_QUADS,2|mode_Lighting,//|LC::mode_AdaptTerrain|LC::mode_Lighting, "../data/textures/LC/roof/roof0.jpg"
 		roofOffCont,boxColor,QVector3D(0,0,1.0f),initHeight+boxSize,false,true,QVector3D(1,1,1));
-	addTexConvexPoly(rendManager,"3d_building","",GL_QUADS,1|mode_Lighting|mode_AdaptTerrain,//|LC::mode_AdaptTerrain|LC::mode_Lighting,
+	addTexConvexPoly(rendManager,"3d_building","",GL_QUADS,1|mode_Lighting,//|LC::mode_AdaptTerrain|LC::mode_Lighting,
 		roofOffCont,boxColor,QVector3D(0,0,-1.0f),initHeight,true,true,QVector3D(1,1,1));
 	addFirstFloor(rendManager,roofOffCont,boxColor,initHeight,boxSize);
 }//
@@ -255,7 +244,7 @@ void addWindow(VBORenderManager& rendManager,
 			vertWind.push_back(Vertex(vert[5],color,norm,QVector3D()));
 			vertWind.push_back(Vertex(vert[4],color,norm,QVector3D()));
 			vertWind.push_back(Vertex(vert[1],color,norm,QVector3D()));
-			rendManager.addStaticGeometry("3d_building",vertWind,"",GL_QUADS,1|mode_Lighting|mode_AdaptTerrain);//|LC::mode_AdaptTerrain|LC::mode_Lighting);
+			rendManager.addStaticGeometry("3d_building",vertWind,"",GL_QUADS,1|mode_Lighting);//|LC::mode_AdaptTerrain|LC::mode_Lighting);
 			//////////////////////////////////////////////////////
 			// BACK
 			vertWind.clear();
@@ -266,7 +255,7 @@ void addWindow(VBORenderManager& rendManager,
 			vertWind.push_back(Vertex(vert[2],color,norm,QVector3D(0,1,0)));
 
 			//rendManager.addStaticGeometry("buildingsTop",vertWind,"../data/textures/LC/wind/c_window1.jpg",GL_QUADS,2|LC::mode_AdaptTerrain|LC::mode_Lighting);
-			rendManager.addStaticGeometry("3d_building",vertWind,windowTex[((int)randN.x())%windowTex.size()],GL_QUADS,2|mode_Lighting|mode_AdaptTerrain);//|LC::mode_AdaptTerrain|LC::mode_Lighting);
+			rendManager.addStaticGeometry("3d_building",vertWind,windowTex[((int)randN.x())%windowTex.size()],GL_QUADS,2|mode_Lighting);//|LC::mode_AdaptTerrain|LC::mode_Lighting);
 
 			/*tex.push_back(QVector3D(0,0,0));tex.push_back(QVector3D(1.0f,0,0));tex.push_back(QVector3D(1.0f,1.0f,0));tex.push_back(QVector3D(0,1.0f,0));
 			texN=window_frameTex[((int)randN.x())%window_frameTex.size()];
@@ -455,7 +444,7 @@ void addColumnGeometry(VBORenderManager& rendManager,
 			accPerimeter+=sideLenght;
 		}
 		//rendManager.addStaticGeometry("buildingsTop",vert,"../data/textures/LC/facade/SeamlessBrick05_1.25_1.3_8.JPG",GL_QUADS,2|LC::mode_AdaptTerrain|LC::mode_Lighting);
-		rendManager.addStaticGeometry("3d_building",vert,facadeTex[randomFacade],GL_QUADS,2|mode_Lighting|mode_AdaptTerrain);//|LC::mode_AdaptTerrain|LC::mode_Lighting);
+		rendManager.addStaticGeometry("3d_building",vert,facadeTex[randomFacade],GL_QUADS,2|mode_Lighting);//|LC::mode_AdaptTerrain|LC::mode_Lighting);
 }//
 
 void VBOGeoBuilding::initBuildingsTex(){
@@ -512,27 +501,27 @@ void VBOGeoBuilding::generateBuilding(VBORenderManager& rendManager,Building& bu
 		for(int curN=0;curN<footprint.contour.size();curN++){
 			nextN=(curN+1)%footprint.contour.size();
 			normal=QVector3D::crossProduct(footprint[nextN]-footprint[curN],QVector3D(0,0,1)).normalized();
-			sideVert.push_back(Vertex(QVector3D(footprint[curN].x(),footprint[curN].y(),0.0f),color,normal,QVector3D()));
-			sideVert.push_back(Vertex(QVector3D(footprint[nextN].x(),footprint[nextN].y(),0.0f),color,normal,QVector3D()));
-			sideVert.push_back(Vertex(QVector3D(footprint[nextN].x(),footprint[nextN].y(),0.0f+height),color,normal,QVector3D()));
-			sideVert.push_back(Vertex(QVector3D(footprint[curN].x(),footprint[curN].y(),0.0f+height),color,normal,QVector3D()));			
+			sideVert.push_back(Vertex(QVector3D(footprint[curN].x(),footprint[curN].y(),footprint[curN].z()),color,normal,QVector3D()));
+			sideVert.push_back(Vertex(QVector3D(footprint[nextN].x(),footprint[nextN].y(),footprint[nextN].z()),color,normal,QVector3D()));
+			sideVert.push_back(Vertex(QVector3D(footprint[nextN].x(),footprint[nextN].y(),footprint[nextN].z()+height),color,normal,QVector3D()));
+			sideVert.push_back(Vertex(QVector3D(footprint[curN].x(),footprint[curN].y(),footprint[curN].z()+height),color,normal,QVector3D()));			
 		}
-		rendManager.addStaticGeometry("3d_building",sideVert,"",GL_QUADS,1|mode_Lighting|mode_AdaptTerrain);//|LC::mode_AdaptTerrain|LC::mode_Lighting);
+		rendManager.addStaticGeometry("3d_building",sideVert,"",GL_QUADS,1|mode_Lighting);//|LC::mode_AdaptTerrain|LC::mode_Lighting);
 
 		// ROOF
 		if(footprint.contour.size()==3||footprint.contour.size()==4){
 			normal=QVector3D(0,0,1.0f);
 			std::vector<Vertex> topVert;
-			topVert.push_back(Vertex(QVector3D(footprint[0].x(),footprint[0].y(),0.0f+height),color,normal,QVector3D()));
-			topVert.push_back(Vertex(QVector3D(footprint[1].x(),footprint[1].y(),0.0f+height),color,normal,QVector3D()));
-			topVert.push_back(Vertex(QVector3D(footprint[2].x(),footprint[2].y(),0.0f+height),color,normal,QVector3D()));
+			topVert.push_back(Vertex(QVector3D(footprint[0].x(),footprint[0].y(),footprint[0].z()+height),color,normal,QVector3D()));
+			topVert.push_back(Vertex(QVector3D(footprint[1].x(),footprint[1].y(),footprint[1].z()+height),color,normal,QVector3D()));
+			topVert.push_back(Vertex(QVector3D(footprint[2].x(),footprint[2].y(),footprint[2].z()+height),color,normal,QVector3D()));
 			if(footprint.contour.size()==4){
 
-				topVert.push_back(Vertex(QVector3D(footprint[3].x(),footprint[3].y(),0.0f+height),color,normal,QVector3D()));
+				topVert.push_back(Vertex(QVector3D(footprint[3].x(),footprint[3].y(),footprint[3].z()+height),color,normal,QVector3D()));
 			}else{
-				topVert.push_back(Vertex(QVector3D(footprint[2].x(),footprint[2].y(),0.0f+height),color,normal,QVector3D()));
+				topVert.push_back(Vertex(QVector3D(footprint[2].x(),footprint[2].y(),footprint[2].z()+height),color,normal,QVector3D()));
 			}
-			rendManager.addStaticGeometry("3d_building",topVert,"",GL_QUADS,1|mode_Lighting|mode_AdaptTerrain);//|LC::mode_AdaptTerrain|LC::mode_Lighting);
+			rendManager.addStaticGeometry("3d_building",topVert,"",GL_QUADS,1|mode_Lighting);//|LC::mode_AdaptTerrain|LC::mode_Lighting);
 		}
 	}
 	/*if(footprint.size()==3||footprint.size()==4){
@@ -646,14 +635,14 @@ void VBOGeoBuilding::generateBuilding(VBORenderManager& rendManager,Building& bu
 				sideVert.push_back(Vertex(c-dir*blackWidth,colorB,normal,QVector3D()));
 			}
 		}
-		rendManager.addStaticGeometry("3d_building",sideVert,"",GL_QUADS,1|mode_AdaptTerrain);//|LC::mode_AdaptTerrain|LC::mode_Lighting);
+		rendManager.addStaticGeometry("3d_building",sideVert,"",GL_QUADS,1);//|LC::mode_AdaptTerrain|LC::mode_Lighting);
 
 		// ROOF
 		Polygon3D roofRed;
 		footprint.computeInset(1.0f,roofRed.contour,false);
 		//rendManager.addStaticGeometry2("3d_building",footprint.contour,height,false,"",GL_QUADS,1,QVector3D(1,1,1));
-		rendManager.addStaticGeometry2("3d_building",roofRed.contour,height+sideWalkEl,false,"",GL_QUADS,1|mode_AdaptTerrain,QVector3D(1,1,1),colorW);
-		rendManager.addStaticGeometry2("3d_building",footprint.contour,height-blackWidth/2.0f+sideWalkEl,false,"",GL_QUADS,1|mode_AdaptTerrain,QVector3D(1,1,1),colorB);
+		rendManager.addStaticGeometry2("3d_building",roofRed.contour,height+sideWalkEl,false,"",GL_QUADS,1,QVector3D(1,1,1),colorW);
+		rendManager.addStaticGeometry2("3d_building",footprint.contour,height-blackWidth/2.0f+sideWalkEl,false,"",GL_QUADS,1,QVector3D(1,1,1),colorB);
 	}
 
 	///////////////////////////
@@ -708,7 +697,7 @@ void VBOGeoBuilding::generateBuilding(VBORenderManager& rendManager,Building& bu
 			hatchFiles.push_back("../data/textures/LC/hatch/h"+QString::number(i)+"b.png");
 		}
 		rendManager.loadArrayTexture("hatching_array",hatchFiles);*/
-		rendManager.addStaticGeometry("3d_building_fac",sideVert,"hatching_array",GL_QUADS,9|0x0200|mode_TexArray|mode_AdaptTerrain);//|LC::mode_AdaptTerrain|LC::mode_Lighting);
+		rendManager.addStaticGeometry("3d_building_fac",sideVert,"hatching_array",GL_QUADS,9|0x0200|mode_TexArray);//|LC::mode_AdaptTerrain|LC::mode_Lighting);
 		//rendManager.addStaticGeometry("3d_building_fac",sideVert,"../data/textures/LC/hatch/h1.png",GL_QUADS,8);//|LC::mode_AdaptTerrain|LC::mode_Lighting);
 
 		// ROOF
@@ -716,6 +705,6 @@ void VBOGeoBuilding::generateBuilding(VBORenderManager& rendManager,Building& bu
 		Polygon3D roofRed;
 		footprint.computeInset(blackWidth,roofRed.contour,false);
 		//rendManager.addStaticGeometry2("3d_building",roofRed.contour,height+sideWalkEl,false,"",GL_QUADS,1,QVector3D(1,1,1),colorW);
-		rendManager.addStaticGeometry2("3d_building",footprint.contour,height-0.2+sideWalkEl,false,"hatching_array",GL_QUADS,10|mode_TexArray|mode_AdaptTerrain,QVector3D(1,1,1),QVector3D(0.1f,0.1f,0.1f));
+		rendManager.addStaticGeometry2("3d_building",footprint.contour,height-0.2+sideWalkEl,false,"hatching_array",GL_QUADS,10|mode_TexArray,QVector3D(1,1,1),QVector3D(0.1f,0.1f,0.1f));
 	}
 }//

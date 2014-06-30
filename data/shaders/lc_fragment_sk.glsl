@@ -11,7 +11,6 @@ in vec4 varyingLightVertexPosition;//position respect the camera view
 out vec4 outputF;
 
 uniform int mode;
-uniform int terrainMode;
 uniform sampler2D tex0;
 uniform sampler2DArray tex_3D;
 //uniform sampler3D tex_3D;
@@ -164,43 +163,19 @@ void main(){
 	//////////////
 	// TERRAIN
 	if((mode&0xFF)==3){
-		///////////////////////////
-		// 0 FLAT (Maps)
-		if(terrainMode==0){
-			float height=outColor.r;///COMPUTED IN VERTEX
-			if(height<=15){//water
-				if(height<=13){
-					outputF=vec4(0xa0/255.0,0xc3/255.0,0xff/255.0,1.0);//water blue
-				}else{
-					outputF=mix(
-						vec4(0x84/255.0,0xa9/255.0,0xe6/255.0,1.0),//water blue dark 92bbff (mine 84a9e6)
-						vec4(0xa0/255.0,0xc3/255.0,0xff/255.0,1.0),//water blue
-						(15.0f-height)*0.5f);
-				}
-			}else{
-				//outputF=vec4(0xf0/255.0,0xed/255.0,0xe5/255.0,1.0);//grey brighter
-				outputF=vec4(0xe9/255.0,0xe5/255.0,0xdc/255.0,1.0);//gray dark
-			}
-			return;
-		}
+		vec4 terrainColor=vec4(0,0,0,1.0);
+		float factor;
+		const float maxHeight=9.0;//7=255*7 1500m (change in vertex shader as well) HERE IS 9 TO ALLOW LESS HIGH MOUNTAINS
+		float height=100.0f*(origVertex.z/maxHeight)/255.0;//0-100
+		height=clamp(height,0.0,99.999999);//0-99.99
 
-		///////////////////////////
-		// 1 MOUNTAIN
-		if(terrainMode==1){
-			vec4 terrainColor=vec4(0,0,0,1.0);
-			float factor;
-			const float maxHeight=9.0;//7=255*7 1500m (change in vertex shader as well) HERE IS 9 TO ALLOW LESS HIGH MOUNTAINS
-			float height=100.0f*(origVertex.z/maxHeight)/255.0;//0-100
-			height=clamp(height,0.0,99.999999);//0-99.99
-
-			int texInd=int(height/25);
-			float interpTex=mod(height,25.0);
-			// texture
-			outputF=mix(
-				texture( tex_3D, vec3(outUV.rg,texInd) ),
-				texture( tex_3D, vec3(outUV.rg,texInd+1) ),
-				interpTex/25.0);
-		}
+		int texInd=int(height/25);
+		float interpTex=mod(height,25.0);
+		// texture
+		outputF=mix(
+			texture( tex_3D, vec3(outUV.rg,texInd) ),
+			texture( tex_3D, vec3(outUV.rg,texInd+1) ),
+			interpTex/25.0);
 	}
 
 	//////////////

@@ -174,10 +174,10 @@
 	/**
 	 * If "actual" flag is on, then the actual elevation will be returned even if the 2D flat terrain is used.
 	 */
-	float VBORenderManager::getTerrainHeight(float xP,float xY,bool actual){
+	float VBORenderManager::getTerrainHeight(float xP,float xY){
 		float xM=1.0f-(side/2.0f-xP)/side;
 		float yM=1.0f-(side/2.0f-xY)/side;
-		return vboTerrain.getTerrainHeight(xM,yM,actual);
+		return vboTerrain.getTerrainHeight(xM,yM);
 		//return 90.0f;
 		//vboTerrain.updateTerrain(coordX,coordY,change,rad);
 	}
