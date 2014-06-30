@@ -136,6 +136,8 @@ struct vertex_output_visitor : public output_visitor
 
 //
 // Remove intersecting edges of a graph
+// GEN: This function considers each edge as a straight line segment, instead of a polyline.
+//      This may cause unnecessary removal of edges, but it usually can guarantee the planar graph after this process, so I will go with this.
 //
 bool removeIntersectingEdges(RoadGraph &roadGraph)
 {
