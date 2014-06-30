@@ -126,6 +126,29 @@ bool VBOPm::generateVegetation(VBORenderManager& rendManager, BlockSet& blocks, 
 	return true;
 }
 
+void VBOPm::generatePlaceTypeMesh(VBORenderManager& rendManager, PlaceTypesMainClass& placeTypes) {
+	if (!initializedLC) {
+		initLC();//init LC textures
+	}
+
+	rendManager.removeStaticGeometry("placetype");
+
+	for (int i = 0; i < placeTypes.size(); ++i) {
+		std::vector<Vertex> vert;
+
+		QVector3D color = QVector3D(1.0f, 1.0f, 1.0f);
+
+		for (int j = 0; j < placeTypes.myPlaceTypes[i].area.size(); ++j) {
+			int next = (j + 1) % placeTypes.myPlaceTypes[i].area.size();
+
+			vert.push_back(Vertex(QVector3D(placeTypes.myPlaceTypes[i].area[j].x(), placeTypes.myPlaceTypes[i].area[j].y(), 1), color, QVector3D(), QVector3D()));
+			vert.push_back(Vertex(QVector3D(placeTypes.myPlaceTypes[i].area[next].x(), placeTypes.myPlaceTypes[i].area[next].y(), 1), color, QVector3D(), QVector3D()));
+
+		}
+		rendManager.addStaticGeometry("placetype", vert, "", GL_LINES, 1|mode_AdaptTerrain);
+	}
+}
+
 void VBOPm::generateBlockMesh(VBORenderManager& rendManager, BlockSet& blocks) {
 	if (!initializedLC) {
 		initLC();//init LC textures
@@ -151,12 +174,9 @@ void VBOPm::generateBlockMesh(VBORenderManager& rendManager, BlockSet& blocks) {
 
 			for(int sN=0;sN<blocks[i].blockContour.contour.size();sN++){
 				int next = (sN+1) % blocks[i].blockContour.contour.size();
-				vert.push_back(Vertex(QVector3D(blocks[i].blockContour.contour[sN].x(),blocks[i].blockContour.contour[sN].y(), 0),
-					color,QVector3D(),QVector3D()));
-				vert.push_back(Vertex(QVector3D(blocks[i].blockContour.contour[next].x(),blocks[i].blockContour.contour[next].y(), 0),
-					color,QVector3D(),QVector3D()));
+				vert.push_back(Vertex(QVector3D(blocks[i].blockContour.contour[sN].x(),blocks[i].blockContour.contour[sN].y(), 1), color, QVector3D(), QVector3D()));
+				vert.push_back(Vertex(QVector3D(blocks[i].blockContour.contour[next].x(),blocks[i].blockContour.contour[next].y(), 1), color, QVector3D(), QVector3D()));
 			}
-			//rendManager.addStaticGeometry("3d_sidewalk",vert,"",GL_POINTS,1|mode_AdaptTerrain);
 			rendManager.addStaticGeometry("3d_block",vert,"",GL_LINES,1|mode_AdaptTerrain);
 		}
 	
@@ -180,8 +200,8 @@ void VBOPm::generateBlockMesh(VBORenderManager& rendManager, BlockSet& blocks) {
 				for (int j = 0; j < blocks[i].myParcels[*vi].parcelContour.contour.size(); ++j) {
 					int next = (j+1) % blocks[i].myParcels[*vi].parcelContour.contour.size();
 
-					vert.push_back(Vertex(QVector3D(blocks[i].myParcels[*vi].parcelContour.contour[j].x(), blocks[i].myParcels[*vi].parcelContour.contour[j].y(), 0), color, QVector3D(), QVector3D()));
-					vert.push_back(Vertex(QVector3D(blocks[i].myParcels[*vi].parcelContour.contour[next].x(), blocks[i].myParcels[*vi].parcelContour.contour[next].y(), 0), color, QVector3D(), QVector3D()));
+					vert.push_back(Vertex(QVector3D(blocks[i].myParcels[*vi].parcelContour.contour[j].x(), blocks[i].myParcels[*vi].parcelContour.contour[j].y(), 1), color, QVector3D(), QVector3D()));
+					vert.push_back(Vertex(QVector3D(blocks[i].myParcels[*vi].parcelContour.contour[next].x(), blocks[i].myParcels[*vi].parcelContour.contour[next].y(), 1), color, QVector3D(), QVector3D()));
 				}
 			
 				rendManager.addStaticGeometry("3d_parcel", vert, "", GL_LINES, 1|mode_AdaptTerrain);

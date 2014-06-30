@@ -26,7 +26,7 @@
       <x>10</x>
       <y>10</y>
       <width>171</width>
-      <height>111</height>
+      <height>101</height>
      </rect>
     </property>
     <property name="title">
@@ -111,22 +111,6 @@
       <enum>Qt::Horizontal</enum>
      </property>
     </widget>
-    <widget class="QCheckBox" name="render_3DtreesCheckBox">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>80</y>
-       <width>101</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>3D Trees</string>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
-     </property>
-    </widget>
     <widget class="QPushButton" name="terrain_smooth">
      <property name="geometry">
       <rect>
@@ -146,7 +130,6 @@
  <tabstops>
   <tabstop>terrainPaint_sizeSlider</tabstop>
   <tabstop>terrainPaint_changeSlider</tabstop>
-  <tabstop>render_3DtreesCheckBox</tabstop>
  </tabstops>
  <resources/>
  <connections/>

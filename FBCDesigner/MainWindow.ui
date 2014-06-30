@@ -76,9 +76,8 @@
     <property name="title">
      <string>Mode</string>
     </property>
-    <addaction name="actionModePopulation"/>
-    <addaction name="actionActionJob"/>
     <addaction name="actionModeDefault"/>
+    <addaction name="actionModePlaceType"/>
     <addaction name="actionModeBlock"/>
     <addaction name="actionModeParcel"/>
    </widget>
@@ -281,14 +280,9 @@
     <string>Parcel</string>
    </property>
   </action>
-  <action name="actionModePopulation">
+  <action name="actionModePlaceType">
    <property name="text">
-    <string>Population</string>
-   </property>
-  </action>
-  <action name="actionActionJob">
-   <property name="text">
-    <string>Job</string>
+    <string>Place Type</string>
    </property>
   </action>
   <action name="actionLoadPlaceTypes">

@@ -41,6 +41,7 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags) : QMainWindow(parent, 
 	connect(ui.actionExit, SIGNAL(triggered()), this, SLOT(close()));
 
 	connect(ui.actionModeDefault, SIGNAL(triggered()), this, SLOT(onModeDefault()));
+	connect(ui.actionModePlaceType, SIGNAL(triggered()), this, SLOT(onModePlaceType()));
 	connect(ui.actionModeBlock, SIGNAL(triggered()), this, SLOT(onModeBlock()));
 	connect(ui.actionModeParcel, SIGNAL(triggered()), this, SLOT(onModeParcel()));
 
@@ -202,6 +203,7 @@ void MainWindow::onResetCamera() {
 
 void MainWindow::onModeDefault() {
 	mode = MODE_DEFAULT;
+	ui.actionModePlaceType->setChecked(false);
 	ui.actionModeBlock->setChecked(false);
 	ui.actionModeParcel->setChecked(false);
 
@@ -209,9 +211,20 @@ void MainWindow::onModeDefault() {
 	glWidget->updateGL();
 }
 
+void MainWindow::onModePlaceType() {
+	mode = MODE_PLACETYPE;
+	ui.actionModeDefault->setChecked(false);
+	ui.actionModeBlock->setChecked(false);
+	ui.actionModeParcel->setChecked(false);
+
+	VBOPm::generatePlaceTypeMesh(glWidget->vboRenderManager, urbanGeometry->placeTypes);
+	glWidget->updateGL();
+}
+
 void MainWindow::onModeBlock() {
 	mode = MODE_BLOCK;
 	ui.actionModeDefault->setChecked(false);
+	ui.actionModePlaceType->setChecked(false);
 	ui.actionModeParcel->setChecked(false);
 
 	VBOPm::generateBlockMesh(glWidget->vboRenderManager, urbanGeometry->blocks);
@@ -222,6 +235,7 @@ void MainWindow::onModeParcel() {
 	mode = MODE_PARCEL;
 	ui.actionModeDefault->setChecked(false);
 	ui.actionModeBlock->setChecked(false);
+	ui.actionModePlaceType->setChecked(false);
 
 	VBOPm::generateBlockMesh(glWidget->vboRenderManager, urbanGeometry->blocks);
 	glWidget->updateGL();

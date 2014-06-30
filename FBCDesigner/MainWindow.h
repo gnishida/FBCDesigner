@@ -14,7 +14,7 @@ class MainWindow : public QMainWindow
 	Q_OBJECT
 
 public:
-	static enum { MODE_DEFAULT = 0, MODE_BLOCK, MODE_PARCEL, MODE_POPULATION, MODE_JOB };
+	static enum { MODE_DEFAULT = 0, MODE_PLACETYPE, MODE_BLOCK, MODE_PARCEL };
 
 public:
 	Ui::MainWindow ui;
@@ -50,6 +50,7 @@ public slots:
 	void onResetCamera();
 
 	void onModeDefault();
+	void onModePlaceType();
 	void onModeBlock();
 	void onModeParcel();
 
