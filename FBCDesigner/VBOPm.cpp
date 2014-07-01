@@ -82,7 +82,7 @@ bool VBOPm::generateBlocks(VBORenderManager& rendManager,RoadGraph &roadGraph, B
 
 
 bool VBOPm::generateParcels(VBORenderManager& rendManager, BlockSet& blocks, PlaceTypesMainClass& placeTypes) {
-	if (!VBOPmParcels::generateParcels(placeTypes, blocks.blocks)) {
+	if (!VBOPmParcels::generateParcels(rendManager, placeTypes, blocks.blocks)) {
 		printf("ERROR: generateParcels\n");
 		return false;
 	}
@@ -143,8 +143,10 @@ void VBOPm::generatePlaceTypeMesh(VBORenderManager& rendManager, PlaceTypesMainC
 		for (int j = 0; j < placeTypes.myPlaceTypes[i].area.size(); ++j) {
 			int next = (j + 1) % placeTypes.myPlaceTypes[i].area.size();
 
-			vert.push_back(Vertex(QVector3D(placeTypes.myPlaceTypes[i].area[j].x(), placeTypes.myPlaceTypes[i].area[j].y(), 1), color, QVector3D(), QVector3D()));
-			vert.push_back(Vertex(QVector3D(placeTypes.myPlaceTypes[i].area[next].x(), placeTypes.myPlaceTypes[i].area[next].y(), 1), color, QVector3D(), QVector3D()));
+			float z = rendManager.getTerrainHeight(placeTypes.myPlaceTypes[i].area[j].x(), placeTypes.myPlaceTypes[i].area[j].y());
+			vert.push_back(Vertex(QVector3D(placeTypes.myPlaceTypes[i].area[j].x(), placeTypes.myPlaceTypes[i].area[j].y(), z + 2), color, QVector3D(), QVector3D()));
+			z = rendManager.getTerrainHeight(placeTypes.myPlaceTypes[i].area[next].x(), placeTypes.myPlaceTypes[i].area[next].y());
+			vert.push_back(Vertex(QVector3D(placeTypes.myPlaceTypes[i].area[next].x(), placeTypes.myPlaceTypes[i].area[next].y(), z + 2), color, QVector3D(), QVector3D()));
 
 		}
 		rendManager.addStaticGeometry("placetype", vert, "", GL_LINES, 1);
@@ -243,6 +245,15 @@ void VBOPm::generateBlockMesh(VBORenderManager& rendManager, BlockSet& blocks) {
 					vert.push_back(Vertex(p4,QVector3D(0.5f,0.5f,0.5f),normal,QVector3D()));
 				}
 				rendManager.addStaticGeometry("3d_sidewalk",vert,"",GL_QUADS,1|mode_Lighting);
+
+				Block::parcelGraphVertexIter vi, viEnd;
+			
+				int randPark=qrand()%grassFileNames.size();
+				for (boost::tie(vi, viEnd) = boost::vertices(blocks[i].myParcels); vi != viEnd; ++vi) {
+					if (blocks[i].myParcels[*vi].parcelType == PAR_PARK) {
+						//rendManager.addStaticGeometry2("3d_sidewalk", blocks[i].myParcels[*vi].parcelContour.contour,0.0f,false,grassFileNames[randPark],GL_QUADS,2,QVector3D(0.05f,0.05f,0.05f),QVector3D());
+					}
+				}
 			}
 		}
 	}

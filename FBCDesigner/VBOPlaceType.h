@@ -12,6 +12,7 @@
 #include <QTextStream>
 #include "global.h"
 #include "Polygon2D.h"
+#include "VBORenderManager.h"
 
 /**
 * PlaceType class contains a place type instance in the city.

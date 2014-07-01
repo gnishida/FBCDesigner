@@ -130,6 +130,7 @@
     <ClCompile Include="BBox.cpp" />
     <ClCompile Include="BlockSet.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CarCamera.cpp" />
     <ClCompile Include="clipper.cpp" />
     <ClCompile Include="ColorTable.cpp" />
     <ClCompile Include="ControlWidget.cpp" />
@@ -266,6 +267,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Camera2D.h" />
     <ClInclude Include="Camera3D.h" />
+    <ClInclude Include="CarCamera.h" />
     <ClInclude Include="clipper.hpp" />
     <ClInclude Include="ColorTable.h" />
     <ClInclude Include="common.h" />

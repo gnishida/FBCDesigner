@@ -81,10 +81,18 @@
     <addaction name="actionModeBlock"/>
     <addaction name="actionModeParcel"/>
    </widget>
+   <widget class="QMenu" name="menuCamera">
+    <property name="title">
+     <string>Camera</string>
+    </property>
+    <addaction name="actionCameraDefault"/>
+    <addaction name="actionCameraCar"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuMode"/>
    <addaction name="menuPM"/>
    <addaction name="menuWindow"/>
+   <addaction name="menuCamera"/>
   </widget>
   <widget class="QToolBar" name="fileToolBar">
    <attribute name="toolBarArea">
@@ -288,6 +296,16 @@
   <action name="actionLoadPlaceTypes">
    <property name="text">
     <string>Load Place Types</string>
+   </property>
+  </action>
+  <action name="actionCameraDefault">
+   <property name="text">
+    <string>Default</string>
+   </property>
+  </action>
+  <action name="actionCameraCar">
+   <property name="text">
+    <string>Car</string>
    </property>
   </action>
  </widget>

@@ -1,0 +1,159 @@
+<blocks>
+   <placeType>
+		<!-- Highway junction -->
+        <attribute type="float" value="1.0" name="park_percentage"/>
+        <attribute type="float" value="100" name="parcel_area_mean"/>
+        <attribute type="float" value="50" name="parcel_area_deviation"/>
+        <attribute type="float" value="0.2" name="parcel_split_deviation"/>
+        <attribute type="float" value="1" name="parcel_setback_front"/>
+        <attribute type="float" value="1" name="parcel_setback_sides"/>
+        <attribute type="float" value="1" name="parcel_setback_rear"/>
+        <attribute type="float" value="2" name="building_stories_mean"/>
+        <attribute type="float" value="50" name="building_stories_deviation"/>
+        <attribute type="float" value="0" name="building_max_depth"/>
+        <attribute type="float" value="0" name="building_max_frontage"/>
+        <point x="-1130" y="1852"/>
+        <point x="-1250" y="1702"/>
+        <point x="-1063" y="1540"/>
+        <point x="-927" y="1688"/>
+    </placeType>
+	
+   <placeType>
+		<!-- Hinode -->
+        <attribute type="float" value="0.05" name="park_percentage"/>
+        <attribute type="float" value="100" name="parcel_area_mean"/>
+        <attribute type="float" value="50" name="parcel_area_deviation"/>
+        <attribute type="float" value="0.2" name="parcel_split_deviation"/>
+        <attribute type="float" value="1" name="parcel_setback_front"/>
+        <attribute type="float" value="1" name="parcel_setback_sides"/>
+        <attribute type="float" value="1" name="parcel_setback_rear"/>
+        <attribute type="float" value="2" name="building_stories_mean"/>
+        <attribute type="float" value="50" name="building_stories_deviation"/>
+        <attribute type="float" value="0" name="building_max_depth"/>
+        <attribute type="float" value="0" name="building_max_frontage"/>
+        <point x="62" y="969"/>
+        <point x="200" y="834"/>
+        <point x="310" y="834"/>
+        <point x="424" y="946"/>
+        <point x="235" y="1140"/>
+    </placeType>
+	
+   <placeType>
+		<!-- Irifune -->
+        <attribute type="float" value="0.05" name="park_percentage"/>
+        <attribute type="float" value="100" name="parcel_area_mean"/>
+        <attribute type="float" value="50" name="parcel_area_deviation"/>
+        <attribute type="float" value="0.2" name="parcel_split_deviation"/>
+        <attribute type="float" value="1" name="parcel_setback_front"/>
+        <attribute type="float" value="1" name="parcel_setback_sides"/>
+        <attribute type="float" value="1" name="parcel_setback_rear"/>
+        <attribute type="float" value="2" name="building_stories_mean"/>
+        <attribute type="float" value="50" name="building_stories_deviation"/>
+        <attribute type="float" value="0" name="building_max_depth"/>
+        <attribute type="float" value="0" name="building_max_frontage"/>
+        <point x="-429" y="1046"/>
+        <point x="-240" y="861"/>
+        <point x="213" y="1312"/>
+        <point x="-2" y="1485"/>
+    </placeType>
+	
+   <placeType>
+		<!-- Mihama close to highway -->
+        <attribute type="float" value="0.05" name="park_percentage"/>
+        <attribute type="float" value="100" name="parcel_area_mean"/>
+        <attribute type="float" value="50" name="parcel_area_deviation"/>
+        <attribute type="float" value="0.2" name="parcel_split_deviation"/>
+        <attribute type="float" value="1" name="parcel_setback_front"/>
+        <attribute type="float" value="1" name="parcel_setback_sides"/>
+        <attribute type="float" value="1" name="parcel_setback_rear"/>
+        <attribute type="float" value="2" name="building_stories_mean"/>
+        <attribute type="float" value="50" name="building_stories_deviation"/>
+        <attribute type="float" value="0" name="building_max_depth"/>
+        <attribute type="float" value="0" name="building_max_frontage"/>
+        <point x="-495" y="1881"/>
+        <point x="-1302" y="2400"/>
+        <point x="-1707" y="1386"/>
+        <point x="-1332" y="1022"/>
+    </placeType>
+	
+   <placeType>
+		<!-- Benten -->
+        <attribute type="float" value="0.05" name="park_percentage"/>
+        <attribute type="float" value="100" name="parcel_area_mean"/>
+        <attribute type="float" value="50" name="parcel_area_deviation"/>
+        <attribute type="float" value="0.2" name="parcel_split_deviation"/>
+        <attribute type="float" value="1" name="parcel_setback_front"/>
+        <attribute type="float" value="1" name="parcel_setback_sides"/>
+        <attribute type="float" value="1" name="parcel_setback_rear"/>
+        <attribute type="float" value="2" name="building_stories_mean"/>
+        <attribute type="float" value="50" name="building_stories_deviation"/>
+        <attribute type="float" value="0" name="building_max_depth"/>
+        <attribute type="float" value="0" name="building_max_frontage"/>
+        <point x="-1761" y="112"/>
+        <point x="-2170" y="540"/>
+        <point x="-2743" y="-50"/>
+        <point x="-2428" y="-573"/>
+    </placeType>
+	
+   <placeType>
+		<!-- Imagawa -->
+        <attribute type="float" value="0.05" name="park_percentage"/>
+        <attribute type="float" value="100" name="parcel_area_mean"/>
+        <attribute type="float" value="50" name="parcel_area_deviation"/>
+        <attribute type="float" value="0.2" name="parcel_split_deviation"/>
+        <attribute type="float" value="1" name="parcel_setback_front"/>
+        <attribute type="float" value="1" name="parcel_setback_sides"/>
+        <attribute type="float" value="1" name="parcel_setback_rear"/>
+        <attribute type="float" value="2" name="building_stories_mean"/>
+        <attribute type="float" value="50" name="building_stories_deviation"/>
+        <attribute type="float" value="0" name="building_max_depth"/>
+        <attribute type="float" value="0" name="building_max_frontage"/>
+        <point x="-1155" y="736"/>
+        <point x="-1761" y="112"/>
+        <point x="-1335" y="-306"/>
+        <point x="-731" y="313"/>
+    </placeType>
+	
+   <placeType>
+		<!-- Houses area -->
+        <attribute type="float" value="0.05" name="park_percentage"/>
+        <attribute type="float" value="100" name="parcel_area_mean"/>
+        <attribute type="float" value="50" name="parcel_area_deviation"/>
+        <attribute type="float" value="0.2" name="parcel_split_deviation"/>
+        <attribute type="float" value="1" name="parcel_setback_front"/>
+        <attribute type="float" value="1" name="parcel_setback_sides"/>
+        <attribute type="float" value="1" name="parcel_setback_rear"/>
+        <attribute type="float" value="2" name="building_stories_mean"/>
+        <attribute type="float" value="50" name="building_stories_deviation"/>
+        <attribute type="float" value="0" name="building_max_depth"/>
+        <attribute type="float" value="0" name="building_max_frontage"/>
+        <point x="-560" y="139"/>
+        <point x="-701" y="-11"/>
+        <point x="-700" y="-75"/>
+        <point x="-783" y="-155"/>
+        <point x="-960" y="-335"/>
+        <point x="-814" y="-473"/>
+        <point x="-542" y="-221"/>
+        <point x="-522" y="-246"/>
+        <point x="-351" y="-67"/>
+    </placeType>
+	
+    <placeType>
+		<!-- Default (Apartments area) -->
+        <attribute type="float" value="0.5" name="park_percentage"/>
+        <attribute type="float" value="5000" name="parcel_area_mean"/>
+        <attribute type="float" value="100" name="parcel_area_deviation"/>
+        <attribute type="float" value="0.4" name="parcel_split_deviation"/>
+        <attribute type="float" value="5" name="parcel_setback_front"/>
+        <attribute type="float" value="5" name="parcel_setback_sides"/>
+        <attribute type="float" value="10" name="parcel_setback_rear"/>
+        <attribute type="float" value="12" name="building_stories_mean"/>
+        <attribute type="float" value="60" name="building_stories_deviation"/>
+        <attribute type="float" value="0" name="building_max_depth"/>
+        <attribute type="float" value="0" name="building_max_frontage"/>
+        <point x="-5000" y="-5000"/>
+        <point x="5000" y="-5000"/>
+        <point x="5000" y="5000"/>
+        <point x="-5000" y="5000"/>
+    </placeType>
+</blocks>

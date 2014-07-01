@@ -62,6 +62,9 @@ public slots:
 
 	void onShowControlWidget();
 	void onShowPropertyWidget();
+
+	void onCameraDefault();
+	void onCameraCar();
 };
 
 #endif // MAINWINDOW_H

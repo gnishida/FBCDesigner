@@ -217,6 +217,9 @@
     <ClCompile Include="HeatMapColorTable.cpp">
       <Filter>common</Filter>
     </ClCompile>
+    <ClCompile Include="CarCamera.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="MainWindow.ui">
@@ -408,6 +411,9 @@
       <Filter>common</Filter>
     </ClInclude>
     <ClInclude Include="HeatMapColorTable.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="CarCamera.h">
       <Filter>common</Filter>
     </ClInclude>
   </ItemGroup>

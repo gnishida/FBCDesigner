@@ -11,9 +11,7 @@
 class VBOPmParcels{
 public:
 
-	static bool generateParcels(
-		PlaceTypesMainClass &placeTypesIn,
-		std::vector< Block > &blocks);
+	static bool generateParcels(VBORenderManager& rendManager, PlaceTypesMainClass &placeTypesIn, std::vector< Block > &blocks);
 
 	static void assignPlaceTypeToParcels(PlaceTypesMainClass &placeTypesIn, Block& blocks);
 };

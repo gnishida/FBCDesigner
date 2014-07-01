@@ -27,6 +27,7 @@ This file is part of QtUrban.
 #include "Camera2D.h"
 #include "Camera3D.h"
 #include "FlyThroughCamera.h"
+#include "CarCamera.h"
 #include "RoadGraph.h"
 
 class MainWindow;
@@ -37,6 +38,7 @@ public:
 	Camera2D camera2D;
 	Camera3D camera3D;
 	FlyThroughCamera flyCamera;
+	CarCamera carCamera;
 	Camera* camera;
 
 	bool shiftPressed;

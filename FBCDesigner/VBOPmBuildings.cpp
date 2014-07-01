@@ -194,7 +194,7 @@ bool generateBlockBuildings(VBORenderManager& rendManager, Block &inBlock, Place
 
 	//=== First compute parcel frontage and buildable area
 	//For each parcel
-	for(boost::tie(vi, viEnd) = boost::vertices(inBlock.myParcels); vi != viEnd; ++vi){					
+	for(boost::tie(vi, viEnd) = boost::vertices(inBlock.myParcels); vi != viEnd; ++vi){
 		if(!generateParcelBuildings(rendManager, inBlock, inBlock.myParcels[*vi], placeTypesIn)){
 			continue;
 		}

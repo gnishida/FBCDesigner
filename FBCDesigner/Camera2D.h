@@ -93,9 +93,9 @@ public:
 			angle -= 360.0;
 	}
 
-	float getCamElevation() {	
+	/*float getCamElevation() {	
 		return getCamPos().z();
-	}
+	}*/
 
 	void setRotation(float x, float y, float z) {
 		setXRotation(x);

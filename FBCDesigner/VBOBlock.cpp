@@ -216,7 +216,7 @@ void Block::adaptToTerrain(VBORenderManager* vboRenderManager) {
 	for (boost::tie(vi, viEnd) = boost::vertices(myParcels); vi != viEnd; ++vi) {
 		for (int i = 0; i < myParcels[*vi].parcelContour.contour.size(); ++i) {
 			float z = vboRenderManager->getTerrainHeight(myParcels[*vi].parcelContour[i].x(), myParcels[*vi].parcelContour[i].x());
-			myParcels[*vi].parcelContour.contour[i].setZ(z + 1);
+			myParcels[*vi].parcelContour.contour[i].setZ(z + 2);
 		}
 	}
 }

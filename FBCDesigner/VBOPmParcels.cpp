@@ -11,7 +11,7 @@ void subdivideBlockIntoParcels(Block &block, PlaceTypesMainClass &placeTypesIn);
 bool subdivideParcel(Block &block, Parcel parcel, float areaMean, float areaVar, float splitIrregularity, std::vector<Parcel> &outParcels); 
 void setParcelsAsParks(PlaceTypesMainClass &placeTypesIn, std::vector< Block > &blocks);
 
-bool VBOPmParcels::generateParcels(PlaceTypesMainClass &placeTypesIn, std::vector< Block > &blocks) {
+bool VBOPmParcels::generateParcels(VBORenderManager& rendManager, PlaceTypesMainClass &placeTypesIn, std::vector< Block > &blocks) {
 	std::cout << "start #"<<blocks.size()<<"...";
 	for (int i = 0; i < blocks.size(); ++i) {
 		subdivideBlockIntoParcels(blocks[i], placeTypesIn);
@@ -19,6 +19,8 @@ bool VBOPmParcels::generateParcels(PlaceTypesMainClass &placeTypesIn, std::vecto
 		if (placeTypesIn.size() > 0) {
 			assignPlaceTypeToParcels(placeTypesIn, blocks[i]);
 		}
+
+		blocks[i].adaptToTerrain(&rendManager);
 	}
 	std::cout << "end...";
 

@@ -12,8 +12,12 @@ GLWidget3D::GLWidget3D(MainWindow* mainWin) : QGLWidget(QGLFormat(QGL::SampleBuf
 	camera2D.resetCamera();
 	flyCamera.resetCamera();
 	camera3D.resetCamera();
+	//carCamera.resetCamera();
+	carCamera.rendManager = &vboRenderManager;
 	camera = &camera2D;
-	//camera = &flyCamera;
+	camera->type = Camera::TYPE_2D;
+	//camera = &carCamera;
+	//camera->type = Camera::TYPE_CAR;
 
 	spaceRadius=30000.0;
 	farPlaneToSpaceRadiusFactor=5.0f;//N 5.0f
@@ -26,8 +30,8 @@ GLWidget3D::GLWidget3D(MainWindow* mainWin) : QGLWidget(QGLFormat(QGL::SampleBuf
 	altPressed=false;
 	keyMPressed=false;
 
-	camera->setRotation(0, 0, 0);
-	camera->setTranslation(0, 0, G::getFloat("MAX_Z"));//6000);
+	camera2D.setRotation(0, 0, 0);
+	camera2D.setTranslation(0, 0, G::getFloat("MAX_Z"));//6000);
 
 	vertexSelected = false;
 	edgeSelected = false;
@@ -140,7 +144,7 @@ void GLWidget3D::mouseMoveEvent(QMouseEvent *event) {
 
 	float dx = (float)(event->x() - lastPos.x());
 	float dy = (float)(event->y() - lastPos.y());
-	float camElevation = camera->getCamElevation();
+	//float camElevation = camera->getCamElevation();
 
 	vboRenderManager.mousePos3D=pos.toVector3D();
 
@@ -172,16 +176,22 @@ void GLWidget3D::mouseMoveEvent(QMouseEvent *event) {
 			}
 		}
 	} else if (event->buttons() & Qt::LeftButton) {	// Rotate
-		camera->changeXRotation(rotationSensitivity * dy);
-		camera->changeZRotation(-rotationSensitivity * dx);    
+		if (camera->type == Camera::TYPE_2D) {
+			camera2D.changeXRotation(rotationSensitivity * dy);
+			camera2D.changeZRotation(-rotationSensitivity * dx);
+		}
 		updateCamera();
 		lastPos = event->pos();
 	} else if (event->buttons() & Qt::MidButton) {
-		camera->changeXYZTranslation(-dx, dy, 0);
+		if (camera->type == Camera::TYPE_2D) {
+			camera2D.changeXYZTranslation(-dx, dy, 0);
+		}
 		updateCamera();
 		lastPos = event->pos();
 	} else if (event->buttons() & Qt::RightButton) {	// Zoom
-		camera->changeXYZTranslation(0, 0, -zoomSensitivity * dy);
+		if (camera->type == Camera::TYPE_2D) {
+			camera2D.changeXYZTranslation(0, 0, -zoomSensitivity * dy);
+		}
 		updateCamera();
 		lastPos = event->pos();
 	}
@@ -237,6 +247,8 @@ void GLWidget3D::initializeGL() {
 	//glUniform1i(glGetUniformLocation(vboRenderManager.program, "terrainMode"),1);//FLAT
 		
 	shadow.makeShadowMap(this);
+
+	carCamera.resetCamera();
 }
 
 void GLWidget3D::resizeGL(int width, int height) {
@@ -387,6 +399,36 @@ void GLWidget3D::keyPressEvent( QKeyEvent *e ){
 		printf("Reseting camera pose\n");
 		camera->resetCamera();
 		break;
+	case Qt::Key_Up:
+		if (camera->type == Camera::TYPE_CAR) {
+			carCamera.moveForward(1);
+			updateCamera();
+			updateGL();
+		}
+		break;
+	case Qt::Key_Down:
+		if (camera->type == Camera::TYPE_CAR) {
+			carCamera.moveForward(-1);
+			updateCamera();
+			updateGL();
+		}
+		break;
+	case Qt::Key_Right:
+		if (camera->type == Camera::TYPE_CAR) {
+			carCamera.steer(-0.1f);
+			carCamera.moveForward(1);
+			updateCamera();
+			updateGL();
+		}
+		break;
+	case Qt::Key_Left:
+		if (camera->type == Camera::TYPE_CAR) {
+			carCamera.steer(0.1f);
+			carCamera.moveForward(1);
+			updateCamera();
+			updateGL();
+		}
+		break;
 	case Qt::Key_W:
 		camera3D.moveKey(0);updateCamera();updateGL();
 		break;
@@ -426,6 +468,14 @@ void GLWidget3D::keyReleaseEvent(QKeyEvent* e) {
 			setMouseTracking(false);
 			updateGL();
 		}
+	case Qt::Key_Right:
+	case Qt::Key_Left:
+		if (camera->type == Camera::TYPE_CAR) {
+			carCamera.steer(0.0f);
+			//updateCamera();
+			//updateGL();
+		}
+		break;
 	default:
 		;
 	}
@@ -466,8 +516,7 @@ void GLWidget3D::updateCamera(){
 	glViewport(0, 0, (GLint)this->width(), (GLint)this->height());
 	camera->updatePerspective(this->width(),height);
 	camera->updateCamMatrix();
-	if(G::global()["3d_render_mode"]==1)
-		camera3D.updateCamMatrix();
+	//if(G::global()["3d_render_mode"]==1) 		camera3D.updateCamMatrix();
 	// update uniforms
 	float mvpMatrixArray[16];
 	float mvMatrixArray[16];

@@ -52,6 +52,8 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags) : QMainWindow(parent, 
 	connect(ui.actionGenerateAll, SIGNAL(triggered()), this, SLOT(onGenerateAll()));
 	connect(ui.actionControlWidget, SIGNAL(triggered()), this, SLOT(onShowControlWidget()));
 	connect(ui.actionPropertyWidget, SIGNAL(triggered()), this, SLOT(onShowPropertyWidget()));
+	connect(ui.actionCameraDefault, SIGNAL(triggered()), this, SLOT(onCameraDefault()));
+	connect(ui.actionCameraCar, SIGNAL(triggered()), this, SLOT(onCameraCar()));
 
 	// setup the GL widget
 	glWidget = new GLWidget3D(this);
@@ -182,7 +184,7 @@ void MainWindow::onLoadCamera() {
 	QString filename = QFileDialog::getOpenFileName(this, tr("Open Camera file..."), "", tr("Area Files (*.cam)"));
 	if (filename.isEmpty()) return;
 
-	glWidget->camera->loadCameraPose(filename);
+	glWidget->camera2D.loadCameraPose(filename);
 	glWidget->updateCamera();
 
 	glWidget->updateGL();
@@ -192,7 +194,7 @@ void MainWindow::onSaveCamera() {
 	QString filename = QFileDialog::getSaveFileName(this, tr("Save Camera file..."), "", tr("Area Files (*.cam)"));
 	if (filename.isEmpty()) return;
 	
-	glWidget->camera->saveCameraPose(filename);
+	glWidget->camera2D.saveCameraPose(filename);
 }
 
 void MainWindow::onResetCamera() {
@@ -284,4 +286,21 @@ void MainWindow::onShowControlWidget() {
 void MainWindow::onShowPropertyWidget() {
 	propertyWidget->show();
 	addDockWidget(Qt::RightDockWidgetArea, propertyWidget);
+}
+
+void MainWindow::onCameraDefault() {
+	glWidget->camera = &glWidget->camera2D;
+	glWidget->camera->type = Camera::TYPE_2D;
+	glWidget->camera->resetCamera();
+	glWidget->updateCamera();
+	glWidget->updateGL();
+}
+
+void MainWindow::onCameraCar() {
+	glWidget->carCamera.rendManager = &glWidget->vboRenderManager;
+	glWidget->camera = &glWidget->carCamera;
+	glWidget->camera->type = Camera::TYPE_CAR;
+	glWidget->camera->resetCamera();
+	glWidget->updateCamera();
+	glWidget->updateGL();
 }
