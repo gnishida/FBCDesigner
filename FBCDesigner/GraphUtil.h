@@ -130,6 +130,7 @@ public:
 	static void snapDeadendEdges(RoadGraph& roads, float threshold);
 	static void snapDeadendEdges2(RoadGraph& roads, int degree, float threshold);
 	static void removeShortDeadend(RoadGraph& roads, float threshold);
+	static void removeNullEdges(RoadGraph& roads);
 	static void realize(RoadGraph &roads);
 	static BBox bbox(RoadGraph &roads);
 	static Polygon2D hull(RoadGraph &roads);

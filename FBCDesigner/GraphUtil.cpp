@@ -2495,6 +2495,7 @@ void GraphUtil::clean(RoadGraph& roads) {
 
 	roads.clear();
 
+	removeNullEdges(temp);
 	removeIsolatedVertices(temp);
 
 	QMap<RoadVertexDesc, RoadVertexDesc> conv;
@@ -3509,6 +3510,18 @@ void GraphUtil::removeShortDeadend(RoadGraph& roads, float threshold) {
 	}
 
 	if (actuallyDeleted) roads.setModified();
+}
+
+/**
+ * Remove edges whose length = 0.
+ */
+void GraphUtil::removeNullEdges(RoadGraph& roads) {
+	RoadEdgeIter ei, eend;
+	for (boost::tie(ei, eend) = boost::edges(roads.graph); ei != eend; ++ei) {
+		if (!roads.graph[*ei]->valid) continue;
+
+		if (roads.graph[*ei]->getLength() == 0.0f) roads.graph[*ei]->valid = false;
+	}
 }
 
 float GraphUtil::getTotalEdgeLength(RoadGraph &roads) {

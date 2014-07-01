@@ -205,7 +205,10 @@
 				float degInRad = i*degreesSegmentCircle*0.0174532925f;//degree to rad
 				QVector3D pos(cos(degInRad)*radius,sin(degInRad)*radius,0);
 				pos+=posM;
-				pos.setZ(50.0f);
+
+				float z = rendManager.getTerrainHeight(pos.x(), pos.y());
+				pos.setZ(z + 50.0f);
+
 				points[i]=Vertex(pos.x(),pos.y(),pos.z(),0,0,1.0f,0,0,0,0,0,0);
 			}
 
