@@ -17,7 +17,7 @@ ModelSpec addTree(QVector3D pos){
 	tree.transMatrix.setToIdentity();
 	tree.transMatrix.translate(pos);
 	tree.transMatrix.rotate(pos.x()*pos.y(),0.0f,0.0f,1.0f);//random
-	tree.transMatrix.scale(1.0f+(((0.5f*qrand())/RAND_MAX))-0.5f);
+	tree.transMatrix.scale(0.8f + (((0.5f*qrand())/RAND_MAX))-0.5f);
 	tree.colors.resize(2);
 	//trunk
 	tree.colors[1]=QVector3D(0.27f,0.22f,0.22f);
@@ -76,8 +76,6 @@ bool VBOVegetation::generateVegetation(VBORenderManager& rendManager, PlaceTypes
 	float distanceBetweenTrees = 31.0f;//23 N 15.0f; //used for trees along streets
 	float distanceBetweenStreetLamps = 43.0f;//30 from google but too close
 
-	QVector3D pos;
-
 	//generate trees in blocks (park)
 	for (int bN = 0; bN < blocks.size(); bN++) {
 		if (blocks[bN].isPark) {
@@ -93,7 +91,8 @@ bool VBOVegetation::generateVegetation(VBORenderManager& rendManager, PlaceTypes
 
 			int numTreesInParcel = parcelBBoxArea * treesPerSqMeter;
 
-			for(int i=0; i<numTreesInParcel; ++i){		
+			for(int i=0; i<numTreesInParcel; ++i){
+				QVector3D pos;
 				pos.setX(Util::genRand(xmin, xmax));
 				pos.setY(Util::genRand(ymin, ymax));
 				pos.setZ(rendManager.getTerrainHeight(pos.x(), pos.y()));
@@ -111,7 +110,8 @@ bool VBOVegetation::generateVegetation(VBORenderManager& rendManager, PlaceTypes
 				Polygon3D::getLoopAABB(blocks[bN].myParcels[*vi].parcelContour.contour, minCorner, maxCorner);
 				int numTreesInParcel = blocks[bN].myParcels[*vi].parcelContour.area() * treesPerSqMeter;
 
-				for(int i=0; i<numTreesInParcel; ++i){		
+				for(int i=0; i<numTreesInParcel; ++i){	
+					QVector3D pos;
 					pos.setX(Util::genRand(minCorner.x(), maxCorner.x()));
 					pos.setY(Util::genRand(minCorner.y(), maxCorner.y()));
 					pos.setZ(rendManager.getTerrainHeight(pos.x(), pos.y()));
@@ -136,9 +136,9 @@ bool VBOVegetation::generateVegetation(VBORenderManager& rendManager, PlaceTypes
 	
 		float tree_setback = placeTypesIn.myPlaceTypes.at(blocks[i].getMyPlaceTypeIdx()).getFloat("tree_setback");
 
-		contourPtr = &(blocks.at(i).blockContour.contour);
+		contourPtr = &(blocks.at(i).sidewalkContour.contour);
 
-		float distLeftOver = 0.0f;
+		float distLeftOver = tree_setback;
 		int type = 0;
 
 		for (int j = 0; j < contourPtr->size(); ++j) {
@@ -148,12 +148,13 @@ bool VBOVegetation::generateVegetation(VBORenderManager& rendManager, PlaceTypes
 			segmentLength = segmentVector.length();
 			segmentVector /= segmentLength;
 
-			QVector3D perpV = QVector3D(segmentVector.y(), -segmentVector.x(), 0);//QVector3D::crossProduct(segmentVector,QVector3D(0,0,1));
-			ptThis=ptThis-perpV*tree_setback;//2.0f;//5.5f;
+			QVector3D perpV = QVector3D(segmentVector.y(), -segmentVector.x(), 0);
+			ptThis = ptThis - perpV * tree_setback;
+			QVector3D ptThis2 = ptThis - perpV * 1.0f;
 
 			float distFromSegmentStart = distLeftOver;
 			while (true) {
-				if (distFromSegmentStart > segmentLength) {
+				if (distFromSegmentStart > segmentLength - tree_setback) {
 					distLeftOver = distFromSegmentStart - segmentLength;
 					break;
 				}
@@ -161,58 +162,21 @@ bool VBOVegetation::generateVegetation(VBORenderManager& rendManager, PlaceTypes
 				if (j == contourPtr->size() - 1) {
 					// For the last segment, don't place a tree close to the last end point
 					if (segmentLength - distFromSegmentStart < distanceBetweenTrees * 0.5f) break;
-				}
-
-				pos = ptThis + segmentVector * distFromSegmentStart;
+				}			
 
 				if (type % 2 == 0) {
+					QVector3D pos = ptThis + segmentVector * distFromSegmentStart;
 					pos.setZ(rendManager.getTerrainHeight(pos.x(), pos.y()) + 0.5f);//pavement at 1.5f
 					rendManager.addStreetElementModel("tree", addTree(pos));
 				} else {
+					QVector3D pos = ptThis2 + segmentVector * distFromSegmentStart;
 					rendManager.addStreetElementModel("streetLamp", addStreetLap(pos, segmentVector));
 				}
 
 				distFromSegmentStart += distanceBetweenTrees * Util::genRand(0.4, 0.6);
-				type = 1 - type;	
+				type = 1 - type;
 			}
 		}
-
-
-		/*
-		for (int j = 0; j < contourPtr->size(); ++j) {
-			ptThis = contourPtr->at(j);
-			ptNext = contourPtr->at((j+1)%contourPtr->size());
-			segmentVector = ptNext - ptThis;
-			segmentLength = segmentVector.length();
-			segmentVector/=segmentLength;
-
-			QVector3D perpV=QVector3D::crossProduct(segmentVector,QVector3D(0,0,1));
-			ptThis=ptThis-perpV*2.0f;//5.5f;
-
-			// Trees
-			float distFromSegmentStart = 0.0f;
-			while(true){					
-				distFromSegmentStart += distanceBetweenTrees*(0.8f+(0.4f*qrand()/RAND_MAX));
-				if(distFromSegmentStart > segmentLength){
-					break;
-				}
-				pos = ptThis + segmentVector*distFromSegmentStart;
-				pos.setZ(1.0f);//pavement at 1.5f
-				rendManager.addStreetElementModel("tree",addTree(pos));
-
-			}
-			// StreetLamps
-			int numStreetLamps=ceil((segmentLength-1.0f)/distanceBetweenStreetLamps);//-1.0 to leave space at the beginning
-			if(numStreetLamps<2)numStreetLamps=2;
-			float distanceBetweenPosts=(segmentLength-1.0f)/(numStreetLamps-1);
-			for (int i = 0; i < numStreetLamps - 1; i++) { //not in the end (avoid two in the corner)
-				pos = ptThis + segmentVector*(0.5f+i*distanceBetweenPosts);
-
-				//blocks[i].streetElementInfo.push_back(addStreetLap(pos,segmentVector));
-				rendManager.addStreetElementModel("streetLamp",addStreetLap(pos,segmentVector));
-			}
-		}
-		*/
 	}
 
 	std::cout << "\t" << tim.elapsed() << " ms\n";

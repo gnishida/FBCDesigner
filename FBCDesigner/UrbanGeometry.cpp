@@ -82,15 +82,15 @@ void UrbanGeometry::clearRoads() {
 	roads.updateRoadGraph(mainWin->glWidget->vboRenderManager);
 
 	blocks.clear();
-	VBOPm::generateBlockMesh(mainWin->glWidget->vboRenderManager, blocks, mainWin->urbanGeometry->placeTypes);
+	VBOPm::generateBlockModels(mainWin->glWidget->vboRenderManager, roads, blocks, mainWin->urbanGeometry->placeTypes);
+	VBOPm::generateParcelModels(mainWin->glWidget->vboRenderManager, blocks, mainWin->urbanGeometry->placeTypes);
 }
 
 void UrbanGeometry::loadBlocks(const QString& filename) {
 	blocks.load(filename);
 	VBOPmBlocks::assignPlaceTypeToBlocks(placeTypes, blocks);
-	//VBOPmParcels::assignPlaceTypeToParcels(placeTypes, blocks.blocks);
-	VBOPm::generateBlockMesh(mainWin->glWidget->vboRenderManager, blocks, mainWin->urbanGeometry->placeTypes);
-	//blocks.generateMesh(mainWin->glWidget->vboRenderManager);
+	VBOPm::generateBlockModels(mainWin->glWidget->vboRenderManager, roads, blocks, mainWin->urbanGeometry->placeTypes);
+	VBOPm::generateParcelModels(mainWin->glWidget->vboRenderManager, blocks, mainWin->urbanGeometry->placeTypes);
 }
 
 void UrbanGeometry::saveBlocks(const QString& filename) {

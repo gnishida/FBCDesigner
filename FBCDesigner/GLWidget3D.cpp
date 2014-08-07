@@ -89,7 +89,7 @@ void GLWidget3D::mousePressEvent(QMouseEvent *event) {
 					mainWin->propertyWidget->setBlock(selectedIndex, mainWin->urbanGeometry->blocks[selectedIndex]);
 				}
 
-				VBOPm::generateBlockMesh(mainWin->glWidget->vboRenderManager, mainWin->urbanGeometry->blocks, mainWin->urbanGeometry->placeTypes);
+				//VBOPm::generateBlockMesh(mainWin->glWidget->vboRenderManager, mainWin->urbanGeometry->blocks, mainWin->urbanGeometry->placeTypes);
 				updateGL();
 			}
 			break;
@@ -100,7 +100,7 @@ void GLWidget3D::mousePressEvent(QMouseEvent *event) {
 					mainWin->propertyWidget->setParcel(selectedIndexPair.first, selectedIndexPair.second, mainWin->urbanGeometry->blocks[selectedIndexPair.first]);
 				}
 				
-				VBOPm::generateBlockMesh(mainWin->glWidget->vboRenderManager, mainWin->urbanGeometry->blocks, mainWin->urbanGeometry->placeTypes);
+				//VBOPm::generateBlockMesh(mainWin->glWidget->vboRenderManager, mainWin->urbanGeometry->blocks, mainWin->urbanGeometry->placeTypes);
 				updateGL();
 			}
 
@@ -396,8 +396,7 @@ void GLWidget3D::keyPressEvent( QKeyEvent *e ){
 			}
 		} else if (mainWin->mode == MainWindow::MODE_BLOCK) {
 			mainWin->urbanGeometry->blocks.removeSelectedBlock();
-			VBOPm::generateBlockMesh(mainWin->glWidget->vboRenderManager, mainWin->urbanGeometry->blocks, mainWin->urbanGeometry->placeTypes);
-			//mainWin->urbanGeometry->blocks.generateMesh(vboRenderManager);
+			//VBOPm::generateBlockMesh(mainWin->glWidget->vboRenderManager, mainWin->urbanGeometry->blocks, mainWin->urbanGeometry->placeTypes);
 			updateGL();
 		}
 		break;

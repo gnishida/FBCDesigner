@@ -18,11 +18,11 @@
 RoadGraph * roadGraphPtr;
 std::vector< Block > * blocksPtr;
 
-Polygon3D blockContourTmp;
-Polygon3D blockContourPoints;
-std::vector<Polyline3D> blockContourLines;
+Polygon3D sidewalkContourTmp;
+Polygon3D sidewalkContourPoints;
+std::vector<Polyline3D> sidewalkContourLines;
 
-std::vector< float > blockContourWidths;
+std::vector< float > sidewalkContourWidths;
 bool isFirstVertexVisited;
 
 int curRandSeed;
@@ -37,54 +37,54 @@ struct output_visitor : public boost::planar_face_traversal_visitor
 	{
 		//std::cout << "face: " << face_index++ << std::endl;
 		
-		blockContourTmp.clear();
-		blockContourWidths.clear();
+		sidewalkContourTmp.clear();
+		sidewalkContourWidths.clear();
 
-		blockContourPoints.clear();
-		blockContourLines.clear();
+		sidewalkContourPoints.clear();
+		sidewalkContourLines.clear();
 
 		vertex_output_visitor_invalid = false;
 	}
 
 	void end_face()
 	{
-		blockContourTmp.clear();
+		sidewalkContourTmp.clear();
 
 		if (vertex_output_visitor_invalid){ 
 			printf("INVALID end face\n");
 			return;
 		}
 			
-		for (int i = 0; i < blockContourPoints.contour.size(); ++i) {
-			blockContourTmp.push_back(blockContourPoints[i]);
-			//blockContourTmp.contour.back().setZ(0);//forze height =0
+		for (int i = 0; i < sidewalkContourPoints.contour.size(); ++i) {
+			sidewalkContourTmp.push_back(sidewalkContourPoints[i]);
+			//sidewalkContourTmp.contour.back().setZ(0);//forze height =0
 
-			if ((blockContourLines[i][0] - blockContourPoints[i]).lengthSquared() < (blockContourLines[i].last() - blockContourPoints[i]).lengthSquared()) {
-				for (int j = 1; j < blockContourLines[i].size() - 1; ++j) {
-					blockContourTmp.push_back(blockContourLines[i][j]);
+			if ((sidewalkContourLines[i][0] - sidewalkContourPoints[i]).lengthSquared() < (sidewalkContourLines[i].last() - sidewalkContourPoints[i]).lengthSquared()) {
+				for (int j = 1; j < sidewalkContourLines[i].size() - 1; ++j) {
+					sidewalkContourTmp.push_back(sidewalkContourLines[i][j]);
 					//blockContourTmp.contour.back().setZ(0);//forze height =0
 				}
 			} else {
-				for (int j = blockContourLines[i].size() - 2; j > 0; --j) {
-					blockContourTmp.push_back(blockContourLines[i][j]);
+				for (int j = sidewalkContourLines[i].size() - 2; j > 0; --j) {
+					sidewalkContourTmp.push_back(sidewalkContourLines[i][j]);
 					//blockContourTmp.contour.back().setZ(0);//forze height =0
 				}
 			}
 		}
 
 		//if (blockContourTmp.area() > 100.0f) {
-		if (blockContourTmp.contour.size() >= 3 && blockContourWidths.size() >= 3) {
+		if (sidewalkContourTmp.contour.size() >= 3 && sidewalkContourWidths.size() >= 3) {
 			Block newBlock;
-			newBlock.blockContour = blockContourTmp;
-			newBlock.blockContourRoadsWidths = blockContourWidths;
-			while (newBlock.blockContour.contour.size() > newBlock.blockContourRoadsWidths.size()) {
-				newBlock.blockContourRoadsWidths.push_back(newBlock.blockContourRoadsWidths.back());
+			newBlock.sidewalkContour = sidewalkContourTmp;
+			newBlock.sidewalkContourRoadsWidths = sidewalkContourWidths;
+			while (newBlock.sidewalkContour.contour.size() > newBlock.sidewalkContourRoadsWidths.size()) {
+				newBlock.sidewalkContourRoadsWidths.push_back(newBlock.sidewalkContourRoadsWidths.back());
 			}
 	
 			blocksPtr->push_back(newBlock);
 			//printf("CREATE block %d: %d\n",blocksPtr->size(),blocksPtr->back().blockContour.contour.size());
 		}else{
-			printf("Contour %d widths %d\n",blockContourTmp.contour.size(),blockContourWidths.size());
+			printf("Contour %d widths %d\n",sidewalkContourTmp.contour.size(),sidewalkContourWidths.size());
 		}
 	}
 };
@@ -111,7 +111,7 @@ struct vertex_output_visitor : public output_visitor
 				curRandSeed = ( (roadGraphPtr->graph)[v]->randSeed*4096 + 150889) % 714025;
 			}
 		}*/
-		blockContourPoints.push_back(roadGraphPtr->graph[v]->pt);
+		sidewalkContourPoints.push_back(roadGraphPtr->graph[v]->pt);
 	}
 
 	template <typename Edge> 
@@ -125,10 +125,10 @@ struct vertex_output_visitor : public output_visitor
 			return;
 		}
 
-		blockContourLines.push_back(roadGraphPtr->graph[e]->polyline3D);
+		sidewalkContourLines.push_back(roadGraphPtr->graph[e]->polyline3D);
 
 		for (int i = 0; i < roadGraphPtr->graph[e]->polyline3D.size() - 1; ++i) {
-			blockContourWidths.push_back(0.5f * roadGraphPtr->graph[e]->getWidth());
+			sidewalkContourWidths.push_back(0.5f * roadGraphPtr->graph[e]->getWidth());
 		}
 
 	}
@@ -271,31 +271,31 @@ bool VBOPmBlocks::generateBlocks(PlaceTypesMainClass &placeTypesIn, RoadGraph &r
 	int maxVtxCountIdx = -1;
 	std::vector<float> blockAreas;
 
-	Loop3D blockContourInset;
+	Loop3D sidewalkContourInset;
 	for (int i = 0; i < blocks.size(); ++i) {
 		//Reorient faces
-		if (Polygon3D::reorientFace(blocks[i].blockContour.contour)) {
-			std::reverse(blocks[i].blockContourRoadsWidths.begin(), blocks[i].blockContourRoadsWidths.end() - 1);
+		if (Polygon3D::reorientFace(blocks[i].sidewalkContour.contour)) {
+			std::reverse(blocks[i].sidewalkContourRoadsWidths.begin(), blocks[i].sidewalkContourRoadsWidths.end() - 1);
 		}
 
-		if( blocks[i].blockContour.contour.size() != blocks[i].blockContourRoadsWidths.size() ){
-			std::cout << "Error: contour" << blocks[i].blockContour.contour.size() << " widhts " << blocks[i].blockContourRoadsWidths.size() << "\n";
-			blocks[i].blockContour.contour.clear();
+		if( blocks[i].sidewalkContour.contour.size() != blocks[i].sidewalkContourRoadsWidths.size() ){
+			std::cout << "Error: contour" << blocks[i].sidewalkContour.contour.size() << " widhts " << blocks[i].sidewalkContourRoadsWidths.size() << "\n";
+			blocks[i].sidewalkContour.contour.clear();
 			blockAreas.push_back(0.0f);
 			continue;
 		}
 
-		if(blocks[i].blockContour.contour.size() < 3){
+		if(blocks[i].sidewalkContour.contour.size() < 3){
 			std::cout << "Error: Contour <3 " << "\n";
 			blockAreas.push_back(0.0f);
 			continue;
 		}
 
 		//Compute block offset	
-		float insetArea = blocks[i].blockContour.computeInset(blocks[i].blockContourRoadsWidths,blockContourInset);
+		float insetArea = blocks[i].sidewalkContour.computeInset(blocks[i].sidewalkContourRoadsWidths,sidewalkContourInset);
 		
-		blocks[i].blockContour.contour = blockContourInset;
-		blocks[i].blockContour.getBBox3D(blocks[i].bbox.minPt, blocks[i].bbox.maxPt);
+		blocks[i].sidewalkContour.contour = sidewalkContourInset;
+		blocks[i].sidewalkContour.getBBox3D(blocks[i].bbox.minPt, blocks[i].bbox.maxPt);
 		
 		blockAreas.push_back(insetArea);
 	}
@@ -304,7 +304,7 @@ bool VBOPmBlocks::generateBlocks(PlaceTypesMainClass &placeTypesIn, RoadGraph &r
 	float maxArea = -FLT_MAX;
 	int maxAreaIdx = -1;
 	for(int i=0; i<blocks.size(); ++i){
-		if(blocks[i].blockContour.contour.size() < 3){
+		if(blocks[i].sidewalkContour.contour.size() < 3){
 			continue;
 		}
 		if(blockAreas[i] > maxArea){
@@ -324,6 +324,15 @@ bool VBOPmBlocks::generateBlocks(PlaceTypesMainClass &placeTypesIn, RoadGraph &r
 		if (Util::genRand() < placeTypesIn.myPlaceTypes[blocks[i].getMyPlaceTypeIdx()].getFloat("park_percentage")) {
 			blocks[i].isPark = true;
 		}
+	}
+
+	// 歩道の分を確保するため、ブロックを縮小する。
+	for (int i = 0; i < blocks.size(); ++i) {
+		Loop3D blockContourInset;
+		float sidewalk_width = placeTypesIn.myPlaceTypes[blocks[i].getMyPlaceTypeIdx()].getFloat("sidewalk_width");
+		blocks[i].sidewalkContour.computeInset(sidewalk_width, blockContourInset, false);
+		blocks[i].blockContour.contour = blockContourInset;
+		blocks[i].blockContour.getBBox3D(blocks[i].bbox.minPt, blocks[i].bbox.maxPt);
 	}
 
 	return true;

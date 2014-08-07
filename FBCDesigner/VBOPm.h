@@ -26,12 +26,14 @@ public:
 	//static PlaceTypesMainClass placeTypes;
 
 	static bool generateBlocks(VBORenderManager& rendManager, RoadGraph &roadGraph, BlockSet& blocks, PlaceTypesMainClass& placeTypes);
+	static void generateBlockModels(VBORenderManager& rendManager,RoadGraph &roadGraph, BlockSet& blocks, PlaceTypesMainClass& placeTypes);
 	static bool generateParcels(VBORenderManager& rendManager, BlockSet& blocks, PlaceTypesMainClass& placeTypes);
+	static void generateParcelModels(VBORenderManager& rendManager, BlockSet& blocks, PlaceTypesMainClass& placeTypes);
 	static bool generateBuildings(VBORenderManager& rendManager, BlockSet& blocks, PlaceTypesMainClass& placeTypes);
 	static bool generateVegetation(VBORenderManager& rendManager, BlockSet& blocks, PlaceTypesMainClass& placeTypes);
 
 	static void generatePlaceTypeMesh(VBORenderManager& rendManager, PlaceTypesMainClass& placeTypes);
-	static void generateBlockMesh(VBORenderManager& rendManager, BlockSet& block, PlaceTypesMainClass& placeTypes);
+	//static void generateBlockMesh(VBORenderManager& rendManager, BlockSet& block, PlaceTypesMainClass& placeTypes);
 	static void generatePopulationJobDistribution(BlockSet& blocks);
 
 private:

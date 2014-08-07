@@ -43,65 +43,46 @@ private:
 public:
 	parcelGraph myParcels;
 
-	//QVector3D myColor;
-
 	BBox3D bbox;
 
 	int randSeed;
 	bool isPark;
 
-	/**
-	* Contour of the block.
-	**/
+	/** Contour of the block */
 	Polygon3D blockContour;
 
-	/**
-	* Boundary road widths
-	**/
-	std::vector<float> blockContourRoadsWidths;
+	/** contour of the sidewalk */
+	Polygon3D sidewalkContour;
+
+	/** Boundary road widths */
+	std::vector<float> sidewalkContourRoadsWidths;
 
 public:
-	/**
-	* Constructor.
-	**/
+	/** Constructor */
 	Block() : myPlaceTypeIdx(-1), isPark(false) {}
 
-	/**
-	* Destructor.
-	**/
-	~Block() {}
-
-	/**
-	* Clear
-	**/
+	/** Clear */
 	void clear(void);
 
 	void computeMyBBox3D(void);
 
-	inline void setMyPlaceTypeIdx(int inIdx)
-	{
+	inline void setMyPlaceTypeIdx(int inIdx) {
 		myPlaceTypeIdx = inIdx;
 	}
 
-	inline int getMyPlaceTypeIdx(void)
-	{
+	inline int getMyPlaceTypeIdx(void) {
 		return myPlaceTypeIdx;
 	}
 
-	inline int getMyNeighborhoodID(void)
-	{
+	inline int getMyNeighborhoodID(void) {
 		return myNeighborhoodID;
 	}
 
-	inline int getMyCityID(void)
-	{						
+	inline int getMyCityID(void) {						
 		return myCityID;
 	}
 
-
-	/**
-	* Compute parcel adjacency graph
-	**/
+	/** Compute parcel adjacency graph */
 	void computeParcelAdjacencyGraph(void);
 
 	void buildableAreaMock(void);
