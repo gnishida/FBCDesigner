@@ -31,7 +31,7 @@ public:
 	static bool generateVegetation(VBORenderManager& rendManager, BlockSet& blocks, PlaceTypesMainClass& placeTypes);
 
 	static void generatePlaceTypeMesh(VBORenderManager& rendManager, PlaceTypesMainClass& placeTypes);
-	static void generateBlockMesh(VBORenderManager& rendManager, BlockSet& block);
+	static void generateBlockMesh(VBORenderManager& rendManager, BlockSet& block, PlaceTypesMainClass& placeTypes);
 	static void generatePopulationJobDistribution(BlockSet& blocks);
 
 private:

@@ -8,7 +8,7 @@
 
 
 void subdivideBlockIntoParcels(Block &block, PlaceTypesMainClass &placeTypesIn);
-bool subdivideParcel(Block &block, Parcel parcel, float areaMean, float areaVar, float splitIrregularity, std::vector<Parcel> &outParcels); 
+bool subdivideParcel(Block &block, Parcel parcel, float areaMean, float areaMin, float areaVar, float splitIrregularity, std::vector<Parcel> &outParcels); 
 void setParcelsAsParks(PlaceTypesMainClass &placeTypesIn, std::vector< Block > &blocks);
 
 bool VBOPmParcels::generateParcels(VBORenderManager& rendManager, PlaceTypesMainClass &placeTypesIn, std::vector< Block > &blocks) {
@@ -50,7 +50,8 @@ void subdivideBlockIntoParcels(Block &block, PlaceTypesMainClass &placeTypesIn) 
 		//start recursive subdivision
 		subdivideParcel(block, tmpParcel,
 			placeTypesIn.myPlaceTypes.at(block.getMyPlaceTypeIdx()).getFloat("parcel_area_mean"),
-			placeTypesIn.myPlaceTypes.at(block.getMyPlaceTypeIdx()).getFloat("parcel_area_deviation")/100.0f,
+			placeTypesIn.myPlaceTypes.at(block.getMyPlaceTypeIdx()).getFloat("parcel_area_min"),
+			placeTypesIn.myPlaceTypes.at(block.getMyPlaceTypeIdx()).getFloat("parcel_area_deviation"),
 			placeTypesIn.myPlaceTypes.at(block.getMyPlaceTypeIdx()).getFloat("parcel_split_deviation"),
 			tmpParcels);
 	}
@@ -78,14 +79,14 @@ void subdivideBlockIntoParcels(Block &block, PlaceTypesMainClass &placeTypesIn) 
 * @splitIrregularity: A normalized value 0-1 indicating how far
 *					from the middle point the split line should be
 **/
-bool subdivideParcel(Block &block, Parcel parcel, float areaMean, float areaStd,
+bool subdivideParcel(Block &block, Parcel parcel, float areaMean, float areaMin, float areaStd,
 	float splitIrregularity, std::vector<Parcel> &outParcels)
 {
 	//printf("subdivideParcel\n");
 	//check if parcel is subdividable
 	float thresholdArea = areaMean + areaStd*areaMean*(((float)qrand()/RAND_MAX)*2.0f-1.0f);//LC::misctools::genRand(-1.0f, 1.0f)
 	//float thresholdArea = areaMean + LC::misctools::genRand(0.0f, 1.0f)*areaStd;
-	if( (fabs(boost::geometry::area(parcel.bg_parcelContour))) < thresholdArea ){
+	if( (fabs(boost::geometry::area(parcel.bg_parcelContour))) <= std::max(thresholdArea, areaMin)) {
 		//printf("a: %.3f %.3f", boost::geometry::area(parcel.bg_parcelContour));
 		//boost::geometry::correct(parcel.bg_parcelContour);
 		//printf("a: %.3f %.3f", boost::geometry::area(parcel.bg_parcelContour));
@@ -140,8 +141,8 @@ bool subdivideParcel(Block &block, Parcel parcel, float areaMean, float areaStd,
 		parcel2.setContour(pgon2);
 
 		//call recursive function for both parcels
-		subdivideParcel(block, parcel1, areaMean, areaStd, splitIrregularity, outParcels);
-		subdivideParcel(block, parcel2, areaMean, areaStd, splitIrregularity, outParcels);
+		subdivideParcel(block, parcel1, areaMean, areaMin, areaStd, splitIrregularity, outParcels);
+		subdivideParcel(block, parcel2, areaMean, areaMin, areaStd, splitIrregularity, outParcels);
 	} else {
 		return false;
 	}

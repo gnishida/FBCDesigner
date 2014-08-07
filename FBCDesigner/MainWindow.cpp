@@ -209,7 +209,7 @@ void MainWindow::onModeDefault() {
 	ui.actionModeBlock->setChecked(false);
 	ui.actionModeParcel->setChecked(false);
 
-	VBOPm::generateBlockMesh(glWidget->vboRenderManager, urbanGeometry->blocks);
+	//VBOPm::generateBlockMesh(glWidget->vboRenderManager, urbanGeometry->blocks, urbanGeometry->placeTypes);
 	glWidget->updateGL();
 }
 
@@ -229,7 +229,7 @@ void MainWindow::onModeBlock() {
 	ui.actionModePlaceType->setChecked(false);
 	ui.actionModeParcel->setChecked(false);
 
-	VBOPm::generateBlockMesh(glWidget->vboRenderManager, urbanGeometry->blocks);
+	//VBOPm::generateBlockMesh(glWidget->vboRenderManager, urbanGeometry->blocks, urbanGeometry->placeTypes);
 	glWidget->updateGL();
 }
 
@@ -239,19 +239,19 @@ void MainWindow::onModeParcel() {
 	ui.actionModeBlock->setChecked(false);
 	ui.actionModePlaceType->setChecked(false);
 
-	VBOPm::generateBlockMesh(glWidget->vboRenderManager, urbanGeometry->blocks);
+	//VBOPm::generateBlockMesh(glWidget->vboRenderManager, urbanGeometry->blocks, urbanGeometry->placeTypes);
 	glWidget->updateGL();
 }
 
 void MainWindow::onGenerateBlocks() {
 	VBOPm::generateBlocks(glWidget->vboRenderManager, urbanGeometry->roads, urbanGeometry->blocks, urbanGeometry->placeTypes);
-	VBOPm::generateBlockMesh(glWidget->vboRenderManager, urbanGeometry->blocks);
+	//VBOPm::generateBlockMesh(glWidget->vboRenderManager, urbanGeometry->blocks, urbanGeometry->placeTypes);
 	glWidget->updateGL();
 }
 
 void MainWindow::onGenerateParcels() {
 	VBOPm::generateParcels(glWidget->vboRenderManager, urbanGeometry->blocks, urbanGeometry->placeTypes);
-	VBOPm::generateBlockMesh(glWidget->vboRenderManager, urbanGeometry->blocks);
+	//VBOPm::generateBlockMesh(glWidget->vboRenderManager, urbanGeometry->blocks, urbanGeometry->placeTypes);
 	glWidget->updateGL();
 }
 
@@ -270,7 +270,7 @@ void MainWindow::onGenerateVegetation() {
 void MainWindow::onGenerateAll() {
 	VBOPm::generateBlocks(glWidget->vboRenderManager, urbanGeometry->roads, urbanGeometry->blocks, urbanGeometry->placeTypes);
 	VBOPm::generateParcels(glWidget->vboRenderManager, urbanGeometry->blocks, urbanGeometry->placeTypes);
-	VBOPm::generateBlockMesh(glWidget->vboRenderManager, urbanGeometry->blocks);
+	//VBOPm::generateBlockMesh(glWidget->vboRenderManager, urbanGeometry->blocks, urbanGeometry->placeTypes);
 	VBOPm::generateBuildings(glWidget->vboRenderManager, urbanGeometry->blocks, urbanGeometry->placeTypes);
 	VBOPm::generateVegetation(glWidget->vboRenderManager, urbanGeometry->blocks, urbanGeometry->placeTypes);
 	glWidget->shadow.makeShadowMap(glWidget);

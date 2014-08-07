@@ -1,4 +1,4 @@
-/************************************************************************************************
+﻿/************************************************************************************************
 *		Procedural City Generation: Buildings
 *		@author igarciad
 ************************************************************************************************/
@@ -100,6 +100,9 @@ bool computeBuildingFootprintPolygon(float maxFrontage, float maxDepth,
 	return true;
 }
 
+/**
+ * 指定されたParcelの中に、ビルを建てる。
+ */
 bool generateParcelBuildings(VBORenderManager& rendManager, Block &inBlock, Parcel &inParcel, PlaceTypesMainClass &placeTypesIn)
 {
 	float probEmptyParcel = 0.0f;
@@ -132,16 +135,16 @@ bool generateParcelBuildings(VBORenderManager& rendManager, Block &inBlock, Parc
 
 	//Compute buildable area polygon
 	float bldgFootprintArea = inParcel.computeBuildableArea(
-		placeTypesIn.myPlaceTypes.at(inParcel.getMyPlaceTypeIdx()).getFloat("parcel_setback_front"),
-		placeTypesIn.myPlaceTypes.at(inParcel.getMyPlaceTypeIdx()).getFloat("parcel_setback_rear"),
-		placeTypesIn.myPlaceTypes.at(inParcel.getMyPlaceTypeIdx()).getFloat("parcel_setback_sides"),
+		placeTypesIn.myPlaceTypes[inParcel.getMyPlaceTypeIdx()].getFloat("parcel_setback_front"),
+		placeTypesIn.myPlaceTypes[inParcel.getMyPlaceTypeIdx()].getFloat("parcel_setback_rear"),
+		placeTypesIn.myPlaceTypes[inParcel.getMyPlaceTypeIdx()].getFloat("parcel_setback_sides"),
 		frontEdges, rearEdges, sideEdges,
 		inParcel.parcelBuildableAreaContour.contour);
 	//printf("parcelBuilsable %d\n",inParcel.parcelBuildableAreaContour.contour.size());
 	if(inParcel.parcelBuildableAreaContour.isSelfIntersecting()){
 		inParcel.parcelBuildableAreaContour.contour.clear();
 		return false;
-	}		
+	}
 
 	//compute building footprint polygon
 	if(!computeBuildingFootprintPolygon(
@@ -154,6 +157,13 @@ bool generateParcelBuildings(VBORenderManager& rendManager, Block &inBlock, Parc
 		printf("!computeBuildingFootprintPolygon\n");
 		return false;
 	}
+
+	// もしfootprintの一辺の長さが短すぎたら、または、短い辺と長い辺の比が大きすぎたら、ビルの建設を中止する
+	QVector3D obbSize;
+	QMatrix4x4 obbMat;
+	inParcel.myBuilding.buildingFootprint.getMyOBB(obbSize, obbMat);
+	if (obbSize.x() < 5 || obbSize.y() < 5) return false;
+	if (obbSize.x() > obbSize.y() * 5 || obbSize.y() > obbSize.x() * 5) return false;
 
 	// stoties
 	float heightDev = 
@@ -187,12 +197,13 @@ bool generateParcelBuildings(VBORenderManager& rendManager, Block &inBlock, Parc
 	return true;
 }
 
-
+/**
+ * 指定されたブロック内に、ビルを建てる
+ */
 bool generateBlockBuildings(VBORenderManager& rendManager, Block &inBlock, PlaceTypesMainClass &placeTypesIn)
 {
 	Block::parcelGraphVertexIter vi, viEnd;	
 
-	//=== First compute parcel frontage and buildable area
 	//For each parcel
 	for(boost::tie(vi, viEnd) = boost::vertices(inBlock.myParcels); vi != viEnd; ++vi){
 		if(!generateParcelBuildings(rendManager, inBlock, inBlock.myParcels[*vi], placeTypesIn)){

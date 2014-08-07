@@ -89,7 +89,7 @@ void GLWidget3D::mousePressEvent(QMouseEvent *event) {
 					mainWin->propertyWidget->setBlock(selectedIndex, mainWin->urbanGeometry->blocks[selectedIndex]);
 				}
 
-				VBOPm::generateBlockMesh(mainWin->glWidget->vboRenderManager, mainWin->urbanGeometry->blocks);
+				VBOPm::generateBlockMesh(mainWin->glWidget->vboRenderManager, mainWin->urbanGeometry->blocks, mainWin->urbanGeometry->placeTypes);
 				updateGL();
 			}
 			break;
@@ -100,7 +100,7 @@ void GLWidget3D::mousePressEvent(QMouseEvent *event) {
 					mainWin->propertyWidget->setParcel(selectedIndexPair.first, selectedIndexPair.second, mainWin->urbanGeometry->blocks[selectedIndexPair.first]);
 				}
 				
-				VBOPm::generateBlockMesh(mainWin->glWidget->vboRenderManager, mainWin->urbanGeometry->blocks);
+				VBOPm::generateBlockMesh(mainWin->glWidget->vboRenderManager, mainWin->urbanGeometry->blocks, mainWin->urbanGeometry->placeTypes);
 				updateGL();
 			}
 
@@ -266,6 +266,11 @@ void GLWidget3D::paintGL() {
 	drawScene(0);		
 }
 
+/**
+ * シーンを描画
+ *
+ * @param drawMode		0 -- 通常の描画 / 1 -- shadowmap生成用の描画
+ */
 void GLWidget3D::drawScene(int drawMode) {
 	glLineWidth(10);
 	
@@ -290,6 +295,7 @@ void GLWidget3D::drawScene(int drawMode) {
 		vboRenderManager.vboTerrain.render(vboRenderManager);
 
 		vboRenderManager.renderStaticGeometry(QString("3d_sidewalk"));
+		vboRenderManager.renderStaticGeometry(QString("3d_parcel"));
 		vboRenderManager.renderStaticGeometry(QString("3d_building"));
 		vboRenderManager.renderStaticGeometry(QString("3d_building_fac"));
 
@@ -390,7 +396,7 @@ void GLWidget3D::keyPressEvent( QKeyEvent *e ){
 			}
 		} else if (mainWin->mode == MainWindow::MODE_BLOCK) {
 			mainWin->urbanGeometry->blocks.removeSelectedBlock();
-			VBOPm::generateBlockMesh(mainWin->glWidget->vboRenderManager, mainWin->urbanGeometry->blocks);
+			VBOPm::generateBlockMesh(mainWin->glWidget->vboRenderManager, mainWin->urbanGeometry->blocks, mainWin->urbanGeometry->placeTypes);
 			//mainWin->urbanGeometry->blocks.generateMesh(vboRenderManager);
 			updateGL();
 		}

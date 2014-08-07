@@ -1,4 +1,4 @@
-/************************************************************************************************
+﻿/************************************************************************************************
  *		Procedural City Generation
  *		@author igarciad
  ************************************************************************************************/
@@ -200,9 +200,9 @@ bool removeIntersectingEdges(RoadGraph &roadGraph)
 }//
 
 
-//
-// Given a road network, this function extracts the blocks
-//
+/**
+ * 道路網から、Block情報を抽出する。
+ */
 bool VBOPmBlocks::generateBlocks(PlaceTypesMainClass &placeTypesIn, RoadGraph &roadGraph, BlockSet &blocks) {
 	std::cout << "normalizing loop of roads." << std::endl;
 	GraphUtil::normalizeLoop(roadGraph);

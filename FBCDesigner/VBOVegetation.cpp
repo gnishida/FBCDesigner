@@ -133,6 +133,8 @@ bool VBOVegetation::generateVegetation(VBORenderManager& rendManager, PlaceTypes
 
 	for (int i = 0; i < blocks.size(); ++i) {
 		srand(blocks.at(i).randSeed);
+	
+		float tree_setback = placeTypesIn.myPlaceTypes.at(blocks[i].getMyPlaceTypeIdx()).getFloat("tree_setback");
 
 		contourPtr = &(blocks.at(i).blockContour.contour);
 
@@ -147,7 +149,7 @@ bool VBOVegetation::generateVegetation(VBORenderManager& rendManager, PlaceTypes
 			segmentVector /= segmentLength;
 
 			QVector3D perpV = QVector3D(segmentVector.y(), -segmentVector.x(), 0);//QVector3D::crossProduct(segmentVector,QVector3D(0,0,1));
-			ptThis=ptThis-perpV*2.0f;//5.5f;
+			ptThis=ptThis-perpV*tree_setback;//2.0f;//5.5f;
 
 			float distFromSegmentStart = distLeftOver;
 			while (true) {
